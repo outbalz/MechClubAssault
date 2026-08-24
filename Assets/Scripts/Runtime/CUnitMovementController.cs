@@ -36,9 +36,9 @@ public class CUnitMovementController : MonoBehaviour
         {
             Vector3 dir = (dest - transform.position).normalized;
 
-            transform.position += dir * _movementSpeed * Time.deltaTime;
-
             UnitRotation(dir);
+
+            transform.position += transform.rotation * Vector3.forward * _movementSpeed * Time.deltaTime;
 
             return true;
         }

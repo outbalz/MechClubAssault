@@ -204,7 +204,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 50360592}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 192198922}
+        m_TargetAssemblyTypeName: CTurnStateManager, Assembly-CSharp
+        m_MethodName: SubmitTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &50360592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,6 +265,9 @@ GameObject:
   m_Component:
   - component: {fileID: 192198921}
   - component: {fileID: 192198920}
+  - component: {fileID: 192198922}
+  - component: {fileID: 192198924}
+  - component: {fileID: 192198923}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -277,6 +292,7 @@ MonoBehaviour:
   _rayLayerMask:
     serializedVersion: 2
     m_Bits: 72
+  _turnStateManager: {fileID: 0}
   _selectedUnit: {fileID: 8233098296661468948}
   _targetUnit: {fileID: 0}
 --- !u!4 &192198921
@@ -294,6 +310,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &192198922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192198919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff0c40c8a55ca28459f47e6869d0cee2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerUnits:
+  - {fileID: 8233098296661468948}
+  _playerTurnUI: {fileID: 2044730416}
+--- !u!114 &192198923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192198919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eddeda4c37b1ddc488e7d59abcada22c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeScale: 1
+--- !u!114 &192198924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192198919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af25abbdd4d556b4fade3e372d6d5638, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 0}
+  _camTr: {fileID: 0}
+  _target: {fileID: 2639667466067557736}
+  _camOffset: {x: 0, y: 2, z: -3}
+  _camLookAtHeight: 1.5
+  _sharpness: 18
+  _sensitivity: 3
 --- !u!1 &330428908
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,6 +966,7 @@ GameObject:
   - component: {fileID: 1721058017}
   - component: {fileID: 1721058016}
   - component: {fileID: 1721058015}
+  - component: {fileID: 1721058019}
   m_Layer: 5
   m_Name: UIElement
   m_TagString: Untagged
@@ -993,6 +1057,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &1721058019
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721058014}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2044730416
 GameObject:
   m_ObjectHideFlags: 0
@@ -1002,6 +1078,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2044730417}
+  - component: {fileID: 2044730418}
   m_Layer: 5
   m_Name: PlayerTurnUI
   m_TagString: Untagged
@@ -1029,6 +1106,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &2044730418
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044730416}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!4 &2240279729243722
 Transform:
   m_ObjectHideFlags: 0
@@ -4258,8 +4347,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac4f5c663e8b3744da2ed6b45cadba56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementSpeed: 5
-  _rotationSpeed: 5
+  _movementSpeed: 0
+  _rotationSpeed: 0
 --- !u!114 &8233098296661468948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4273,10 +4362,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movementController: {fileID: 8233098296661468947}
-  _speed: 3
-  _turnRate: 5
-  _shield: 50
-  _lineRenderer: {fileID: 0}
+  _speed: 1.5
+  _turnRate: 15
+  _shield: 0
+  _lineRenderer: {fileID: 8233098296661468949}
 --- !u!120 &8233098296661468949
 LineRenderer:
   serializedVersion: 2
@@ -4322,6 +4411,14 @@ LineRenderer:
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.5

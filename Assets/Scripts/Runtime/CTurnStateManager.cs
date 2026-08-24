@@ -21,6 +21,7 @@ public class CTurnStateManager : MonoBehaviour
     [Space]
     [Header("UI")]
     [SerializeField] private GameObject _playerTurnUI;
+
     #endregion
 
     #region private var
