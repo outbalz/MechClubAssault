@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,10 +83,13 @@ public class CUnitController : MonoBehaviour
         }
     }
 
-    public void VisualizePath()
+    public void VisualizePath(List<Vector3> posList)
     {
+        Vector3[] posArr = posList.ToArray();
+
         _lineRenderer.enabled = true;
-        _lineRenderer.SetPositions(_turnData.Positions);
+        _lineRenderer.positionCount = posArr.Length;
+        _lineRenderer.SetPositions(posArr);
     }
 
 }

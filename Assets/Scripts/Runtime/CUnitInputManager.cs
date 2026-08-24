@@ -140,6 +140,7 @@ public class CUnitInputManager : MonoBehaviour
         dest.y = _MAPHIGHT;
 
         Vector3[] posPath = new Vector3[10];
+        List<Vector3> linePos = new List<Vector3>();
 
         posPath[0] = _selectedUnit.transform.position;
         
@@ -163,6 +164,8 @@ public class CUnitInputManager : MonoBehaviour
                     rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate * 0.2f);
 
                     moveVector += rot * Vector3.forward * _selectedUnit.Speed * 0.2f;
+
+                    linePos.Add(moveVector);
                 }
 
                 /*
@@ -180,6 +183,7 @@ public class CUnitInputManager : MonoBehaviour
             else
             {
                 moveVector += rot * Vector3.forward * _selectedUnit.Speed;
+                linePos.Add(moveVector);
             }
 
 
@@ -196,7 +200,7 @@ public class CUnitInputManager : MonoBehaviour
         }
 
         _selectedUnit.TurnData.Positions = posPath;
-        _selectedUnit.VisualizePath();
+        _selectedUnit.VisualizePath(linePos);
 
         _selectedUnit.MovementController.SetTargetPos(dest, posPath[posPath.Length-1]);
 
