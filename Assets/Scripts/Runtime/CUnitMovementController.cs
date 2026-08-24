@@ -45,7 +45,8 @@ public class CUnitMovementController : MonoBehaviour
 
         else
         {
-            transform.position = dest;
+            //transform.position = dest;
+            transform.position += transform.rotation * Vector3.forward * _movementSpeed * Time.deltaTime;
         }
 
         return false;

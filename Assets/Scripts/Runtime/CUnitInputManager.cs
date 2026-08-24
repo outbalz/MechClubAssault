@@ -148,32 +148,34 @@ public class CUnitInputManager : MonoBehaviour
 
         for (int i = 1; i < posPath.Length; i++)
         {
-            Vector3 moveVector = new Vector3();
+            Vector3 moveVector = posPath[i - 1];
 
 
             if(pathReachedDest == false)
             {
-                Quaternion tempRot = rot;
+                for (int j = 0; j < 10; j++)
+                {
+                    Quaternion tempRot = rot;
 
-                tempRot = Quaternion.LookRotation(dest - posPath[i-1], Vector3.up);
+                    tempRot = Quaternion.LookRotation(dest - posPath[i-1], Vector3.up);
 
-                rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate);
+                    rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate * 0.05f);
 
-                moveVector = rot * Vector3.forward * _selectedUnit.Speed;
-
+                    moveVector += rot * Vector3.forward * _selectedUnit.Speed * 0.05f;
+                }
             }
 
             else
             {
-                moveVector = rot * Vector3.forward * _selectedUnit.Speed;
+                moveVector += rot * Vector3.forward * _selectedUnit.Speed;
             }
 
 
-            posPath[i] =  posPath[i-1] + moveVector;
+            posPath[i] = moveVector;
 
             if ((dest - posPath[i]).sqrMagnitude <= _selectedUnit.Speed * _selectedUnit.Speed)
             {
-                pathReachedDest = true;
+                pathReachedDest = true; 
             }
             //posPath[i].y = _MAPHIGHT;
 
