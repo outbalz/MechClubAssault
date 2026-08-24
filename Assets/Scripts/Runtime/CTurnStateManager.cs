@@ -103,7 +103,7 @@ public class CTurnStateManager : MonoBehaviour
 
     private void TurnResolveInit()
     {
-        _turnTimer = 1f;
+        _turnTimer = 0;
         _turnSec = 0;
 
 

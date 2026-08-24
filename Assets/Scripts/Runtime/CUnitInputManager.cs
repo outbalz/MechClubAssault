@@ -24,6 +24,7 @@ public class CUnitInputManager : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private CUnitController _selectedUnit;
     [SerializeField] private GameObject _targetUnit;
+    [SerializeField] private Transform _posMarcker;
     #endregion
 
     #region private var
@@ -153,17 +154,26 @@ public class CUnitInputManager : MonoBehaviour
 
             if(pathReachedDest == false)
             {
-
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < 5; j++)
                 {
+                    Quaternion tempRot = rot;
+
+                    tempRot = Quaternion.LookRotation(dest - moveVector, Vector3.up);
+
+                    rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate * 0.2f);
+
+                    moveVector += rot * Vector3.forward * _selectedUnit.Speed * 0.2f;
+                }
+
+                /*
                     Quaternion tempRot = rot;
 
                     tempRot = Quaternion.LookRotation(dest - moveVector, Vector3.up);
 
                     rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate * 0.1f);
 
-                    moveVector += rot * Vector3.forward * _selectedUnit.Speed * 0.1f;
-                }
+                    moveVector += rot * Vector3.forward * _selectedUnit.Speed;
+                */
 
             }
 
@@ -189,6 +199,9 @@ public class CUnitInputManager : MonoBehaviour
         _selectedUnit.VisualizePath();
 
         _selectedUnit.MovementController.SetTargetPos(dest);
+
+
+        _posMarcker.position = dest;
 
         //Debug.Log(pathReachedDest);
 

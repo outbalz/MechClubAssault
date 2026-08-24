@@ -42,20 +42,15 @@ public class CUnitMovementController : MonoBehaviour
 
     private bool UnitMovemet(Vector3 dest)
     {
-        if ((dest - transform.position).sqrMagnitude > _movementSpeed * _movementSpeed * Time.deltaTime * Time.deltaTime + Time.deltaTime)
+        Vector3 dir = (dest - transform.position).normalized;
+
+        UnitRotation(dir);
+
+        transform.position += transform.rotation * Vector3.forward * _movementSpeed * Time.deltaTime;
+
+        if ((dest - transform.position).sqrMagnitude > _movementSpeed * _movementSpeed)
         {
-            Vector3 dir = (dest - transform.position).normalized;
-
-            UnitRotation(dir);
-
-            transform.position += transform.rotation * Vector3.forward * _movementSpeed * Time.deltaTime;
-
             return false;
-        }
-
-        else
-        {
-            transform.position = dest;
         }
 
         return true;
