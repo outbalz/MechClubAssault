@@ -82,10 +82,15 @@ public class CTurnStateManager : MonoBehaviour
 
         for (int i = 0; i < _playerUnits.Count; i++)
         {
-            for (int j = 0; j < _playerUnits[i].TurnData.Positions.Length ; j++)
+            Vector3[] tunPosData = _playerUnits[i].TurnData.Positions;
+
+            for (int j = 0; j < tunPosData.Length ; j++)
             {
-                _playerUnits[i].TurnData.Positions[j] = _playerUnits[i].transform.position + _playerUnits[i].transform.rotation * Vector3.forward * _playerUnits[i].Speed * j;
+                tunPosData[j] = _playerUnits[i].transform.position + _playerUnits[i].transform.rotation * Vector3.forward * _playerUnits[i].Speed * j;
             }
+
+            _playerUnits[i].MovementController.SetTargetPos(tunPosData[tunPosData.Length-1]);
+            _playerUnits[i].MovementController.SetOnMove(false);
         }
 
         ChangeTurnState(ETurnState.AwaitPlayerInput);
@@ -100,7 +105,15 @@ public class CTurnStateManager : MonoBehaviour
     {
         _turnTimer = 1f;
         _turnSec = 0;
-        TurnResolveUpDatePerSec();
+
+
+        for (int i = 0; i < _playerUnits.Count; i++)
+        {
+            _playerUnits[i].MovementController.SetOnMove();
+        }
+
+
+        //TurnResolveUpDatePerSec();
     }
 
     private void TurnResolveUpDate()
@@ -116,7 +129,7 @@ public class CTurnStateManager : MonoBehaviour
                 return;
             }
 
-            TurnResolveUpDatePerSec();
+            //TurnResolveUpDatePerSec();
         }
 
         _turnTimer -= Time.deltaTime;

@@ -148,28 +148,32 @@ public class CUnitInputManager : MonoBehaviour
 
         for (int i = 1; i < posPath.Length; i++)
         {
-            Vector3 moveVector = new Vector3();
+            Vector3 moveVector = posPath[i - 1];
 
 
             if(pathReachedDest == false)
             {
-                Quaternion tempRot = rot;
 
-                tempRot = Quaternion.LookRotation(dest - posPath[i-1], Vector3.up);
+                for (int j = 0; j < 10; j++)
+                {
+                    Quaternion tempRot = rot;
 
-                rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate);
+                    tempRot = Quaternion.LookRotation(dest - moveVector, Vector3.up);
 
-                moveVector = rot * Vector3.forward * _selectedUnit.Speed;
+                    rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate * 0.1f);
+
+                    moveVector += rot * Vector3.forward * _selectedUnit.Speed * 0.1f;
+                }
 
             }
 
             else
             {
-                moveVector = rot * Vector3.forward * _selectedUnit.Speed;
+                moveVector += rot * Vector3.forward * _selectedUnit.Speed;
             }
 
 
-            posPath[i] =  posPath[i-1] + moveVector;
+            posPath[i] =  moveVector;
 
             if ((dest - posPath[i]).sqrMagnitude <= _selectedUnit.Speed * _selectedUnit.Speed)
             {
@@ -184,11 +188,12 @@ public class CUnitInputManager : MonoBehaviour
         _selectedUnit.TurnData.Positions = posPath;
         _selectedUnit.VisualizePath();
 
+        _selectedUnit.MovementController.SetTargetPos(dest);
+
         //Debug.Log(pathReachedDest);
 
         /*
         // for test-----------
-        _selectedUnit.MovementController.SetTargetPos(pos);
         _selectedUnit.MovementController.SetOnMove(true);
         //----------------------
         */

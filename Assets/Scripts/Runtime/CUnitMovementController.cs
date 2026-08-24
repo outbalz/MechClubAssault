@@ -13,6 +13,7 @@ public class CUnitMovementController : MonoBehaviour
     #region private var
     private Vector3 _targetPos;
     private bool _onMove;
+    private bool _reachedDest;
     #endregion
 
 
@@ -20,13 +21,22 @@ public class CUnitMovementController : MonoBehaviour
     {
         _targetPos = transform.position;
         _onMove = false;
+        _reachedDest = false;
     }
 
     void Update()
     {
         if (_onMove)
         {
-            _onMove = UnitMovemet(_targetPos);
+            if (_reachedDest == false)
+            {
+                _reachedDest = UnitMovemet(_targetPos);
+            }
+
+            else
+            {
+                UnitMovemet();
+            }
         }
     }
 
@@ -40,7 +50,7 @@ public class CUnitMovementController : MonoBehaviour
 
             transform.position += transform.rotation * Vector3.forward * _movementSpeed * Time.deltaTime;
 
-            return true;
+            return false;
         }
 
         else
@@ -48,7 +58,12 @@ public class CUnitMovementController : MonoBehaviour
             transform.position = dest;
         }
 
-        return false;
+        return true;
+    }
+
+    private void UnitMovemet()
+    {
+        transform.position += transform.rotation * Vector3.forward * _movementSpeed * Time.deltaTime;
     }
 
     private void UnitRotation(Vector3 dir)
@@ -59,7 +74,7 @@ public class CUnitMovementController : MonoBehaviour
     public void SetTargetPos(Vector3 pos)
     {
         _targetPos = pos;
-        _onMove = true;
+        _reachedDest = false;
     }
 
     public bool IsOnMove()
