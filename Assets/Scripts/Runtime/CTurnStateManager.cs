@@ -98,7 +98,7 @@ public class CTurnStateManager : MonoBehaviour
 
     private void TurnResolveInit()
     {
-        _turnTimer = -Time.deltaTime;
+        _turnTimer = 1;
         _turnSec = 0;
         TurnResolveUpDatePerSec();
     }
@@ -128,7 +128,7 @@ public class CTurnStateManager : MonoBehaviour
     {
         for (int i = 0; i < _playerUnits.Count; i++)
         {
-            _playerUnits[i].MovementController.SetTargetPos(_playerUnits[i].TurnData.Positions[_turnSec]);
+            _playerUnits[i].MovementController.SetTargetPos(_playerUnits[i].TurnData.Dest, _playerUnits[i].TurnData.DestReachSec);
         }
     }
 

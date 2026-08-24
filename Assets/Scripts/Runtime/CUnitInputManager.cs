@@ -153,16 +153,13 @@ public class CUnitInputManager : MonoBehaviour
 
             if(pathReachedDest == false)
             {
-                for (int j = 0; j < 10; j++)
-                {
-                    Quaternion tempRot = rot;
+                Quaternion tempRot = rot;
+                
+                tempRot = Quaternion.LookRotation(dest - posPath[i-1], Vector3.up);
 
-                    tempRot = Quaternion.LookRotation(dest - posPath[i-1], Vector3.up);
+                rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate);
 
-                    rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate * 0.1f);
-
-                    moveVector += rot * Vector3.forward * _selectedUnit.Speed * 0.1f;
-                }
+                moveVector += rot * Vector3.forward * _selectedUnit.Speed;
             }
 
             else
@@ -176,11 +173,21 @@ public class CUnitInputManager : MonoBehaviour
             if ((dest - posPath[i]).sqrMagnitude <= _selectedUnit.Speed * _selectedUnit.Speed)
             {
                 pathReachedDest = true; 
+
+                _selectedUnit.TurnData.Dest = posPath[i];
+                _selectedUnit.TurnData.DestReachSec = i;
+
             }
             //posPath[i].y = _MAPHIGHT;
 
             Debug.DrawRay(posPath[i - 1], posPath[i] - posPath[i - 1], pathReachedDest ? Color.yellow : Color.blue , 2f);
 
+        }
+
+        if(pathReachedDest == false)
+        {
+            _selectedUnit.TurnData.Dest = posPath[posPath.Length - 1];
+            _selectedUnit.TurnData.DestReachSec = posPath.Length -1;
         }
 
         _selectedUnit.TurnData.Positions = posPath;
