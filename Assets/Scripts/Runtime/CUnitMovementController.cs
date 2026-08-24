@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class CUnitMovementController : MonoBehaviour
 {
+    #region inspector
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _rotationSpeed;
+    #endregion
 
+    #region private var
     private Vector3 _targetPos;
     private bool _onMove;
+    #endregion
 
 
     private void Awake()
@@ -57,10 +61,19 @@ public class CUnitMovementController : MonoBehaviour
     }
 
 
-    public void MoveToPos(Vector3 pos)
+    public void SetTargetPos(Vector3 pos)
     {
         _targetPos = pos;
-        _onMove = true;
+    }
+
+    public bool IsOnMove()
+    {
+        return _onMove;
+    }
+
+    public void SetOnMove(bool onMove = true)
+    {
+        _onMove = onMove;
     }
 
 }

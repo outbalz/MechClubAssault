@@ -17,12 +17,11 @@ public class CUnitInputManager : MonoBehaviour
     #region inspector (debug)
     [Space]
     [Header("Debug")]
-    [SerializeField] private GameObject _selectedUnit;
+    [SerializeField] private CUnitController _selectedUnit;
     [SerializeField] private GameObject _targetUnit;
     #endregion
 
     #region private var
-    private CUnitMovementController _unitMovement;
     private const float _MAPHIGHT = 0;
     #endregion
 
@@ -38,15 +37,9 @@ public class CUnitInputManager : MonoBehaviour
 
     private void Awake()
     {
-        
         if (_camera == null)
         {
             _camera = Camera.main;
-        }
-
-        if (_selectedUnit != null)
-        {
-            InitSelectedUint();
         }
     }
 
@@ -77,7 +70,6 @@ public class CUnitInputManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit, _rayMaxDistance, _rayLayerMask))
         {
             isHit = true;
-            Debug.Log("!!");
             Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green, 2f);
         }
 
@@ -89,29 +81,36 @@ public class CUnitInputManager : MonoBehaviour
 
     private void UnitMoveToRayHit(RaycastHit hit)
     {
-        if(_selectedUnit == null || _unitMovement == null)
+        if(_selectedUnit == null)
         {
             return;
         }
 
+        if(_selectedUnit.MovementController == null)
+        {
+            Debug.LogWarning("Missing MovementController");
+            return;
+        }
 
         Vector3 pos = new Vector3(hit.point.x, _MAPHIGHT, hit.point.z);
 
-        _unitMovement.MoveToPos(pos);
+
+        Vector3[] posPath = new Vector3[10];
+
+
+        /*
+        // for test-----------
+        _selectedUnit.MovementController.SetTargetPos(pos);
+        _selectedUnit.MovementController.SetOnMove(true);
+        //----------------------
+        */
     }
 
-    private void InitSelectedUint()
-    {
-        if(_selectedUnit.TryGetComponent<CUnitMovementController>(out _unitMovement) == false)
-        {
-            Debug.LogWarning("Missing CUnitMovementController");
-        }
-    }
 
-    public void SetSelectedUint(GameObject unit)
+
+    public void SetSelectedUint(CUnitController unit)
     {
         _selectedUnit = unit;
-        InitSelectedUint();
     }
 
 }
