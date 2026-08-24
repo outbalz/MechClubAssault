@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CUnitMovementController : MonoBehaviour
 {
-    #region inspector
+    #region inspector (debug)
+    [Header("debug")]
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _rotationSpeed;
     #endregion
@@ -52,18 +53,13 @@ public class CUnitMovementController : MonoBehaviour
 
     private void UnitRotation(Vector3 dir)
     {
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir, Vector3.up), GetSmoothT(_rotationSpeed));
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir, Vector3.up), _rotationSpeed * Time.deltaTime);
     }
-
-    private float GetSmoothT(float sharpness)
-    {
-        return 1f - Mathf.Exp(-sharpness * Time.deltaTime);
-    }
-
 
     public void SetTargetPos(Vector3 pos)
     {
         _targetPos = pos;
+        _onMove = true;
     }
 
     public bool IsOnMove()
@@ -74,6 +70,12 @@ public class CUnitMovementController : MonoBehaviour
     public void SetOnMove(bool onMove = true)
     {
         _onMove = onMove;
+    }
+
+    public void SetSpeed(float movementSpeed, float rotationSpeed)
+    {
+        _movementSpeed = movementSpeed;
+        _rotationSpeed = rotationSpeed;
     }
 
 }

@@ -6,10 +6,18 @@ using UnityEngine;
 public class CUnitController : MonoBehaviour
 {
     #region inspector
+    [Header("Movement")]
     [SerializeField] private CUnitMovementController _movementController;
     [SerializeField] private float _speed;
     [SerializeField] private float _turnRate;
+
+    [Space]
+    [Header("Shield")]
     [SerializeField] private float _shield;
+
+    [Space]
+    [Header("Line Renderer")]
+    [SerializeField] private LineRenderer _lineRenderer;
     #endregion
 
     #region private var
@@ -35,6 +43,11 @@ public class CUnitController : MonoBehaviour
         InitializeUnit();
     }
 
+    private void Start()
+    {
+        _movementController.SetSpeed(_speed, _turnRate);
+    }
+
     private void InitializeUnit(int turnNum = 0)
     {
         _turnNum = turnNum;
@@ -45,13 +58,34 @@ public class CUnitController : MonoBehaviour
             {
                 Debug.LogWarning("Missing CUnitMovementController");
             }
+
         }
 
         if (_turnData == null)
         {
             _turnData = new CTurnData(_turnNum);
         }
+
+        if (_lineRenderer == null)
+        {
+            if (TryGetComponent<LineRenderer>(out _lineRenderer) == false)
+            {
+                Debug.LogWarning("Missing LineRenderer");
+            }
+
+            else
+            {
+                _lineRenderer.positionCount = 10;
+                _lineRenderer.enabled = false;
+            }
+
+        }
     }
 
+    public void VisualizePath()
+    {
+        _lineRenderer.enabled = true;
+        _lineRenderer.SetPositions(_turnData.Positions);
+    }
 
 }
