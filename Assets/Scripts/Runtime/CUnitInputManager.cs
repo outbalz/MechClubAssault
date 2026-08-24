@@ -198,7 +198,7 @@ public class CUnitInputManager : MonoBehaviour
         _selectedUnit.TurnData.Positions = posPath;
         _selectedUnit.VisualizePath();
 
-        _selectedUnit.MovementController.SetTargetPos(dest);
+        _selectedUnit.MovementController.SetTargetPos(dest, posPath[posPath.Length-1]);
 
 
         _posMarcker.position = dest;

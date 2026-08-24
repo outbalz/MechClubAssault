@@ -12,6 +12,7 @@ public class CUnitMovementController : MonoBehaviour
 
     #region private var
     private Vector3 _targetPos;
+    private Vector3 _finalTargetPos;
     private bool _onMove;
     private bool _reachedDest;
     #endregion
@@ -35,7 +36,7 @@ public class CUnitMovementController : MonoBehaviour
 
             else
             {
-                UnitMovemet();
+                UnitMovemet(_finalTargetPos);
             }
         }
     }
@@ -48,27 +49,28 @@ public class CUnitMovementController : MonoBehaviour
 
         transform.position += transform.rotation * Vector3.forward * _movementSpeed * Time.deltaTime;
 
-        if ((dest - transform.position).sqrMagnitude > _movementSpeed * _movementSpeed)
+        if ((dest - transform.position).sqrMagnitude <= _movementSpeed * _movementSpeed + _movementSpeed)
         {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
-
+    /*
     private void UnitMovemet()
     {
         transform.position += transform.rotation * Vector3.forward * _movementSpeed * Time.deltaTime;
     }
-
+    */
     private void UnitRotation(Vector3 dir)
     {
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir, Vector3.up), _rotationSpeed * Time.deltaTime);
     }
 
-    public void SetTargetPos(Vector3 pos)
+    public void SetTargetPos(Vector3 pos, Vector3 fainalPos)
     {
         _targetPos = pos;
+        _finalTargetPos = fainalPos;
         _reachedDest = false;
     }
 

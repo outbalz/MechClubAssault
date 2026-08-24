@@ -89,7 +89,7 @@ public class CTurnStateManager : MonoBehaviour
                 tunPosData[j] = _playerUnits[i].transform.position + _playerUnits[i].transform.rotation * Vector3.forward * _playerUnits[i].Speed * j;
             }
 
-            _playerUnits[i].MovementController.SetTargetPos(tunPosData[tunPosData.Length-1]);
+            _playerUnits[i].MovementController.SetTargetPos(tunPosData[tunPosData.Length-1], tunPosData[tunPosData.Length - 1]);
             _playerUnits[i].MovementController.SetOnMove(false);
         }
 
@@ -136,15 +136,15 @@ public class CTurnStateManager : MonoBehaviour
 
     }
 
-
+    /*
     private void TurnResolveUpDatePerSec()
     {
         for (int i = 0; i < _playerUnits.Count; i++)
         {
-            _playerUnits[i].MovementController.SetTargetPos(_playerUnits[i].TurnData.Positions[_turnSec]);
+            _playerUnits[i].MovementController.SetTargetPos(_playerUnits[i].TurnData.Positions[_turnSec], _playerUnits[i].TurnData.Positions[_playerUnits[i].TurnData.Positions.Length -1]);
         }
     }
-
+    */
     public void SubmitTurn()
     {
         if(_turnState != ETurnState.AwaitPlayerInput)
