@@ -159,9 +159,9 @@ public class CUnitInputManager : MonoBehaviour
 
                     tempRot = Quaternion.LookRotation(dest - posPath[i-1], Vector3.up);
 
-                    rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate * 0.05f);
+                    rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate * 0.1f);
 
-                    moveVector += rot * Vector3.forward * _selectedUnit.Speed * 0.05f;
+                    moveVector += rot * Vector3.forward * _selectedUnit.Speed * 0.1f;
                 }
             }
 

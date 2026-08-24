@@ -98,7 +98,7 @@ public class CTurnStateManager : MonoBehaviour
 
     private void TurnResolveInit()
     {
-        _turnTimer = 1f;
+        _turnTimer = -Time.deltaTime;
         _turnSec = 0;
         TurnResolveUpDatePerSec();
     }
