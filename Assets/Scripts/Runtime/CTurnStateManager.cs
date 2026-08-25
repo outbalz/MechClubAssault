@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class CTurnStateManager : MonoBehaviour
@@ -21,7 +22,7 @@ public class CTurnStateManager : MonoBehaviour
     [Space]
     [Header("UI")]
     [SerializeField] private GameObject _playerTurnUI;
-
+    [SerializeField] private Slider _speedSlider;
     #endregion
 
     #region private var
@@ -89,11 +90,17 @@ public class CTurnStateManager : MonoBehaviour
                 tunPosData[j] = _playerUnits[i].transform.position + _playerUnits[i].transform.rotation * Vector3.forward * _playerUnits[i].Speed * j;
             }
 
+
             _playerUnits[i].MovementController.SetTargetPos(tunPosData[tunPosData.Length-1], tunPosData[tunPosData.Length - 1]);
             _playerUnits[i].MovementController.SetOnMove(false);
+            _playerUnits[i].MovementController.SpeedTurnInit();
+            _playerUnits[i].GetSpeed();
         }
 
         ChangeTurnState(ETurnState.AwaitPlayerInput);
+
+        _speedSlider.value = 1;
+        _speedSlider.onValueChanged.Invoke(0.1f);
     }
 
     private void AIInput()
@@ -123,7 +130,7 @@ public class CTurnStateManager : MonoBehaviour
             _turnTimer += 1;
             _turnSec++;
 
-            if (_turnSec >= 10)
+            if (_turnSec >= 5)
             {
                 ChangeTurnState(ETurnState.TurnInit);
                 return;

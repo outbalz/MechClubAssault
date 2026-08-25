@@ -12,7 +12,7 @@ public class CTurnData
 
     public CTurnData(int turnNum)
     {
-        _positions = new Vector3[10];
+        _positions = new Vector3[5];
         _turnNum = turnNum;
     }
 }

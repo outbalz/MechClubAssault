@@ -1,13 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CUnitMovementController : MonoBehaviour
 {
     #region inspector (debug)
-    [Header("debug")]
-    [SerializeField] private float _movementSpeed;
-    [SerializeField] private float _rotationSpeed;
+    [Header("speed")]
+    [SerializeField] private float _speed;
+    [SerializeField] private float _maxSpeed;
+    [SerializeField] private float _turnRate;
+
+    [Space]
+    [SerializeField] private float _acceleration;
+    [SerializeField] private float _deceleration;
+    [SerializeField] private float _airResistance;
     #endregion
 
     #region private var
@@ -15,6 +24,8 @@ public class CUnitMovementController : MonoBehaviour
     private Vector3 _finalTargetPos;
     private bool _onMove;
     private bool _reachedDest;
+    private int _accelerationLevel;
+    private float _previousSpeed;
     #endregion
 
 
@@ -47,9 +58,9 @@ public class CUnitMovementController : MonoBehaviour
 
         UnitRotation(dir);
 
-        transform.position += transform.rotation * Vector3.forward * _movementSpeed * Time.deltaTime;
+        transform.position += transform.rotation * Vector3.forward * _speed * Time.deltaTime;
 
-        if ((dest - transform.position).sqrMagnitude <= _movementSpeed * _movementSpeed + _movementSpeed)
+        if ((dest - transform.position).sqrMagnitude <= _speed * _speed + _speed)
         {
             return true;
         }
@@ -59,12 +70,17 @@ public class CUnitMovementController : MonoBehaviour
     /*
     private void UnitMovemet()
     {
-        transform.position += transform.rotation * Vector3.forward * _movementSpeed * Time.deltaTime;
+        transform.position += transform.rotation * Vector3.forward * _speed * Time.deltaTime;
     }
     */
     private void UnitRotation(Vector3 dir)
     {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir, Vector3.up), _rotationSpeed * Time.deltaTime);
+        if(dir == Vector3.zero)
+        {
+            return;
+        }
+
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir, Vector3.up), _turnRate * Time.deltaTime);
     }
 
     public void SetTargetPos(Vector3 pos, Vector3 fainalPos)
@@ -84,10 +100,47 @@ public class CUnitMovementController : MonoBehaviour
         _onMove = onMove;
     }
 
-    public void SetSpeed(float movementSpeed, float rotationSpeed)
+    public void SetSpeed(float speed, float turnRate)
     {
-        _movementSpeed = movementSpeed;
-        _rotationSpeed = rotationSpeed;
+        _speed = speed;
+        _turnRate = turnRate;
     }
 
+    public void GetSpeed(out float speed, out float turnRate, out float maxSpeed)
+    {
+        speed = _speed;
+        turnRate = _turnRate;
+        maxSpeed = _maxSpeed;
+    }
+
+    public void SpeedTurnInit()
+    {
+        _speed -= _airResistance;
+
+        if (_speed < 0)
+        {
+            _speed = 0;
+        }
+
+        _previousSpeed = _speed;
+    }
+
+    public void SetAccelerationLevel(int level)
+    {
+        _accelerationLevel = level;
+
+        float tempSpeed = _previousSpeed;
+
+        if(_accelerationLevel < 0)
+        {
+            tempSpeed += _deceleration * _accelerationLevel;
+        }
+
+        else if(_accelerationLevel > 0)
+        {
+            tempSpeed += _acceleration * _accelerationLevel;
+        }
+
+        _speed = tempSpeed;
+    }
 }

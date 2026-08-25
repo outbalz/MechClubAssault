@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CUnitInputManager : MonoBehaviour
 {
@@ -25,6 +27,7 @@ public class CUnitInputManager : MonoBehaviour
     [SerializeField] private CUnitController _selectedUnit;
     [SerializeField] private GameObject _targetUnit;
     [SerializeField] private Transform _posMarker;
+    [SerializeField] private TMP_Text _speedText;
     #endregion
 
     #region private var
@@ -60,7 +63,10 @@ public class CUnitInputManager : MonoBehaviour
         }
     }
 
-
+    private void Start()
+    {
+        _speedText.text = $"{_selectedUnit.Speed}/mps";
+    }
 
     void Update()
     {
@@ -139,11 +145,12 @@ public class CUnitInputManager : MonoBehaviour
 
         dest.y = _MAPHIGHT;
 
-        Vector3[] posPath = new Vector3[10];
+        Vector3[] posPath = new Vector3[5];
         List<Vector3> linePos = new List<Vector3>();
 
         posPath[0] = _selectedUnit.transform.position;
-        
+        linePos.Add(_selectedUnit.transform.position);
+
         bool pathReachedDest = false;
 
         Quaternion rot = _selectedUnit.transform.rotation;
@@ -166,6 +173,11 @@ public class CUnitInputManager : MonoBehaviour
                     moveVector += rot * Vector3.forward * _selectedUnit.Speed * 0.2f;
 
                     linePos.Add(moveVector);
+
+                    if ((dest - moveVector).sqrMagnitude <= _selectedUnit.Speed * _selectedUnit.Speed)
+                    {
+                        pathReachedDest = true;
+                    }
                 }
 
                 /*
@@ -189,10 +201,6 @@ public class CUnitInputManager : MonoBehaviour
 
             posPath[i] =  moveVector;
 
-            if ((dest - posPath[i]).sqrMagnitude <= _selectedUnit.Speed * _selectedUnit.Speed)
-            {
-                pathReachedDest = true;
-            }
             //posPath[i].y = _MAPHIGHT;
 
             Debug.DrawRay(posPath[i - 1], posPath[i] - posPath[i - 1], pathReachedDest ? Color.yellow : Color.blue , 2f);
@@ -221,6 +229,43 @@ public class CUnitInputManager : MonoBehaviour
     public void SetSelectedUint(CUnitController unit)
     {
         _selectedUnit = unit;
+    }
+
+    public void SetAccelerationLevel(Slider slider)
+    {
+        _selectedUnit.MovementController.SetAccelerationLevel((int)slider.value);
+
+        _selectedUnit.GetSpeed();
+
+        if (_selectedUnit.Speed < 0)
+        {
+            slider.value = 0;
+            slider.onValueChanged.Invoke(0);
+            return;
+        }
+
+        if(_selectedUnit.Speed > _selectedUnit.MaxSpeed)
+        {
+            float overflow = _selectedUnit.Speed - _selectedUnit.MaxSpeed;
+
+            slider.value = 3 - overflow;
+            slider.onValueChanged.Invoke(0);
+            return;
+        }
+
+        List<Vector3> posList = new List<Vector3>();
+
+        posList.Add(_selectedUnit.transform.position);
+
+        Vector3 pos = _selectedUnit.transform.position + _selectedUnit.transform.rotation * Vector3.forward * _selectedUnit.Speed * 5;
+
+        posList.Add(pos);
+
+        _selectedUnit.VisualizePath(posList);
+
+        _selectedUnit.MovementController.SetTargetPos(pos,pos);
+
+        _speedText.text = $"{_selectedUnit.Speed}/mps";
     }
 
 }

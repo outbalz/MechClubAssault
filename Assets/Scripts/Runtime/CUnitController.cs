@@ -10,6 +10,7 @@ public class CUnitController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private CUnitMovementController _movementController;
     [SerializeField] private float _speed;
+    [SerializeField] private float _maxSpeed;
     [SerializeField] private float _turnRate;
 
     [Space]
@@ -29,6 +30,7 @@ public class CUnitController : MonoBehaviour
     #region getter
     public CUnitMovementController MovementController { get { return _movementController; } }
     public float Speed { get { return _speed; } }
+    public float MaxSpeed {  get { return _maxSpeed; } }
     public float TurnRate { get { return _turnRate; } }
     public CTurnData TurnData { get { return _turnData; } }
     #endregion
@@ -46,7 +48,7 @@ public class CUnitController : MonoBehaviour
 
     private void Start()
     {
-        _movementController.SetSpeed(_speed, _turnRate);
+        GetSpeed();
     }
 
     private void InitializeUnit(int turnNum = 0)
@@ -90,6 +92,11 @@ public class CUnitController : MonoBehaviour
         _lineRenderer.enabled = true;
         _lineRenderer.positionCount = posArr.Length;
         _lineRenderer.SetPositions(posArr);
+    }
+    
+    public void GetSpeed()
+    {
+        _movementController.GetSpeed(out _speed, out _turnRate, out _maxSpeed);
     }
 
 }
