@@ -24,7 +24,7 @@ public class CUnitInputManager : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private CUnitController _selectedUnit;
     [SerializeField] private GameObject _targetUnit;
-    [SerializeField] private Transform _posMarcker;
+    [SerializeField] private Transform _posMarker;
     #endregion
 
     #region private var
@@ -205,7 +205,7 @@ public class CUnitInputManager : MonoBehaviour
         _selectedUnit.MovementController.SetTargetPos(dest, posPath[posPath.Length-1]);
 
 
-        _posMarcker.position = dest;
+        _posMarker.position = dest;
 
         //Debug.Log(pathReachedDest);
 

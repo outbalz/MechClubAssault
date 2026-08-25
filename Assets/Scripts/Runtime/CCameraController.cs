@@ -12,12 +12,18 @@ public class CCameraController : MonoBehaviour
     [SerializeField] private Vector3 _camOffset = new Vector3(0f, 2f, -3f);
     [SerializeField] private float _camLookAtHeight = 1.5f;
 
+    [SerializeField] private float _offesetZmin = -20f;
+    [SerializeField] private float _offesetZmax = -2.7f;
+
     [Min(0f)]
     [SerializeField] private float _sharpness = 18f;
 
     [SerializeField] private float _sensitivity = 1.0f;
     #endregion
 
+    #region private var
+    private Quaternion _rotOffset;
+    #endregion
 
     private void Awake()
     {
@@ -42,6 +48,8 @@ public class CCameraController : MonoBehaviour
         }
 
         _camTr = _camera.transform;
+
+        _rotOffset = Quaternion.identity;
 
         Vector3 desiredPos;
         Quaternion desiredRot;
@@ -102,12 +110,12 @@ public class CCameraController : MonoBehaviour
 
         float camPitch = 2f;
 
-        desiredPos = _target.position + (_target.rotation * _camOffset);
+        desiredPos = _target.position + ( _rotOffset * _target.rotation * _camOffset);
 
         desiredPos.y = _target.position.y + camPitch;
 
         Vector3 lookPos = _target.position + Vector3.up * _camLookAtHeight;
-        desiredRot = Quaternion.LookRotation(lookPos - desiredPos, Vector3.up);
+        desiredRot =  Quaternion.LookRotation(lookPos - desiredPos, Vector3.up);
 
 
     }
@@ -115,7 +123,20 @@ public class CCameraController : MonoBehaviour
     private void CameraOffsetUpdate()
     {
         float wheelInput = Input.GetAxis("Mouse ScrollWheel");
-        _camOffset.z += wheelInput * _sensitivity;
+
+        if (wheelInput != 0f)
+        {
+            _camOffset.z += wheelInput * _sensitivity;
+            _camOffset.z = Mathf.Clamp(_camOffset.z, _offesetZmin, _offesetZmax);
+        }
+
+
+        if (Input.GetMouseButton(1))
+        {
+            float mouseX = Input.GetAxis("Mouse X");
+
+            _rotOffset *= Quaternion.AngleAxis(mouseX * _sensitivity, Vector3.up);
+        }
     }
 
 }
