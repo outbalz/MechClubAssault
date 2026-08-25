@@ -239,9 +239,9 @@ public class CUnitInputManager : MonoBehaviour
 
         if (_selectedUnit.Speed < 0)
         {
-            slider.value = 0;
-            slider.onValueChanged.Invoke(0);
-            return;
+            slider.value = 1 +_selectedUnit.Speed;
+            _selectedUnit.MovementController.SetAccelerationLevel((int)slider.value);
+            _selectedUnit.GetSpeed();
         }
 
         if(_selectedUnit.Speed > _selectedUnit.MaxSpeed)
@@ -249,8 +249,9 @@ public class CUnitInputManager : MonoBehaviour
             float overflow = _selectedUnit.Speed - _selectedUnit.MaxSpeed;
 
             slider.value = 3 - overflow;
-            slider.onValueChanged.Invoke(0);
-            return;
+
+            _selectedUnit.MovementController.SetAccelerationLevel((int)slider.value);
+            _selectedUnit.GetSpeed();
         }
 
         List<Vector3> posList = new List<Vector3>();

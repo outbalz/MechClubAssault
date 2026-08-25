@@ -13,6 +13,7 @@ public class CUnitWeaponContorller : MonoBehaviour
     [SerializeField] private float _weaponRangeL;
     [SerializeField] private bool _weaponEnableL;
     [SerializeField] private float _weaponCoolDownL;
+    [SerializeField] private float _weaponDamegeL;
 
     [SerializeField] private ParticleSystem _weaponParticleL;
 
@@ -25,6 +26,7 @@ public class CUnitWeaponContorller : MonoBehaviour
     [SerializeField] private float _weaponRangeR;
     [SerializeField] private bool _weaponEnableR;
     [SerializeField] private float _weaponCoolDownR;
+    [SerializeField] private float _weaponDamegeR;
 
     [SerializeField] private ParticleSystem _weaponParticleR;
 
@@ -140,6 +142,7 @@ public class CUnitWeaponContorller : MonoBehaviour
                 {
                     _weaponParticleL.Play();
                     _weaponTimerL = _weaponCoolDownL;
+                    hit.collider.GetComponent<IDamageable>().TakeHit(_weaponDamegeL);
                 }
             }
 
@@ -168,6 +171,7 @@ public class CUnitWeaponContorller : MonoBehaviour
                 {
                     _weaponParticleR.Play();
                     _weaponTimerR = _weaponCoolDownR;
+                    hit.collider.GetComponent<IDamageable>().TakeHit(_weaponDamegeR);
                 }
             }
 

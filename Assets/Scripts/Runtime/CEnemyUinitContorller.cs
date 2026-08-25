@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CUnitMovementController))]
-public class CUnitController : MonoBehaviour, IDamageable
+public class CEnemyUinitContorller : MonoBehaviour, IDamageable
 {
     #region inspector
     [Header("Movement")]
@@ -16,11 +16,18 @@ public class CUnitController : MonoBehaviour, IDamageable
     [Space]
     [Header("Shield")]
     [SerializeField] private float _shield;
+    [SerializeField] private float _maxShield;
 
     [Space]
-    [Header("Line Renderer")]
-    [SerializeField] private LineRenderer _lineRenderer;
+    [Header("UI")]
+    [SerializeField] private Transform _unitUi;
+    [SerializeField] private Slider _shieldBar;
+
+    [Space]
+    [Header("carmera")]
+    [SerializeField] private Transform _cameraTr;
     #endregion
+
 
     #region private var
     private CTurnData _turnData;
@@ -30,7 +37,7 @@ public class CUnitController : MonoBehaviour, IDamageable
     #region getter
     public CUnitMovementController MovementController { get { return _movementController; } }
     public float Speed { get { return _speed; } }
-    public float MaxSpeed {  get { return _maxSpeed; } }
+    public float MaxSpeed { get { return _maxSpeed; } }
     public float TurnRate { get { return _turnRate; } }
     public CTurnData TurnData { get { return _turnData; } }
     #endregion
@@ -51,9 +58,16 @@ public class CUnitController : MonoBehaviour, IDamageable
         GetSpeed();
     }
 
+    private void Update()
+    {
+        _unitUi.rotation =_cameraTr.rotation;
+    }
+
     private void InitializeUnit(int turnNum = 0)
     {
         _turnNum = turnNum;
+
+        _cameraTr = Camera.main.transform;
 
         if (_movementController == null)
         {
@@ -69,31 +83,16 @@ public class CUnitController : MonoBehaviour, IDamageable
             _turnData = new CTurnData(_turnNum);
         }
 
-        if (_lineRenderer == null)
-        {
-            if (TryGetComponent<LineRenderer>(out _lineRenderer) == false)
-            {
-                Debug.LogWarning("Missing LineRenderer");
-            }
-
-            else
-            {
-                _lineRenderer.positionCount = 10;
-                _lineRenderer.enabled = false;
-            }
-
-        }
+        _shield = _maxShield;
+        SetShieldBar();
     }
 
-    public void VisualizePath(List<Vector3> posList)
+    private void SetShieldBar()
     {
-        Vector3[] posArr = posList.ToArray();
-
-        _lineRenderer.enabled = true;
-        _lineRenderer.positionCount = posArr.Length;
-        _lineRenderer.SetPositions(posArr);
+        _shieldBar.maxValue = _maxShield;
+        _shieldBar.value = _shield;
     }
-    
+
     public void GetSpeed()
     {
         _movementController.GetSpeed(out _speed, out _turnRate, out _maxSpeed);
@@ -103,7 +102,7 @@ public class CUnitController : MonoBehaviour, IDamageable
     {
         _shield -= damage;
 
-        //SetShieldBar();
+        SetShieldBar();
     }
 
 }
