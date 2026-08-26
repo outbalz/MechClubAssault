@@ -14,8 +14,15 @@ public class CBattleUIManager : MonoBehaviour
     [Header("UI Element")]
     [SerializeField] private GameObject _playerTurnUI;
     [SerializeField] private TMP_Text _speedText;
+    [SerializeField] private TMP_Text _energyText;
     [SerializeField] private Slider _speedSlider;
     [SerializeField] private Toggle[] _WeaponToggles;
+    #endregion
+
+    #region private var
+    //private float _turnEnergy;
+    private float _previousSpeedBarVal;
+    private float _previousSpeedCost;
     #endregion
 
     private void Reset()
@@ -45,13 +52,37 @@ public class CBattleUIManager : MonoBehaviour
         {
             Debug.LogWarning("Missing _playerTurnUI");
         }
-    }
 
+        if(_speedText == null || _energyText == null)
+        {
+            Debug.LogWarning("Missing text element");
+        }
+
+    }
 
     private void Start()
     {
-        _speedText.text = $"{_unitInputManager.SelectedUnit.Speed}/mps";
+        InitSelectedUnitUi();
     }
+
+    private void InitSelectedUnitUi()
+    {
+        if(_unitInputManager.SelectedUnit == null)
+        {
+            SetPlayerTurnUI(false);
+            return;
+        }
+
+        CUnitController unit = _unitInputManager.SelectedUnit;
+
+        _speedText.text = $"{unit.MovementController.Speed}/mps";
+        _energyText.text = $"{unit.Energy} / {unit.MaxEnergy}";
+
+        //_turnEnergy = unit.Energy;
+        _previousSpeedBarVal = _speedSlider.value;
+        _previousSpeedCost = 0;
+    }
+
 
     public void SetAccelerationLevel(bool init)
     {
@@ -62,41 +93,94 @@ public class CBattleUIManager : MonoBehaviour
 
         if (init)
         {
+            _previousSpeedCost = 0;
+            _previousSpeedBarVal = 0;
             _speedSlider.value = 1;
+            return;
         }
 
-        _unitInputManager.SelectedUnit.MovementController.SetAccelerationLevel((int)_speedSlider.value);
+        CUnitController unit = _unitInputManager.SelectedUnit;
+        CUnitMovementController MovementController = _unitInputManager.SelectedUnit.MovementController;
 
-        _unitInputManager.SelectedUnit.GetSpeed();
+        MovementController.SetAccelerationLevel((int)_speedSlider.value);
 
-        if (_unitInputManager.SelectedUnit.Speed < 0)
+        //_unitInputManager.SelectedUnit.GetSpeed();
+
+        if (MovementController.Speed < 0)
         {
             _speedSlider.value++;
-            _unitInputManager.SelectedUnit.MovementController.SetAccelerationLevel((int)_speedSlider.value);
-            _unitInputManager.SelectedUnit.GetSpeed();
+            return;
+            //MovementController.SetAccelerationLevel((int)_speedSlider.value);
+
         }
 
-        if (_unitInputManager.SelectedUnit.Speed > _unitInputManager.SelectedUnit.MaxSpeed)
+        if (MovementController.Speed > MovementController.FlightModule._maxSpeed)
         {
             _speedSlider.value--;
+            return;
 
-            _unitInputManager.SelectedUnit.MovementController.SetAccelerationLevel((int)_speedSlider.value);
-            _unitInputManager.SelectedUnit.GetSpeed();
+            //MovementController.SetAccelerationLevel((int)_speedSlider.value);
+            
         }
+
+        // float energyCost = Mathf.Abs(_speedSlider.value) - Mathf.Abs(_previousSpeedBarVal);
+        float energyCost = 0;
+
+        if (_speedSlider.value > 0)
+        {
+            energyCost = _speedSlider.value * MovementController.FlightModule._accelerationEnergyCost;
+        }
+
+        else if (_speedSlider.value < 0) 
+        { 
+            energyCost = _speedSlider.value * MovementController.FlightModule._decelerationEnergyCost * -1f;
+        }
+
+        /*
+        else if(_previousSpeedBarVal > 0)
+        {
+            energyCost *= MovementController.FlightModule._accelerationEnergyCost;
+        }
+
+        else if(_previousSpeedBarVal < 0)
+        {
+            energyCost *= MovementController.FlightModule._decelerationEnergyCost * -1f;
+        }
+        */
+
+        float tempCost = energyCost - _previousSpeedCost;
+
+        if (unit.Energy < tempCost)
+        {
+            _speedSlider.value = _previousSpeedBarVal;
+            return;
+
+            //energyCost = _previousSpeedCost;
+            //MovementController.SetAccelerationLevel((int)_speedSlider.value);
+        }
+
+        _previousSpeedCost = energyCost;
+
+        unit.Energy -= tempCost;
 
         List<Vector3> posList = new List<Vector3>();
 
-        posList.Add(_unitInputManager.SelectedUnit.transform.position);
+        posList.Add(unit.transform.position);
 
-        Vector3 pos = _unitInputManager.SelectedUnit.transform.position + _unitInputManager.SelectedUnit.transform.rotation * Vector3.forward * _unitInputManager.SelectedUnit.Speed * 5;
+        Vector3 pos = unit.transform.position + unit.transform.rotation * Vector3.forward * MovementController.Speed * 5;
 
         posList.Add(pos);
 
-        _unitInputManager.SelectedUnit.VisualizePath(posList);
+        unit.VisualizePath(posList);
 
-        _unitInputManager.SelectedUnit.MovementController.SetTargetPos(pos, pos);
+        MovementController.SetTargetPos(pos, pos);
 
-        _speedText.text = $"{_unitInputManager.SelectedUnit.Speed}/mps";
+        _previousSpeedBarVal = _speedSlider.value;
+
+        _speedText.text = $"{MovementController.Speed}/mps";
+        _energyText.text = $"{unit.Energy} / {unit.MaxEnergy}";
+
+        //Debug.Log("!!");
     }
 
     public void SetWeaponEnable(int i)
@@ -115,5 +199,13 @@ public class CBattleUIManager : MonoBehaviour
     {
         _playerTurnUI.SetActive(enable);
     }
+
+/*
+    public void AppllyTurnEnergy()
+    {
+        _unitInputManager.SelectedUnit.Energy = _turnEnergy;
+    }
+*/
+
 
 }

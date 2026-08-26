@@ -12,4 +12,5 @@ public class ScriptableObjectWeaponModule : ScriptableObject
     public float _weaponRange;
     public float _weaponCoolDown;
     public float _weaponDamege;
+    public float _weaponEnegyCost;
 }

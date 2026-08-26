@@ -7,11 +7,18 @@ using UnityEngine;
 public class CUnitController : MonoBehaviour, IDamageable
 {
     #region inspector
+    [Header("Energy")]
+    [SerializeField] private ScriptableObjectGeneratorModule _generator;
+    [SerializeField] private float _energy;
+
+    [Space]
     [Header("Movement")]
     [SerializeField] private CUnitMovementController _movementController;
+    /*
     [SerializeField] private float _speed;
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _turnRate;
+    */
     [SerializeField] private Transform _unitUi;
 
     [Space]
@@ -36,9 +43,14 @@ public class CUnitController : MonoBehaviour, IDamageable
     #region getter
     public CUnitMovementController MovementController { get { return _movementController; } }
     public CUnitWeaponContorller WeaponContorller { get { return _weaponContorller; } }
-    public float Speed { get { return _speed; } }
-    public float MaxSpeed {  get { return _maxSpeed; } }
-    public float TurnRate { get { return _turnRate; } }
+
+    public float Energy { get { return _energy; } set { _energy = value; } }
+
+    public float MaxEnergy { get { return _generator._maxEnergy; } }
+
+    //public float Speed { get { return _speed; } }
+    //public float MaxSpeed {  get { return _maxSpeed; } }
+    //public float TurnRate { get { return _turnRate; } }
     public CTurnData TurnData { get { return _turnData; } }
     #endregion
 
@@ -55,7 +67,7 @@ public class CUnitController : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        GetSpeed();
+        //GetSpeed();
     }
 
 
@@ -112,6 +124,15 @@ public class CUnitController : MonoBehaviour, IDamageable
             Debug.LogWarning("Missing _unitUi");
         }
 
+        if (_generator == null)
+        {
+            Debug.LogWarning("Missing _generator");
+        }
+
+        else
+        {
+            _energy = _generator._startEnergy;
+        }
 
     }
 
@@ -123,17 +144,29 @@ public class CUnitController : MonoBehaviour, IDamageable
         _lineRenderer.positionCount = posArr.Length;
         _lineRenderer.SetPositions(posArr);
     }
-    
+
+    /*
     public void GetSpeed()
     {
         _movementController.GetSpeed(out _speed, out _turnRate, out _maxSpeed);
     }
+    */
 
     public void TakeHit(float damage)
     {
         _shield -= damage;
 
         //SetShieldBar();
+    }
+
+    public void TurnInit()
+    {
+        _energy += _generator._energyRegen;
+
+        if(_energy > _generator._maxEnergy)
+        {
+            _energy = _generator._maxEnergy;
+        }
     }
 
 }

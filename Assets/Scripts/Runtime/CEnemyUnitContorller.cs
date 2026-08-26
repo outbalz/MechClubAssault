@@ -4,19 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CUnitMovementController))]
-public class CEnemyUinitContorller : MonoBehaviour, IDamageable
+public class CEnemyUnitContorller : MonoBehaviour, IDamageable
 {
     #region inspector
+    [Header("Energy")]
+    [SerializeField] private ScriptableObjectGeneratorModule _generatorModule;
+    [SerializeField] private float _energy;
+    
+    [Space]
     [Header("Movement")]
     [SerializeField] private CUnitMovementController _movementController;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _maxSpeed;
-    [SerializeField] private float _turnRate;
-
-    [Space]
-    [Header("Shield")]
-    [SerializeField] private float _shield;
-    [SerializeField] private float _maxShield;
 
     [Space]
     [Header("UI")]
@@ -30,6 +27,20 @@ public class CEnemyUinitContorller : MonoBehaviour, IDamageable
     [SerializeField] private Transform _cameraTr;
     #endregion
 
+    #region Debug
+    [Header("Debug")]
+    /*
+    [Space]
+    [Header("Speed")]
+    [SerializeField] private float _speed;
+    [SerializeField] private float _maxSpeed;
+    [SerializeField] private float _turnRate;
+    */
+    [Space]
+    [Header("Shield")]
+    [SerializeField] private float _shield;
+    [SerializeField] private float _maxShield;
+    #endregion
 
     #region private var
     private CTurnData _turnData;
@@ -38,9 +49,9 @@ public class CEnemyUinitContorller : MonoBehaviour, IDamageable
 
     #region getter
     public CUnitMovementController MovementController { get { return _movementController; } }
-    public float Speed { get { return _speed; } }
-    public float MaxSpeed { get { return _maxSpeed; } }
-    public float TurnRate { get { return _turnRate; } }
+    //public float Speed { get { return _speed; } }
+    //public float MaxSpeed { get { return _maxSpeed; } }
+    //public float TurnRate { get { return _turnRate; } }
     public CTurnData TurnData { get { return _turnData; } }
     #endregion
 
@@ -57,7 +68,7 @@ public class CEnemyUinitContorller : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        GetSpeed();
+        //GetSpeed();
     }
 
     private void LateUpdate()
@@ -101,11 +112,12 @@ public class CEnemyUinitContorller : MonoBehaviour, IDamageable
         _shieldBar.fillAmount = _shield/_maxShield;
     }
 
+    /*
     public void GetSpeed()
     {
         _movementController.GetSpeed(out _speed, out _turnRate, out _maxSpeed);
     }
-
+    */
     public void TakeHit(float damage)
     {
         _shield -= damage;

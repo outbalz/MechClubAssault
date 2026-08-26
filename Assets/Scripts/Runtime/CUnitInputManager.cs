@@ -138,6 +138,9 @@ public class CUnitInputManager : MonoBehaviour
             return;
         }
 
+        float speed = _selectedUnit.MovementController.Speed;
+        float turnRate = _selectedUnit.MovementController.FlightModule._turnRate;
+
         Vector3 dest = hit.point;
 
         dest.y = _MAPHIGHT;
@@ -165,13 +168,13 @@ public class CUnitInputManager : MonoBehaviour
 
                     tempRot = Quaternion.LookRotation(dest - moveVector, Vector3.up);
 
-                    rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate * 0.2f);
+                    rot = Quaternion.RotateTowards(rot, tempRot, turnRate * 0.2f);
 
-                    moveVector += rot * Vector3.forward * _selectedUnit.Speed * 0.2f;
+                    moveVector += rot * Vector3.forward * speed * 0.2f;
 
                     linePos.Add(moveVector);
 
-                    if ((dest - moveVector).sqrMagnitude <= _selectedUnit.Speed * _selectedUnit.Speed)
+                    if ((dest - moveVector).sqrMagnitude <= speed * speed)
                     {
                         pathReachedDest = true;
                     }
@@ -191,7 +194,7 @@ public class CUnitInputManager : MonoBehaviour
 
             else
             {
-                moveVector += rot * Vector3.forward * _selectedUnit.Speed;
+                moveVector += rot * Vector3.forward * speed;
                 linePos.Add(moveVector);
             }
 

@@ -7,9 +7,16 @@ using UnityEngine.UI;
 
 public class CUnitMovementController : MonoBehaviour
 {
+    #region inspector
+    [SerializeField] private ScriptableObjectFlightModule _flightModule;
+    #endregion
+
+
     #region inspector (debug)
     [Header("speed")]
     [SerializeField] private float _speed;
+
+    /*
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _turnRate;
 
@@ -17,6 +24,7 @@ public class CUnitMovementController : MonoBehaviour
     [SerializeField] private float _acceleration;
     [SerializeField] private float _deceleration;
     [SerializeField] private float _airResistance;
+    */
     #endregion
 
     #region private var
@@ -26,6 +34,11 @@ public class CUnitMovementController : MonoBehaviour
     private bool _reachedDest;
     private int _accelerationLevel;
     private float _previousSpeed;
+    #endregion
+
+    #region getter
+    public float Speed { get { return _speed; } }
+    public ScriptableObjectFlightModule FlightModule {  get { return _flightModule; } }
     #endregion
 
 
@@ -80,7 +93,7 @@ public class CUnitMovementController : MonoBehaviour
             return;
         }
 
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir, Vector3.up), _turnRate * Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir, Vector3.up), _flightModule._turnRate * Time.deltaTime);
     }
 
     public void SetTargetPos(Vector3 pos, Vector3 fainalPos)
@@ -103,19 +116,19 @@ public class CUnitMovementController : MonoBehaviour
     public void SetSpeed(float speed, float turnRate)
     {
         _speed = speed;
-        _turnRate = turnRate;
+        _flightModule._turnRate = turnRate;
     }
 
     public void GetSpeed(out float speed, out float turnRate, out float maxSpeed)
     {
         speed = _speed;
-        turnRate = _turnRate;
-        maxSpeed = _maxSpeed;
+        turnRate = _flightModule._turnRate;
+        maxSpeed = _flightModule._maxSpeed;
     }
 
     public void SpeedTurnInit()
     {
-        _speed -= _airResistance;
+        _speed -= _flightModule._airResistance;
 
         if (_speed < 0)
         {
@@ -133,12 +146,12 @@ public class CUnitMovementController : MonoBehaviour
 
         if(_accelerationLevel < 0)
         {
-            tempSpeed += _deceleration * _accelerationLevel;
+            tempSpeed += _flightModule._deceleration * _accelerationLevel;
         }
 
         else if(_accelerationLevel > 0)
         {
-            tempSpeed += _acceleration * _accelerationLevel;
+            tempSpeed += _flightModule._acceleration * _accelerationLevel;
         }
 
         _speed = tempSpeed;

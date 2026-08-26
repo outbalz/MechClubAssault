@@ -88,14 +88,15 @@ public class CTurnStateManager : MonoBehaviour
 
             for (int j = 0; j < tunPosData.Length ; j++)
             {
-                tunPosData[j] = _playerUnits[i].transform.position + _playerUnits[i].transform.rotation * Vector3.forward * _playerUnits[i].Speed * j;
+                tunPosData[j] = _playerUnits[i].transform.position + _playerUnits[i].transform.rotation * Vector3.forward * _playerUnits[i].MovementController.Speed * j;
             }
 
+            _playerUnits[i].TurnInit();
 
             _playerUnits[i].MovementController.SetTargetPos(tunPosData[tunPosData.Length-1], tunPosData[tunPosData.Length - 1]);
             _playerUnits[i].MovementController.SetOnMove(false);
             _playerUnits[i].MovementController.SpeedTurnInit();
-            _playerUnits[i].GetSpeed();
+            //_playerUnits[i].GetSpeed();
         }
 
         ChangeTurnState(ETurnState.AwaitPlayerInput);
