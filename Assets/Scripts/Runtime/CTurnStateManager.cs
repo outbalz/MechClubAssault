@@ -101,7 +101,7 @@ public class CTurnStateManager : MonoBehaviour
 
         ChangeTurnState(ETurnState.AwaitPlayerInput);
 
-        _battleUI.SetAccelerationLevel(true);
+        _battleUI.TurnInitSelectedUnitUi();
     }
 
     private void AIInput()
