@@ -101,6 +101,7 @@ public class CTurnStateManager : MonoBehaviour
 
         _speedSlider.value = 1;
         _speedSlider.onValueChanged.Invoke(0.1f);
+        //---------------------------------------------------------- 
     }
 
     private void AIInput()

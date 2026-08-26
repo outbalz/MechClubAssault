@@ -233,22 +233,29 @@ public class CUnitInputManager : MonoBehaviour
 
     public void SetAccelerationLevel(Slider slider)
     {
+        if (_selectedUnit == null)
+        {
+            return;
+        }
+
         _selectedUnit.MovementController.SetAccelerationLevel((int)slider.value);
 
         _selectedUnit.GetSpeed();
 
         if (_selectedUnit.Speed < 0)
         {
-            slider.value = 1 +_selectedUnit.Speed;
+            //slider.value = 1 +_selectedUnit.Speed;
+            slider.value++;
             _selectedUnit.MovementController.SetAccelerationLevel((int)slider.value);
             _selectedUnit.GetSpeed();
         }
 
         if(_selectedUnit.Speed > _selectedUnit.MaxSpeed)
         {
-            float overflow = _selectedUnit.Speed - _selectedUnit.MaxSpeed;
+            //float overflow = _selectedUnit.Speed - _selectedUnit.MaxSpeed;
 
-            slider.value = 3 - overflow;
+            //slider.value = 3 - overflow;
+            slider.value--;
 
             _selectedUnit.MovementController.SetAccelerationLevel((int)slider.value);
             _selectedUnit.GetSpeed();
@@ -269,4 +276,23 @@ public class CUnitInputManager : MonoBehaviour
         _speedText.text = $"{_selectedUnit.Speed}/mps";
     }
 
+    public void SetWeaponEnableL(bool Enable)
+    {
+        if (_selectedUnit == null)
+        {
+            return;
+        }
+
+        _selectedUnit.WeaponContorller.WeaponL = Enable;
+    }
+
+    public void SetWeaponEnableR(bool Enable)
+    {
+        if (_selectedUnit == null)
+        {
+            return;
+        }
+
+        _selectedUnit.WeaponContorller.WeaponR = Enable;
+    }
 }

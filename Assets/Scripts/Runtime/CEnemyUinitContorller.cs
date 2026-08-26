@@ -21,7 +21,9 @@ public class CEnemyUinitContorller : MonoBehaviour, IDamageable
     [Space]
     [Header("UI")]
     [SerializeField] private Transform _unitUi;
-    [SerializeField] private Slider _shieldBar;
+    //[SerializeField] private Slider _shieldBar;
+
+    [SerializeField] private Image _shieldBar;
 
     [Space]
     [Header("carmera")]
@@ -58,7 +60,7 @@ public class CEnemyUinitContorller : MonoBehaviour, IDamageable
         GetSpeed();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         _unitUi.rotation =_cameraTr.rotation;
     }
@@ -83,14 +85,20 @@ public class CEnemyUinitContorller : MonoBehaviour, IDamageable
             _turnData = new CTurnData(_turnNum);
         }
 
+        if(_unitUi == null)
+        {
+            Debug.LogWarning("Missing _unitUi");
+        }
+
         _shield = _maxShield;
         SetShieldBar();
     }
 
     private void SetShieldBar()
     {
-        _shieldBar.maxValue = _maxShield;
-        _shieldBar.value = _shield;
+        //_shieldBar.maxValue = _maxShield;
+        //_shieldBar.value = _shield;
+        _shieldBar.fillAmount = _shield/_maxShield;
     }
 
     public void GetSpeed()

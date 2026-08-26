@@ -57,6 +57,12 @@ public class CUnitWeaponContorller : MonoBehaviour
     private float _weaponTimerR;
     #endregion
 
+    #region getter
+    public bool WeaponL { get { return _weaponEnableL; } set { _weaponEnableL = value; } }
+    public bool WeaponR { get { return _weaponEnableR; } set { _weaponEnableR = value; } }
+    #endregion
+
+
     private void Awake()
     {
         if(_weaponLInnerArc == null || _weaponLOutterArc == null)
@@ -231,14 +237,5 @@ public class CUnitWeaponContorller : MonoBehaviour
 
 
     }
-
-
-    /*
-    public void WeaponTestFire()
-    {
-        _weaponParticleL.Play();
-        _weaponParticleR.Play();
-    }
-    */
 
 }

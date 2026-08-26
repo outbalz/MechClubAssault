@@ -12,6 +12,7 @@ public class CUnitController : MonoBehaviour, IDamageable
     [SerializeField] private float _speed;
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _turnRate;
+    [SerializeField] private Transform _unitUi;
 
     [Space]
     [Header("Shield")]
@@ -20,15 +21,21 @@ public class CUnitController : MonoBehaviour, IDamageable
     [Space]
     [Header("Line Renderer")]
     [SerializeField] private LineRenderer _lineRenderer;
+
+    [Space]
+    [Header("weapon")]
+    [SerializeField] private CUnitWeaponContorller _weaponContorller;
     #endregion
 
     #region private var
     private CTurnData _turnData;
     private int _turnNum = 0;
+    private Transform _cameraTr;
     #endregion
 
     #region getter
     public CUnitMovementController MovementController { get { return _movementController; } }
+    public CUnitWeaponContorller WeaponContorller { get { return _weaponContorller; } }
     public float Speed { get { return _speed; } }
     public float MaxSpeed {  get { return _maxSpeed; } }
     public float TurnRate { get { return _turnRate; } }
@@ -51,9 +58,17 @@ public class CUnitController : MonoBehaviour, IDamageable
         GetSpeed();
     }
 
+
+    private void LateUpdate()
+    {
+        _unitUi.rotation = _cameraTr.rotation;
+    }
+
     private void InitializeUnit(int turnNum = 0)
     {
         _turnNum = turnNum;
+
+        _cameraTr = Camera.main.transform;
 
         if (_movementController == null)
         {
@@ -83,6 +98,21 @@ public class CUnitController : MonoBehaviour, IDamageable
             }
 
         }
+
+        if(_weaponContorller == null)
+        {
+            if(TryGetComponent<CUnitWeaponContorller>(out _weaponContorller) == false)
+            {
+                Debug.LogWarning("Missing CUnitWeaponContorller");
+            }
+        }
+
+        if (_unitUi == null)
+        {
+            Debug.LogWarning("Missing _unitUi");
+        }
+
+
     }
 
     public void VisualizePath(List<Vector3> posList)
