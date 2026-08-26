@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 public class CTurnStateManager : MonoBehaviour
@@ -21,8 +20,7 @@ public class CTurnStateManager : MonoBehaviour
 
     [Space]
     [Header("UI")]
-    [SerializeField] private GameObject _playerTurnUI;
-    [SerializeField] private Slider _speedSlider;
+    [SerializeField] private CBattleUIManager _battleUI;
     #endregion
 
     #region private var
@@ -40,10 +38,13 @@ public class CTurnStateManager : MonoBehaviour
     private void Awake()
     {
         _turnNum = 0;
-
-        if (_playerTurnUI == null)
+        
+        if(_battleUI == null)
         {
-            Debug.LogWarning("Missing _playerTurnUI");
+            if(TryGetComponent<CBattleUIManager>(out _battleUI) == false)
+            {
+                Debug.LogWarning("Missing CBattleUIManager");
+            }
         }
     }
 
@@ -55,7 +56,7 @@ public class CTurnStateManager : MonoBehaviour
     private void ChangeTurnState(ETurnState turnState)
     {
         _turnState = turnState;
-        _playerTurnUI.SetActive(false);
+        _battleUI.SetPlayerTurnUI(false);
 
         switch (_turnState)
         {
@@ -63,7 +64,7 @@ public class CTurnStateManager : MonoBehaviour
                 TurnInit();
                 break;
             case ETurnState.AwaitPlayerInput:
-                _playerTurnUI.SetActive(true);
+                _battleUI.SetPlayerTurnUI(true);
                 break;
             case ETurnState.AIInput:
                 AIInput();
@@ -99,9 +100,7 @@ public class CTurnStateManager : MonoBehaviour
 
         ChangeTurnState(ETurnState.AwaitPlayerInput);
 
-        _speedSlider.value = 1;
-        _speedSlider.onValueChanged.Invoke(0.1f);
-        //---------------------------------------------------------- 
+        _battleUI.SetAccelerationLevel(true);
     }
 
     private void AIInput()

@@ -238,4 +238,24 @@ public class CUnitWeaponContorller : MonoBehaviour
 
     }
 
+
+    public void SetWeaponEnable(bool isLeft, bool enable)
+    {
+        if (isLeft)
+        {
+            _weaponEnableL = enable;
+
+            _weaponLInnerArc.enabled = enable;
+            _weaponLOutterArc.enabled = enable;
+        }
+
+        else
+        {
+            _weaponEnableR = enable;
+
+            _weaponRInnerArc.enabled = enable;
+            _weaponROutterArc.enabled = enable;
+        }
+    }
+
 }

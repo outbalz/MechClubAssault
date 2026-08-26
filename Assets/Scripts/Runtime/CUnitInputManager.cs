@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class CUnitInputManager : MonoBehaviour
 {
@@ -27,12 +26,15 @@ public class CUnitInputManager : MonoBehaviour
     [SerializeField] private CUnitController _selectedUnit;
     [SerializeField] private GameObject _targetUnit;
     [SerializeField] private Transform _posMarker;
-    [SerializeField] private TMP_Text _speedText;
     #endregion
 
     #region private var
     private const float _MAPHIGHT = 0;
     private Ray _previousRay;
+    #endregion
+
+    #region getter
+    public CUnitController SelectedUnit { get { return _selectedUnit; } }
     #endregion
 
 
@@ -61,11 +63,6 @@ public class CUnitInputManager : MonoBehaviour
                 Debug.LogWarning("Missing CTurnStateManager");
             }
         }
-    }
-
-    private void Start()
-    {
-        _speedText.text = $"{_selectedUnit.Speed}/mps";
     }
 
     void Update()
@@ -231,68 +228,4 @@ public class CUnitInputManager : MonoBehaviour
         _selectedUnit = unit;
     }
 
-    public void SetAccelerationLevel(Slider slider)
-    {
-        if (_selectedUnit == null)
-        {
-            return;
-        }
-
-        _selectedUnit.MovementController.SetAccelerationLevel((int)slider.value);
-
-        _selectedUnit.GetSpeed();
-
-        if (_selectedUnit.Speed < 0)
-        {
-            //slider.value = 1 +_selectedUnit.Speed;
-            slider.value++;
-            _selectedUnit.MovementController.SetAccelerationLevel((int)slider.value);
-            _selectedUnit.GetSpeed();
-        }
-
-        if(_selectedUnit.Speed > _selectedUnit.MaxSpeed)
-        {
-            //float overflow = _selectedUnit.Speed - _selectedUnit.MaxSpeed;
-
-            //slider.value = 3 - overflow;
-            slider.value--;
-
-            _selectedUnit.MovementController.SetAccelerationLevel((int)slider.value);
-            _selectedUnit.GetSpeed();
-        }
-
-        List<Vector3> posList = new List<Vector3>();
-
-        posList.Add(_selectedUnit.transform.position);
-
-        Vector3 pos = _selectedUnit.transform.position + _selectedUnit.transform.rotation * Vector3.forward * _selectedUnit.Speed * 5;
-
-        posList.Add(pos);
-
-        _selectedUnit.VisualizePath(posList);
-
-        _selectedUnit.MovementController.SetTargetPos(pos,pos);
-
-        _speedText.text = $"{_selectedUnit.Speed}/mps";
-    }
-
-    public void SetWeaponEnableL(bool Enable)
-    {
-        if (_selectedUnit == null)
-        {
-            return;
-        }
-
-        _selectedUnit.WeaponContorller.WeaponL = Enable;
-    }
-
-    public void SetWeaponEnableR(bool Enable)
-    {
-        if (_selectedUnit == null)
-        {
-            return;
-        }
-
-        _selectedUnit.WeaponContorller.WeaponR = Enable;
-    }
 }
