@@ -50,6 +50,7 @@ public class CUnitWeaponContorller : MonoBehaviour
     [Space]
     [Header("Ray")]
     [SerializeField] private LayerMask _weaponRayLayerMask;
+    [SerializeField] bool _visualizeRange = true;
     #endregion
 
     #region private var
@@ -58,8 +59,10 @@ public class CUnitWeaponContorller : MonoBehaviour
     #endregion
 
     #region getter
-    public bool WeaponL { get { return _weaponEnableL; } set { _weaponEnableL = value; } }
-    public bool WeaponR { get { return _weaponEnableR; } set { _weaponEnableR = value; } }
+    public bool WeaponEnableL { get { return _weaponEnableL; } set { _weaponEnableL = value; } }
+    public bool WeaponEnableR { get { return _weaponEnableR; } set { _weaponEnableR = value; } }
+    public ScriptableObjectWeaponModule WeaponL { get { return _weaponL; } }
+    public ScriptableObjectWeaponModule WeaponR { get { return _weaponR; } }
     #endregion
 
 
@@ -128,6 +131,15 @@ public class CUnitWeaponContorller : MonoBehaviour
             _weaponROutterArc.SetPosition(1, Vector3.forward * _weaponR._weaponRange);
             _weaponROutterArc.transform.Rotate(Vector3.up, _weaponR._weaponOutterArcDeg);
         }
+
+        if(_visualizeRange == false)
+        {
+            _weaponLInnerArc.enabled = false;
+            _weaponLOutterArc.enabled = false;
+            _weaponRInnerArc.enabled = false;
+            _weaponROutterArc.enabled = false;
+        }
+
     }
 
     private void WeaponUpdate()
@@ -255,6 +267,14 @@ public class CUnitWeaponContorller : MonoBehaviour
 
             _weaponRInnerArc.enabled = enable;
             _weaponROutterArc.enabled = enable;
+        }
+
+        if (_visualizeRange == false)
+        {
+            _weaponLInnerArc.enabled = false;
+            _weaponLOutterArc.enabled = false;
+            _weaponRInnerArc.enabled = false;
+            _weaponROutterArc.enabled = false;
         }
     }
 

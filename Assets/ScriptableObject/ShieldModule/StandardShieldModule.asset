@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 656d49043f0527b45817272834aca3b9, type: 3}
-  m_Name: GeneratorModuleStandard
+  m_Script: {fileID: 11500000, guid: 0e7b4f0568a584d4e915d8c108b9af18, type: 3}
+  m_Name: StandardShieldModule
   m_EditorClassIdentifier: 
-  _name: Standard generator
-  _maxEnergy: 10
-  _startEnergy: 4
-  _energyRegen: 4
+  _name: Standard Shield Module
+  _startShield: 20
+  _maxShield: 20
+  _shieldRegen: 5
+  _shieldRegenCost: 4

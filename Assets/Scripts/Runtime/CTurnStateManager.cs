@@ -25,6 +25,7 @@ public class CTurnStateManager : MonoBehaviour
 
     #region private var
     private int _turnNum;
+    private int _reqReadyCount;
     private ETurnState _turnState;
 
     private float _turnTimer;
@@ -82,6 +83,8 @@ public class CTurnStateManager : MonoBehaviour
     {
         _turnNum++;
 
+        _reqReadyCount = _playerUnits.Count;
+
         for (int i = 0; i < _playerUnits.Count; i++)
         {
             Vector3[] tunPosData = _playerUnits[i].TurnData.Positions;
@@ -91,7 +94,7 @@ public class CTurnStateManager : MonoBehaviour
                 tunPosData[j] = _playerUnits[i].transform.position + _playerUnits[i].transform.rotation * Vector3.forward * _playerUnits[i].MovementController.Speed * j;
             }
 
-            _playerUnits[i].TurnInit();
+            _playerUnits[i].TurnInit(_turnNum);
 
             _playerUnits[i].MovementController.SetTargetPos(tunPosData[tunPosData.Length-1], tunPosData[tunPosData.Length - 1]);
             _playerUnits[i].MovementController.SetOnMove(false);
@@ -153,7 +156,9 @@ public class CTurnStateManager : MonoBehaviour
         }
     }
     */
-    public void SubmitTurn()
+
+
+    private void SubmitTurn()
     {
         if(_turnState != ETurnState.AwaitPlayerInput)
         {
@@ -164,6 +169,25 @@ public class CTurnStateManager : MonoBehaviour
         ChangeTurnState(ETurnState.AIInput);
     }
 
+
+    public void SetReadyCount(bool isReady)
+    {
+        if (isReady)
+        {
+            _reqReadyCount--;
+        }
+
+        else
+        {
+            _reqReadyCount++;
+        }
+
+        if (_reqReadyCount <= 0)
+        {
+            SubmitTurn();
+        }
+
+    }
 
     private void Update()
     {

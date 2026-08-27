@@ -7,10 +7,10 @@ using UnityEngine.UI;
 public class CEnemyUnitContorller : MonoBehaviour, IDamageable
 {
     #region inspector
-    [Header("Energy")]
-    [SerializeField] private ScriptableObjectGeneratorModule _generatorModule;
-    [SerializeField] private float _energy;
-    
+    [Space]
+    [Header("Shield")]
+    [SerializeField] private ScriptableObjectShieldModule _shieldModule;
+
     [Space]
     [Header("Movement")]
     [SerializeField] private CUnitMovementController _movementController;
@@ -18,9 +18,8 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable
     [Space]
     [Header("UI")]
     [SerializeField] private Transform _unitUi;
-    //[SerializeField] private Slider _shieldBar;
-
     [SerializeField] private Image _shieldBar;
+    //[SerializeField] private Slider _shieldBar;
 
     [Space]
     [Header("carmera")]
@@ -29,6 +28,7 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable
 
     #region Debug
     [Header("Debug")]
+    [SerializeField] private float _shield;
     /*
     [Space]
     [Header("Speed")]
@@ -36,10 +36,6 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _turnRate;
     */
-    [Space]
-    [Header("Shield")]
-    [SerializeField] private float _shield;
-    [SerializeField] private float _maxShield;
     #endregion
 
     #region private var
@@ -96,20 +92,28 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable
             _turnData = new CTurnData(_turnNum);
         }
 
-        if(_unitUi == null)
+        if(_unitUi == null || _shieldBar == null)
         {
-            Debug.LogWarning("Missing _unitUi");
+            Debug.LogWarning("Missing Ui element");
         }
 
-        _shield = _maxShield;
-        SetShieldBar();
+        if (_shieldModule == null)
+        {
+            Debug.LogWarning("Missing _shieldModule");
+        }
+
+        else
+        {
+            _shield = _shieldModule._startShield;
+            SetShieldBar();
+        }
     }
 
     private void SetShieldBar()
     {
         //_shieldBar.maxValue = _maxShield;
         //_shieldBar.value = _shield;
-        _shieldBar.fillAmount = _shield/_maxShield;
+        _shieldBar.fillAmount = _shield / _shieldModule._maxShield;
     }
 
     /*

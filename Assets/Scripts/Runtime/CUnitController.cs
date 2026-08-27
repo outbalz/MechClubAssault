@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CUnitMovementController))]
 public class CUnitController : MonoBehaviour, IDamageable
@@ -20,9 +21,11 @@ public class CUnitController : MonoBehaviour, IDamageable
     [SerializeField] private float _turnRate;
     */
     [SerializeField] private Transform _unitUi;
+    [SerializeField] private Image _shieldBar;
 
     [Space]
     [Header("Shield")]
+    [SerializeField] private ScriptableObjectShieldModule _shieldModule;
     [SerializeField] private float _shield;
 
     [Space]
@@ -38,6 +41,7 @@ public class CUnitController : MonoBehaviour, IDamageable
     private CTurnData _turnData;
     private int _turnNum = 0;
     private Transform _cameraTr;
+    private bool _isReady = false;
     #endregion
 
     #region getter
@@ -52,6 +56,7 @@ public class CUnitController : MonoBehaviour, IDamageable
     //public float MaxSpeed {  get { return _maxSpeed; } }
     //public float TurnRate { get { return _turnRate; } }
     public CTurnData TurnData { get { return _turnData; } }
+    public bool IsReady { get { return _isReady; } set { _isReady = value; } }
     #endregion
 
 
@@ -134,6 +139,21 @@ public class CUnitController : MonoBehaviour, IDamageable
             _energy = _generator._startEnergy;
         }
 
+        if (_unitUi == null || _shieldBar == null)
+        {
+            Debug.LogWarning("Missing Ui element");
+        }
+
+        if (_shieldModule == null)
+        {
+            Debug.LogWarning("Missing _shieldModule");
+        }
+
+        else
+        {
+            _shield = _shieldModule._startShield;
+            SetShieldBar();
+        }
     }
 
     public void VisualizePath(List<Vector3> posList)
@@ -143,6 +163,11 @@ public class CUnitController : MonoBehaviour, IDamageable
         _lineRenderer.enabled = true;
         _lineRenderer.positionCount = posArr.Length;
         _lineRenderer.SetPositions(posArr);
+    }
+
+    private void SetShieldBar()
+    {
+        _shieldBar.fillAmount = _shield / _shieldModule._maxShield;
     }
 
     /*
@@ -156,17 +181,25 @@ public class CUnitController : MonoBehaviour, IDamageable
     {
         _shield -= damage;
 
-        //SetShieldBar();
+        SetShieldBar();
     }
 
-    public void TurnInit()
+    public void TurnInit(int turnNum)
     {
+        _turnNum = turnNum;
+
+        if(_turnNum <= 1)
+        {
+            return;
+        }
+
         _energy += _generator._energyRegen;
 
         if(_energy > _generator._maxEnergy)
         {
             _energy = _generator._maxEnergy;
         }
+
     }
 
 }

@@ -38,6 +38,7 @@ public class CUnitMovementController : MonoBehaviour
 
     #region getter
     public float Speed { get { return _speed; } }
+    public float AccelerationLevel {  get { return _accelerationLevel; } }
     public ScriptableObjectFlightModule FlightModule {  get { return _flightModule; } }
     #endregion
 
