@@ -51,6 +51,10 @@ public class CUnitWeaponContorller : MonoBehaviour
     [Header("Ray")]
     [SerializeField] private LayerMask _weaponRayLayerMask;
     [SerializeField] bool _visualizeRange = true;
+
+    [Space]
+    [Header("CombatTracker")]
+    [SerializeField] private ICombatTracker _combatTracker;
     #endregion
 
     #region private var
@@ -88,6 +92,14 @@ public class CUnitWeaponContorller : MonoBehaviour
         else
         {
             _weaponEnableR = true;
+        }
+
+        if(_combatTracker == null)
+        {
+            if(TryGetComponent<ICombatTracker>(out _combatTracker) == false)
+            {
+                Debug.LogWarning("Missing _combatTracker");
+            }
         }
     }
 
@@ -173,6 +185,7 @@ public class CUnitWeaponContorller : MonoBehaviour
                     _weaponParticleL.Play();
                     _weaponTimerL = _weaponL._weaponCoolDown;
                     hit.collider.GetComponent<IDamageable>().TakeHit(_weaponL._weaponDamege);
+                    _combatTracker.SetLastCombatTurn();
                 }
             }
 
@@ -202,6 +215,7 @@ public class CUnitWeaponContorller : MonoBehaviour
                     _weaponParticleR.Play();
                     _weaponTimerR = _weaponR._weaponCoolDown;
                     hit.collider.GetComponent<IDamageable>().TakeHit(_weaponR._weaponDamege);
+                    _combatTracker.SetLastCombatTurn();
                 }
             }
 

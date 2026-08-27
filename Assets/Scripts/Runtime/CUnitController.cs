@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CUnitMovementController))]
-public class CUnitController : MonoBehaviour, IDamageable
+public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
 {
     #region inspector
     [Header("Energy")]
@@ -15,11 +15,9 @@ public class CUnitController : MonoBehaviour, IDamageable
     [Space]
     [Header("Movement")]
     [SerializeField] private CUnitMovementController _movementController;
-    /*
-    [SerializeField] private float _speed;
-    [SerializeField] private float _maxSpeed;
-    [SerializeField] private float _turnRate;
-    */
+
+    [Space]
+    [Header("UI")]
     [SerializeField] private Transform _unitUi;
     [SerializeField] private Image _shieldBar;
 
@@ -40,21 +38,23 @@ public class CUnitController : MonoBehaviour, IDamageable
     #region private var
     private CTurnData _turnData;
     private int _turnNum = 0;
+    private int _lastCombatTurn = 0;
     private Transform _cameraTr;
     private bool _isReady = false;
+    private float _previousShield;
+    private int _shieldRegenLevel = 0;
     #endregion
 
     #region getter
     public CUnitMovementController MovementController { get { return _movementController; } }
     public CUnitWeaponContorller WeaponContorller { get { return _weaponContorller; } }
-
     public float Energy { get { return _energy; } set { _energy = value; } }
-
     public float MaxEnergy { get { return _generator._maxEnergy; } }
+    public ScriptableObjectShieldModule ShieldModule {  get { return _shieldModule; } }
+    public float Shield { get {  return _shield; } set { _shield = value; } }
+    public float PreviousShield { get { return _previousShield; } }
+    public int ShieldRegenLevel { get {  return _shieldRegenLevel; } set { _shieldRegenLevel = value; } }
 
-    //public float Speed { get { return _speed; } }
-    //public float MaxSpeed {  get { return _maxSpeed; } }
-    //public float TurnRate { get { return _turnRate; } }
     public CTurnData TurnData { get { return _turnData; } }
     public bool IsReady { get { return _isReady; } set { _isReady = value; } }
     #endregion
@@ -70,12 +70,6 @@ public class CUnitController : MonoBehaviour, IDamageable
         InitializeUnit();
     }
 
-    private void Start()
-    {
-        //GetSpeed();
-    }
-
-
     private void LateUpdate()
     {
         _unitUi.rotation = _cameraTr.rotation;
@@ -84,6 +78,7 @@ public class CUnitController : MonoBehaviour, IDamageable
     private void InitializeUnit(int turnNum = 0)
     {
         _turnNum = turnNum;
+        _lastCombatTurn = turnNum;
 
         _cameraTr = Camera.main.transform;
 
@@ -152,6 +147,7 @@ public class CUnitController : MonoBehaviour, IDamageable
         else
         {
             _shield = _shieldModule._startShield;
+            _shieldRegenLevel = 0;
             SetShieldBar();
         }
     }
@@ -165,28 +161,24 @@ public class CUnitController : MonoBehaviour, IDamageable
         _lineRenderer.SetPositions(posArr);
     }
 
-    private void SetShieldBar()
+    public void SetShieldBar()
     {
         _shieldBar.fillAmount = _shield / _shieldModule._maxShield;
     }
-
-    /*
-    public void GetSpeed()
-    {
-        _movementController.GetSpeed(out _speed, out _turnRate, out _maxSpeed);
-    }
-    */
 
     public void TakeHit(float damage)
     {
         _shield -= damage;
 
         SetShieldBar();
+
+        _lastCombatTurn = _turnNum;
     }
 
     public void TurnInit(int turnNum)
     {
         _turnNum = turnNum;
+        _previousShield = _shield;
 
         if(_turnNum <= 1)
         {
@@ -200,6 +192,10 @@ public class CUnitController : MonoBehaviour, IDamageable
             _energy = _generator._maxEnergy;
         }
 
+    }
+    public void SetLastCombatTurn()
+    {
+        _lastCombatTurn = _turnNum;
     }
 
 }

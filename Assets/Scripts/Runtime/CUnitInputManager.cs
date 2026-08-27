@@ -132,12 +132,6 @@ public class CUnitInputManager : MonoBehaviour
             return;
         }
 
-        if(_selectedUnit.MovementController == null)
-        {
-            Debug.LogWarning("Missing MovementController");
-            return;
-        }
-
         float speed = _selectedUnit.MovementController.Speed;
         float turnRate = _selectedUnit.MovementController.FlightModule._turnRate;
 

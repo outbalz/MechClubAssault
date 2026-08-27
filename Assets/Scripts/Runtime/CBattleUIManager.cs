@@ -26,6 +26,9 @@ public class CBattleUIManager : MonoBehaviour
     [SerializeField] private Image _energyFill;
 
     [Space]
+    [SerializeField] private Slider _shieldSlider;
+
+    [Space]
     [SerializeField] private Toggle[] _WeaponToggles;
 
     [Space]
@@ -101,12 +104,19 @@ public class CBattleUIManager : MonoBehaviour
 
         //CUnitController unit = _unitInputManager.SelectedUnit;
 
+        SetShieldRegen(true);
         SetReadyToggle(true);
         InitWeaponToggle();
         SetAccelerationLevel(true);
 
     }
 
+    private void UpdateEnergy(CUnitController unit)
+    {
+        _energyText.text = $"{unit.Energy:00}";
+        _energyMaxText.text = $"{unit.MaxEnergy:00}";
+        _energyFill.fillAmount = unit.Energy / unit.MaxEnergy;
+    }
 
     public void SetAccelerationLevel(bool init)
     {
@@ -226,9 +236,7 @@ public class CBattleUIManager : MonoBehaviour
         _speedText.text = $"{MovementController.Speed:00}";
         _speedFill.fillAmount = MovementController.Speed / MovementController.FlightModule._maxSpeed;
 
-        _energyText.text = $"{unit.Energy:00}";
-        _energyMaxText.text = $"{unit.MaxEnergy:00}";
-        _energyFill.fillAmount = unit.Energy / unit.MaxEnergy;
+        UpdateEnergy(unit);
 
         //Debug.Log("!!");
     }
@@ -271,9 +279,7 @@ public class CBattleUIManager : MonoBehaviour
         unit.Energy -= WeaponCost;
         weaponContorller.SetWeaponEnable((i==0)? true : false, Enable);
 
-        _energyText.text = $"{unit.Energy:00}";
-        _energyMaxText.text = $"{unit.MaxEnergy:00}";
-        _energyFill.fillAmount = unit.Energy / unit.MaxEnergy;
+        UpdateEnergy(unit);
     }
     
     private void InitWeaponToggle()
@@ -342,13 +348,52 @@ public class CBattleUIManager : MonoBehaviour
         _turnStateManager.SetReadyCount(isReady);
     }
 
-
-/*
-    public void AppllyTurnEnergy()
+    public void SetShieldRegen(bool init)
     {
-        _unitInputManager.SelectedUnit.Energy = _turnEnergy;
+        if (_unitInputManager.SelectedUnit == null)
+        {
+            return;
+        }
+
+        CUnitController unit = _unitInputManager.SelectedUnit;
+
+        if (init)
+        {
+            unit.ShieldRegenLevel = 0;
+            _shieldSlider.SetValueWithoutNotify(0);
+            return;
+        }
+
+
+        int shieldRegenLevel = (int)_shieldSlider.value;
+
+        float shieldRegenCost = unit.ShieldModule._shieldRegenCost;
+
+        shieldRegenCost *= shieldRegenLevel - unit.ShieldRegenLevel;
+
+        if(shieldRegenCost > unit.Energy)
+        {
+            _shieldSlider.value = unit.ShieldRegenLevel;
+            return;
+        }
+
+        unit.Energy -= shieldRegenCost;
+
+        unit.ShieldRegenLevel = shieldRegenLevel;
+
+        unit.Shield = unit.PreviousShield + unit.ShieldRegenLevel * unit.ShieldModule._shieldRegen;
+
+        if(unit.Shield >= unit.ShieldModule._maxShield + unit.ShieldModule._shieldRegen)
+        {
+            _shieldSlider.value--;
+            return;
+        }
+
+        unit.SetShieldBar();
+
+        UpdateEnergy(unit);
+
     }
-*/
 
 
 }

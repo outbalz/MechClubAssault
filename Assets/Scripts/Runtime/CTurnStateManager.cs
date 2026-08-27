@@ -17,6 +17,7 @@ public class CTurnStateManager : MonoBehaviour
     #region inspector
     [Header("Unit")]
     [SerializeField] private List<CUnitController> _playerUnits;
+    [SerializeField] private List<CEnemyUnitContorller> _enemyUnits;
 
     [Space]
     [Header("UI")]
@@ -26,6 +27,7 @@ public class CTurnStateManager : MonoBehaviour
     #region private var
     private int _turnNum;
     private int _reqReadyCount;
+    private int _reqEnemyReadyCount;
     private ETurnState _turnState;
 
     private float _turnTimer;
@@ -84,6 +86,7 @@ public class CTurnStateManager : MonoBehaviour
         _turnNum++;
 
         _reqReadyCount = _playerUnits.Count;
+        _reqReadyCount = _enemyUnits.Count;
 
         for (int i = 0; i < _playerUnits.Count; i++)
         {
@@ -99,8 +102,30 @@ public class CTurnStateManager : MonoBehaviour
             _playerUnits[i].MovementController.SetTargetPos(tunPosData[tunPosData.Length-1], tunPosData[tunPosData.Length - 1]);
             _playerUnits[i].MovementController.SetOnMove(false);
             _playerUnits[i].MovementController.SpeedTurnInit();
-            //_playerUnits[i].GetSpeed();
         }
+
+        for (int i = 0; i < _enemyUnits.Count; i++)
+        {
+            _enemyUnits[i].MovementController.SetOnMove(false);
+
+            CUnitController closestTargt = _playerUnits[0];
+            float closestDistance = (_enemyUnits[i].transform.position - _playerUnits[0].transform.position).sqrMagnitude;
+
+            for (int j = 1; j < _playerUnits.Count; j++)
+            {
+                float distance = (_enemyUnits[i].transform.position - _playerUnits[j].transform.position).sqrMagnitude;
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestTargt = _playerUnits[j];
+                }
+
+            }
+            
+            _enemyUnits[i].TargetUnit = closestTargt;
+        }
+
 
         ChangeTurnState(ETurnState.AwaitPlayerInput);
 
@@ -109,7 +134,10 @@ public class CTurnStateManager : MonoBehaviour
 
     private void AIInput()
     {
-        ChangeTurnState(ETurnState.TurnResolve);
+        for (int i = 0; i < _enemyUnits.Count; i++)
+        {
+            _enemyUnits[i].CallAIInput(_turnNum);
+        }
     }
 
     private void TurnResolveInit()
@@ -123,6 +151,10 @@ public class CTurnStateManager : MonoBehaviour
             _playerUnits[i].MovementController.SetOnMove();
         }
 
+        for (int i = 0; i < _enemyUnits.Count; i++)
+        {
+            _enemyUnits[i].MovementController.SetOnMove();
+        }
 
         //TurnResolveUpDatePerSec();
     }
@@ -187,6 +219,16 @@ public class CTurnStateManager : MonoBehaviour
             SubmitTurn();
         }
 
+    }
+
+    public void SetEnemyReadyCount()
+    {
+        _reqEnemyReadyCount--;
+
+        if (_reqEnemyReadyCount <= 0)
+        {
+            ChangeTurnState(ETurnState.TurnResolve);
+        }
     }
 
     private void Update()
