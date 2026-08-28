@@ -5,9 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CUnitMovementController))]
+[RequireComponent(typeof(CUnitWeaponContorller))]
 public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
 {
     #region inspector
+    [Header("Manager")]
+    [SerializeField] private CTurnStateManager _turnStateManager;
+ 
     [Header("Energy")]
     [SerializeField] private ScriptableObjectGeneratorModule _generator;
     [SerializeField] private float _energy;
@@ -33,6 +37,10 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
     [Space]
     [Header("weapon")]
     [SerializeField] private CUnitWeaponContorller _weaponContorller;
+
+    [Space]
+    [Header("knockout")]
+    [SerializeField] private CKnockout _knockout;
     #endregion
 
     #region private var
@@ -150,6 +158,19 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
             _shieldRegenLevel = 0;
             SetShieldBar();
         }
+
+        if (_turnStateManager == null)
+        {
+            Debug.LogWarning("Missing _turnStateManager");
+        }
+
+        if (_knockout == null)
+        {
+            if(TryGetComponent<CKnockout>(out _knockout)  == false)
+            {
+                Debug.LogWarning("Missing CKnockout");
+            }
+        }
     }
 
     public void VisualizePath(List<Vector3> posList)
@@ -173,6 +194,14 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
         SetShieldBar();
 
         _lastCombatTurn = _turnNum;
+
+        if(_shield <= 0)
+        {
+            _knockout.enabled = true;
+            TryGetComponent<Collider>(out Collider collider);
+            collider.enabled = false;
+            _turnStateManager.UnitGetKnockedOut(this);
+        }
     }
 
     public void TurnInit(int turnNum)

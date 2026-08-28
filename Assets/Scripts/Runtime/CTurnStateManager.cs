@@ -88,6 +88,24 @@ public class CTurnStateManager : MonoBehaviour
         _reqReadyCount = _playerUnits.Count;
         _reqReadyCount = _enemyUnits.Count;
 
+        if(_playerUnits.Count <= 0 || _enemyUnits.Count <= 0)
+        {
+            if(_playerUnits.Count <= 0)
+            {
+                Debug.Log("패배...");
+                _battleUI.BattleLost();
+            }
+
+            else
+            {
+                Debug.Log("승리!!");
+                _battleUI.BattleWin();
+            }
+
+            this.enabled = false;
+            return;
+        }
+
         for (int i = 0; i < _playerUnits.Count; i++)
         {
             Vector3[] tunPosData = _playerUnits[i].TurnData.Positions;
@@ -239,5 +257,13 @@ public class CTurnStateManager : MonoBehaviour
         }
     }
 
+    public void UnitGetKnockedOut(CUnitController unit)
+    {
+        _playerUnits.Remove(unit);
+    }
 
+    public void UnitGetKnockedOut(CEnemyUnitContorller unit)
+    {
+        _enemyUnits.Remove(unit);
+    }
 }

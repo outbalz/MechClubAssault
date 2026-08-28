@@ -4,9 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CUnitMovementController))]
+[RequireComponent(typeof(CUnitWeaponContorller))]
 public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
 {
     #region inspector
+    [Header("Manager")]
+    [SerializeField] private CTurnStateManager _turnStateManager;
+
     [Space]
     [Header("Shield")]
     [SerializeField] private ScriptableObjectShieldModule _shieldModule;
@@ -25,8 +29,8 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
     [SerializeField] private Transform _cameraTr;
 
     [Space]
-    [Header("Manager")]
-    [SerializeField] private CTurnStateManager _turnStateManager;
+    [Header("knockout")]
+    [SerializeField] private CKnockout _knockout;
     #endregion
 
     #region Debug
@@ -105,6 +109,13 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
             Debug.LogWarning("Missing _turnStateManager");
         }
 
+        if (_knockout == null)
+        {
+            if (TryGetComponent<CKnockout>(out _knockout) == false)
+            {
+                Debug.LogWarning("Missing CKnockout");
+            }
+        }
     }
 
     public void CallAIInput(int turn)
@@ -256,8 +267,9 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
         }
 
 
-        if(_turnNum - _lastCombatTurn < regenTurn)
+        if(_turnNum - _lastCombatTurn <= regenTurn)
         {
+            //Debug.Log($"{_turnNum - _lastCombatTurn} / {regenTurn}");
             return;
         }
 
@@ -287,6 +299,14 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
         SetShieldBar();
 
         _lastCombatTurn = _turnNum;
+
+        if (_shield <= 0)
+        {
+            _knockout.enabled = true;
+            TryGetComponent<Collider>(out Collider collider);
+            collider.enabled = false;
+            _turnStateManager.UnitGetKnockedOut(this);
+        }
     }
 
     public void SetLastCombatTurn()

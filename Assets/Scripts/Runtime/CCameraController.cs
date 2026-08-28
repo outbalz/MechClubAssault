@@ -10,6 +10,8 @@ public class CCameraController : MonoBehaviour
     [SerializeField] private Transform _target;
 
     [SerializeField] private Vector3 _camOffset = new Vector3(0f, 2f, -3f);
+    [SerializeField] private Vector3 _camLookOffset = Vector3.zero;
+    [SerializeField] private Vector3 _camTargetOffset = Vector3.zero;
     [SerializeField] private float _camLookAtHeight = 1.5f;
 
     [SerializeField] private float _offesetZmin = -20f;
@@ -22,12 +24,15 @@ public class CCameraController : MonoBehaviour
     #endregion
 
     #region private var
+    private Vector3 _camOffsetDefault;
     private Quaternion _rotOffset;
+    private bool _freeCamMod = false;
     #endregion
 
     private void Awake()
     {
         _camera = Camera.main;
+        _camOffsetDefault = _camOffset;
     }
 
 
@@ -54,9 +59,9 @@ public class CCameraController : MonoBehaviour
         Vector3 desiredPos;
         Quaternion desiredRot;
 
-        BuildThirdPose(out desiredPos, out desiredRot);
+        SetCameraPose(out desiredPos, out desiredRot);
 
-        ApplyPose(desiredPos, desiredRot, _sharpness, true);
+        ApplyCameraPose(desiredPos, desiredRot, _sharpness);
     }
 
     private void Update()
@@ -69,12 +74,20 @@ public class CCameraController : MonoBehaviour
         CameraUpdate();
     }
 
+
+    private void ApplyCameraPose(Vector3 desiredPos, Quaternion desiredRot, float sharpness)
+    {
+        _camTr.position = desiredPos;
+        _camTr.rotation = desiredRot;
+    }
+
+    /*
     private float GetSmmothT(float sharpness)
     {
         return 1f - Mathf.Exp(-sharpness * Time.deltaTime);
     }
-
-    private void ApplyPose(Vector3 desiredPos, Quaternion desiredRot, float sharpness, bool snap)
+    /*
+    private void ApplyCameraPose(Vector3 desiredPos, Quaternion desiredRot, float sharpness, bool snap)
     {
 
         if (snap)
@@ -93,28 +106,39 @@ public class CCameraController : MonoBehaviour
         _camTr.rotation = Quaternion.Slerp(_camTr.rotation, desiredRot, t);
 
     }
-
+    */
 
     private void CameraUpdate()
     {
         Vector3 desiredPos;
         Quaternion desiredRot;
 
-        BuildThirdPose(out desiredPos, out desiredRot);
+        SetCameraPose(out desiredPos, out desiredRot);
 
-        ApplyPose(desiredPos, desiredRot, _sharpness, true);
+        ApplyCameraPose(desiredPos, desiredRot, _sharpness);
     }
 
-    private void BuildThirdPose(out Vector3 desiredPos, out Quaternion desiredRot)
+    private void SetCameraPose(out Vector3 desiredPos, out Quaternion desiredRot)
     {
 
         float camPitch = 2f;
 
-        desiredPos = _target.position + ( _rotOffset * _target.rotation * _camOffset);
+        Vector3 lookPos;
+        if (_freeCamMod)
+        {
+            desiredPos = _target.position + _camTargetOffset;
+            lookPos = _target.position + _camTargetOffset + _rotOffset * Vector3.forward * _camOffset.z + Vector3.up * _camLookAtHeight;
+
+            desiredPos.y = _target.position.y + camPitch;
+            desiredRot =  Quaternion.LookRotation(lookPos - desiredPos, Vector3.up);
+            return;
+        }
+
+        desiredPos = _target.position + (_rotOffset * _target.rotation * _camOffset);
+        lookPos = _target.position + Vector3.up * _camLookAtHeight;
 
         desiredPos.y = _target.position.y + camPitch;
 
-        Vector3 lookPos = _target.position + Vector3.up * _camLookAtHeight;
         desiredRot =  Quaternion.LookRotation(lookPos - desiredPos, Vector3.up);
 
 
@@ -126,8 +150,18 @@ public class CCameraController : MonoBehaviour
 
         if (wheelInput != 0f)
         {
-            _camOffset.z += wheelInput * _sensitivity;
-            _camOffset.z = Mathf.Clamp(_camOffset.z, _offesetZmin, _offesetZmax);
+            if (_freeCamMod == false)
+            {
+                _camOffset.z += wheelInput * _sensitivity;
+                _camOffset.z = Mathf.Clamp(_camOffset.z, _offesetZmin, _offesetZmax);
+            }
+
+            else
+            {
+                Vector3 dir = _rotOffset * Vector3.forward * wheelInput;
+
+                _camTargetOffset -= dir * 50 * _sensitivity * Time.deltaTime;
+            }
         }
 
 
@@ -136,6 +170,70 @@ public class CCameraController : MonoBehaviour
             float mouseX = Input.GetAxis("Mouse X");
 
             _rotOffset *= Quaternion.AngleAxis(mouseX * _sensitivity, Vector3.up);
+        }
+
+        if (Input.GetMouseButton(2))
+        {
+            if(_freeCamMod == false)
+            {
+                _freeCamMod = true;
+                _rotOffset *= _target.rotation * Quaternion.Euler(0, 180, 0);
+                _camTargetOffset = _rotOffset * -_camOffset;
+                _camTargetOffset.y = _target.position.y;
+            }
+
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
+
+            if(mouseX != 0f || mouseY != 0f)
+            {
+                Vector3 dir = _rotOffset * Vector3.forward * mouseY + _rotOffset * Vector3.right * mouseX;
+
+                _camTargetOffset += dir * 1 * _sensitivity * Time.deltaTime;
+            }
+
+        }
+
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+
+        if (v != 0f)
+        {
+            if(_freeCamMod == false)
+            {
+                _freeCamMod = true;
+                _rotOffset *= _target.rotation * Quaternion.Euler(0, 180, 0);
+                _camTargetOffset = _rotOffset *-_camOffset;
+                _camTargetOffset.y = _target.position.y;
+            }
+
+            Vector3 dir = _rotOffset * Vector3.forward * v;
+
+            _camTargetOffset -= dir * 5 * _sensitivity * Time.deltaTime;
+        }
+
+        if (h != 0f)
+        {
+            if (_freeCamMod == false)
+            {
+                _freeCamMod = true;
+                _rotOffset *= _target.rotation * Quaternion.Euler(0, 180, 0);
+                _camTargetOffset = _rotOffset * -_camOffset;
+                _camTargetOffset.y = _target.position.y;
+            }
+
+            Vector3 dir = _rotOffset * Vector3.right * h;
+
+            _camTargetOffset -= dir * 5 * _sensitivity * Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            _freeCamMod = false;
+            _rotOffset = Quaternion.identity;
+            _camOffset = _camOffsetDefault;
+            _camLookOffset = Vector3.zero;
+            _camTargetOffset = Vector3.zero;
         }
     }
 

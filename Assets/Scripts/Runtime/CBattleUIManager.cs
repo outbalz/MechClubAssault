@@ -33,6 +33,11 @@ public class CBattleUIManager : MonoBehaviour
 
     [Space]
     [SerializeField] private Toggle _readyToggle;
+
+    [Space]
+    [SerializeField] private GameObject _resultUI;
+    [SerializeField] private TMP_Text _resultText;
+
     #endregion
 
     #region private var
@@ -395,5 +400,16 @@ public class CBattleUIManager : MonoBehaviour
 
     }
 
+    public void BattleWin()
+    {
+        _resultUI.SetActive(true);
+        _resultText.text = "승리!!";
+    }
+
+    public void BattleLost()
+    {
+        _resultUI.SetActive(true);
+        _resultText.text = "패배...";
+    }
 
 }
