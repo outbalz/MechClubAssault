@@ -9,6 +9,7 @@ public class CUnitInputManager : MonoBehaviour
     #region inspector
     [Header("Camera")]
     [SerializeField] private Camera _camera;
+    [SerializeField] private CCameraController _cameraController;
 
     [Space]
     [Header("Ray")]
@@ -56,6 +57,14 @@ public class CUnitInputManager : MonoBehaviour
             _camera = Camera.main;
         }
 
+        if(_cameraController == null)
+        {
+            if(TryGetComponent<CCameraController>(out _cameraController) == false)
+            {
+                Debug.LogWarning("Missing _cameraController");
+            }
+        }
+
         if(_turnStateManager == null)
         {
             if(TryGetComponent<CTurnStateManager>(out _turnStateManager) == false)
@@ -65,9 +74,7 @@ public class CUnitInputManager : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-    }
+
 
     private void LateUpdate()
     {
@@ -133,7 +140,7 @@ public class CUnitInputManager : MonoBehaviour
         }
 
         float speed = _selectedUnit.MovementController.Speed;
-        float turnRate = _selectedUnit.MovementController.FlightModule._turnRate;
+        float turnRate = _selectedUnit.MovementController.FlightModule.TurnRate;
 
         Vector3 dest = hit.point;
 
@@ -223,6 +230,7 @@ public class CUnitInputManager : MonoBehaviour
     public void SetSelectedUint(CUnitController unit)
     {
         _selectedUnit = unit;
+        _cameraController.SetTarget(unit.transform);
     }
 
 }

@@ -20,8 +20,9 @@ public class CTurnStateManager : MonoBehaviour
     [SerializeField] private List<CEnemyUnitContorller> _enemyUnits;
 
     [Space]
-    [Header("UI")]
+    [Header("Manager")]
     [SerializeField] private CBattleUIManager _battleUI;
+    [SerializeField] private CUnitInputManager _unitInputManager;
     #endregion
 
     #region private var
@@ -32,10 +33,13 @@ public class CTurnStateManager : MonoBehaviour
 
     private float _turnTimer;
     private int _turnSec;
+
+    private static CTurnStateManager _instance;
     #endregion
 
     #region getter
     public ETurnState TurnState { get { return _turnState; } }
+    public static CTurnStateManager Instance { get { return _instance; } }
     #endregion
 
     private void Awake()
@@ -49,10 +53,28 @@ public class CTurnStateManager : MonoBehaviour
                 Debug.LogWarning("Missing CBattleUIManager");
             }
         }
+
+        if(_unitInputManager == null)
+        {
+            if(TryGetComponent<CUnitInputManager>(out _unitInputManager) == false)
+            {
+                Debug.LogWarning("Missing CUnitInputManager");
+            }
+        }
+
+        if(_instance == null)
+        {
+            _instance = this;
+        }
     }
 
-    private void Start()
+
+    public void InitializeUnitList(List<CUnitController> units, List<CEnemyUnitContorller> enemys)
     {
+        _playerUnits = units;
+        _enemyUnits = enemys;
+
+        _unitInputManager.SetSelectedUint(_playerUnits[0]);
         ChangeTurnState(ETurnState.TurnInit);
     }
 

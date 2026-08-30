@@ -149,12 +149,12 @@ public class CBattleUIManager : MonoBehaviour
 
         if (previousSpeedBarVal > 0)
         {
-            previousSpeedCost = previousSpeedBarVal * MovementController.FlightModule._accelerationEnergyCost;
+            previousSpeedCost = previousSpeedBarVal * MovementController.FlightModule.AccelerationEnergyCost;
         }
 
         else if (previousSpeedBarVal < 0)
         {
-            previousSpeedCost = previousSpeedBarVal * MovementController.FlightModule._decelerationEnergyCost * -1f;
+            previousSpeedCost = previousSpeedBarVal * MovementController.FlightModule.DecelerationEnergyCost * -1f;
         }
 
 
@@ -173,9 +173,9 @@ public class CBattleUIManager : MonoBehaviour
 
         }
 
-        if (MovementController.Speed > MovementController.FlightModule._maxSpeed)
+        if (MovementController.Speed > MovementController.FlightModule.MaxSpeed)
         {
-            //float overflow = MovementController.Speed - MovementController.FlightModule._maxSpeed;
+            //float overflow = MovementController.Speed - MovementController.FlightModule.MaxSpeed;
 
             //_speedSlider.SetValueWithoutNotify(3 - overflow);
             MovementController.SetAccelerationLevel((int)_speedSlider.value -1);
@@ -190,23 +190,23 @@ public class CBattleUIManager : MonoBehaviour
 
         if (_speedSlider.value > 0)
         {
-            energyCost = _speedSlider.value * MovementController.FlightModule._accelerationEnergyCost;
+            energyCost = _speedSlider.value * MovementController.FlightModule.AccelerationEnergyCost;
         }
 
         else if (_speedSlider.value < 0) 
         { 
-            energyCost = _speedSlider.value * MovementController.FlightModule._decelerationEnergyCost * -1f;
+            energyCost = _speedSlider.value * MovementController.FlightModule.DecelerationEnergyCost * -1f;
         }
 
         /*
         else if(_previousSpeedBarVal > 0)
         {
-            energyCost *= MovementController.FlightModule._accelerationEnergyCost;
+            energyCost *= MovementController.FlightModule.AccelerationEnergyCost;
         }
 
         else if(_previousSpeedBarVal < 0)
         {
-            energyCost *= MovementController.FlightModule._decelerationEnergyCost * -1f;
+            energyCost *= MovementController.FlightModule.DecelerationEnergyCost * -1f;
         }
         */
 
@@ -239,7 +239,7 @@ public class CBattleUIManager : MonoBehaviour
         //_previousSpeedBarVal = _speedSlider.value;
 
         _speedText.text = $"{MovementController.Speed:00}";
-        _speedFill.fillAmount = MovementController.Speed / MovementController.FlightModule._maxSpeed;
+        _speedFill.fillAmount = MovementController.Speed / MovementController.FlightModule.MaxSpeed;
 
         UpdateEnergy(unit);
 
@@ -264,13 +264,13 @@ public class CBattleUIManager : MonoBehaviour
         if(i  == 0)
         {
             previousEnable = weaponContorller.WeaponEnableL;
-            WeaponCost = weaponContorller.WeaponL._weaponEnegyCost;
+            WeaponCost = weaponContorller.WeaponL.WeaponEnegyCost;
             WeaponCost *= previousEnable ? -1 : 1;
         }
         else
         {
             previousEnable = weaponContorller.WeaponEnableR;
-            WeaponCost = weaponContorller.WeaponR._weaponEnegyCost;
+            WeaponCost = weaponContorller.WeaponR.WeaponEnegyCost;
             WeaponCost *= previousEnable ? -1 : 1;
         }
 
@@ -299,9 +299,9 @@ public class CBattleUIManager : MonoBehaviour
 
         if (weaponContorller.WeaponEnableL)
         {
-            if (unit.Energy >= weaponContorller.WeaponL._weaponEnegyCost)
+            if (unit.Energy >= weaponContorller.WeaponL.WeaponEnegyCost)
             {
-                unit.Energy -= weaponContorller.WeaponL._weaponEnegyCost;
+                unit.Energy -= weaponContorller.WeaponL.WeaponEnegyCost;
             }
             else
             {
@@ -311,9 +311,9 @@ public class CBattleUIManager : MonoBehaviour
 
         if (weaponContorller.WeaponEnableR)
         {
-            if (unit.Energy >= weaponContorller.WeaponR._weaponEnegyCost)
+            if (unit.Energy >= weaponContorller.WeaponR.WeaponEnegyCost)
             {
-                unit.Energy -= weaponContorller.WeaponR._weaponEnegyCost;
+                unit.Energy -= weaponContorller.WeaponR.WeaponEnegyCost;
             }
             else
             {
@@ -372,7 +372,7 @@ public class CBattleUIManager : MonoBehaviour
 
         int shieldRegenLevel = (int)_shieldSlider.value;
 
-        float shieldRegenCost = unit.ShieldModule._shieldRegenCost;
+        float shieldRegenCost = unit.ShieldModule.ShieldRegenCost;
 
         shieldRegenCost *= shieldRegenLevel - unit.ShieldRegenLevel;
 
@@ -386,9 +386,9 @@ public class CBattleUIManager : MonoBehaviour
 
         unit.ShieldRegenLevel = shieldRegenLevel;
 
-        unit.Shield = unit.PreviousShield + unit.ShieldRegenLevel * unit.ShieldModule._shieldRegen;
+        unit.Shield = unit.PreviousShield + unit.ShieldRegenLevel * unit.ShieldModule.ShieldRegen;
 
-        if(unit.Shield >= unit.ShieldModule._maxShield + unit.ShieldModule._shieldRegen)
+        if(unit.Shield >= unit.ShieldModule.MaxShield + unit.ShieldModule.ShieldRegen)
         {
             _shieldSlider.value--;
             return;

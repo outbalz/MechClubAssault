@@ -10,7 +10,7 @@ public class CCameraController : MonoBehaviour
     [SerializeField] private Transform _target;
 
     [SerializeField] private Vector3 _camOffset = new Vector3(0f, 2f, -3f);
-    [SerializeField] private Vector3 _camLookOffset = Vector3.zero;
+    //[SerializeField] private Vector3 _camLookOffset = Vector3.zero;
     [SerializeField] private Vector3 _camTargetOffset = Vector3.zero;
     [SerializeField] private float _camLookAtHeight = 1.5f;
 
@@ -232,9 +232,13 @@ public class CCameraController : MonoBehaviour
             _freeCamMod = false;
             _rotOffset = Quaternion.identity;
             _camOffset = _camOffsetDefault;
-            _camLookOffset = Vector3.zero;
+            //_camLookOffset = Vector3.zero;
             _camTargetOffset = Vector3.zero;
         }
     }
 
+    public void SetTarget(Transform target)
+    {
+        _target = target;
+    }
 }

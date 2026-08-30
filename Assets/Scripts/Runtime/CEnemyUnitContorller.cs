@@ -20,6 +20,10 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
     [SerializeField] private CUnitMovementController _movementController;
 
     [Space]
+    [Header("weapon")]
+    [SerializeField] private CUnitWeaponContorller _weaponContorller;
+
+    [Space]
     [Header("UI")]
     [SerializeField] private Transform _unitUi;
     [SerializeField] private Image _shieldBar;
@@ -83,6 +87,14 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
 
         }
 
+        if (_weaponContorller == null)
+        {
+            if (TryGetComponent<CUnitWeaponContorller>(out _weaponContorller) == false)
+            {
+                Debug.LogWarning("Missing CUnitWeaponContorller");
+            }
+        }
+
         if (_turnData == null)
         {
             _turnData = new CTurnData(_turnNum);
@@ -93,6 +105,7 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
             Debug.LogWarning("Missing Ui element");
         }
 
+        /*
         if (_shieldModule == null)
         {
             Debug.LogWarning("Missing _shieldModule");
@@ -100,14 +113,12 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
 
         else
         {
-            _shield = _shieldModule._startShield;
+            _shield = _shieldModule.StartShield;
             SetShieldBar();
         }
+        */
 
-        if(_turnStateManager == null)
-        {
-            Debug.LogWarning("Missing _turnStateManager");
-        }
+
 
         if (_knockout == null)
         {
@@ -115,6 +126,30 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
             {
                 Debug.LogWarning("Missing CKnockout");
             }
+        }
+    }
+
+
+    public void UnitModuleInit
+        (
+        ScriptableObjectShieldModule shieldModule,
+        ScriptableObjectFlightModule flightModule,
+        ScriptableObjectWeaponModule weaponModuleL,
+        ScriptableObjectWeaponModule weaponModuleR
+        )
+    {
+        _shieldModule = shieldModule;
+        _movementController.SetModule(flightModule);
+        _weaponContorller.SetModule(weaponModuleL, weaponModuleR);
+
+        _shield = _shieldModule.StartShield;
+        SetShieldBar();
+
+        _turnStateManager = CTurnStateManager.Instance;
+
+        if (_turnStateManager == null)
+        {
+            Debug.LogWarning("Missing _turnStateManager");
         }
     }
 
@@ -140,13 +175,13 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
         switch (speadLevel)
         {
             case 0:
-                _movementController.Speed = MovementController.FlightModule._startSpeed - MovementController.FlightModule._deceleration;
+                _movementController.Speed = MovementController.FlightModule.StartSpeed - MovementController.FlightModule.Deceleration;
                 break;
             case 1:
-                _movementController.Speed = MovementController.FlightModule._startSpeed;
+                _movementController.Speed = MovementController.FlightModule.StartSpeed;
                 break;
             case 2:
-                _movementController.Speed = MovementController.FlightModule._startSpeed + MovementController.FlightModule._acceleration;
+                _movementController.Speed = MovementController.FlightModule.StartSpeed + MovementController.FlightModule.Acceleration;
                 break;
         }
     }
@@ -159,7 +194,7 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
         }
 
         float speed = _movementController.Speed;
-        float turnRate = _movementController.FlightModule._turnRate;
+        float turnRate = _movementController.FlightModule.TurnRate;
 
         Vector3 dest = _targetUnit.transform.position;
 
@@ -243,14 +278,14 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
 
     private void AIShieldRegen()
     {
-        if(_shield == _shieldModule._maxShield)
+        if(_shield == _shieldModule.MaxShield)
         {
             return;
         }
 
         int regenTurn = 0;
 
-        switch (_shieldModule._shieldRegenCost)
+        switch (_shieldModule.ShieldRegenCost)
         {
             case float n when n >= 8:
                 regenTurn = 4;
@@ -273,13 +308,13 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
             return;
         }
 
-        _shield += _shieldModule._shieldRegen;
+        _shield += _shieldModule.ShieldRegen;
 
         _lastCombatTurn = _turnNum;
 
-        if (_shield > _shieldModule._maxShield)
+        if (_shield > _shieldModule.MaxShield)
         {
-            _shield = _shieldModule._maxShield;
+            _shield = _shieldModule.MaxShield;
         }
 
         SetShieldBar();
@@ -289,7 +324,7 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
 
     private void SetShieldBar()
     {
-        _shieldBar.fillAmount = _shield / _shieldModule._maxShield;
+        _shieldBar.fillAmount = _shield / _shieldModule.MaxShield;
     }
 
     public void TakeHit(float damage)

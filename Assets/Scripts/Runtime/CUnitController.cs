@@ -57,7 +57,7 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
     public CUnitMovementController MovementController { get { return _movementController; } }
     public CUnitWeaponContorller WeaponContorller { get { return _weaponContorller; } }
     public float Energy { get { return _energy; } set { _energy = value; } }
-    public float MaxEnergy { get { return _generator._maxEnergy; } }
+    public float MaxEnergy { get { return _generator.MaxEnergy; } }
     public ScriptableObjectShieldModule ShieldModule {  get { return _shieldModule; } }
     public float Shield { get {  return _shield; } set { _shield = value; } }
     public float PreviousShield { get { return _previousShield; } }
@@ -66,12 +66,6 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
     public CTurnData TurnData { get { return _turnData; } }
     public bool IsReady { get { return _isReady; } set { _isReady = value; } }
     #endregion
-
-
-    private void Reset()
-    {
-        InitializeUnit();
-    }
 
     private void Awake()
     {
@@ -127,11 +121,7 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
             }
         }
 
-        if (_unitUi == null)
-        {
-            Debug.LogWarning("Missing _unitUi");
-        }
-
+        /*
         if (_generator == null)
         {
             Debug.LogWarning("Missing _generator");
@@ -139,14 +129,16 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
 
         else
         {
-            _energy = _generator._startEnergy;
+            _energy = _generator.StartEnergy;
         }
+        */
 
         if (_unitUi == null || _shieldBar == null)
         {
             Debug.LogWarning("Missing Ui element");
         }
 
+        /*
         if (_shieldModule == null)
         {
             Debug.LogWarning("Missing _shieldModule");
@@ -154,15 +146,12 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
 
         else
         {
-            _shield = _shieldModule._startShield;
+            _shield = _shieldModule.StartShield;
             _shieldRegenLevel = 0;
             SetShieldBar();
         }
+        */
 
-        if (_turnStateManager == null)
-        {
-            Debug.LogWarning("Missing _turnStateManager");
-        }
 
         if (_knockout == null)
         {
@@ -172,6 +161,34 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
             }
         }
     }
+
+    public void UnitModuleInit
+        (
+        ScriptableObjectGeneratorModule generatorModule,
+        ScriptableObjectShieldModule shieldModule,
+        ScriptableObjectFlightModule flightModule,
+        ScriptableObjectWeaponModule weaponModuleL,
+        ScriptableObjectWeaponModule weaponModuleR
+        )
+    {
+        _generator = generatorModule;
+        _shieldModule = shieldModule;
+        _movementController.SetModule(flightModule);
+        _weaponContorller.SetModule(weaponModuleL, weaponModuleR);
+
+        _energy = _generator.StartEnergy;
+        _shield = _shieldModule.StartShield;
+        _shieldRegenLevel = 0;
+        SetShieldBar();
+
+        _turnStateManager = CTurnStateManager.Instance;
+
+        if (_turnStateManager == null)
+        {
+            Debug.LogWarning("Missing _turnStateManager");
+        }
+    }
+
 
     public void VisualizePath(List<Vector3> posList)
     {
@@ -184,7 +201,7 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
 
     public void SetShieldBar()
     {
-        _shieldBar.fillAmount = _shield / _shieldModule._maxShield;
+        _shieldBar.fillAmount = _shield / _shieldModule.MaxShield;
     }
 
     public void TakeHit(float damage)
@@ -214,11 +231,11 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
             return;
         }
 
-        _energy += _generator._energyRegen;
+        _energy += _generator.EnergyRegen;
 
-        if(_energy > _generator._maxEnergy)
+        if(_energy > _generator.MaxEnergy)
         {
-            _energy = _generator._maxEnergy;
+            _energy = _generator.MaxEnergy;
         }
 
     }

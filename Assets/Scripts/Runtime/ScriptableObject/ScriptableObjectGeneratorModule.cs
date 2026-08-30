@@ -5,9 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newGeneratorModule", menuName = "ScriptableObjects/GeneratorModule", order = 2)]
 public class ScriptableObjectGeneratorModule : ScriptableObject
 {
-    public string _name;
+    [SerializeField] private string _name;
 
-    public float _maxEnergy;
-    public float _startEnergy;
-    public float _energyRegen;
+    [SerializeField] private float _maxEnergy;
+    [SerializeField] private float _startEnergy;
+    [SerializeField] private float _energyRegen;
+    
+    public string ModuleName { get { return _name; } }
+
+    public float MaxEnergy {  get { return _maxEnergy; } }
+    public float StartEnergy { get { return _startEnergy; } }
+    public float EnergyRegen { get { return _energyRegen; } }
 }

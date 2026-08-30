@@ -15,9 +15,9 @@ public class CUnitWeaponContorller : MonoBehaviour
     /*
     [SerializeField] private float _weaponLInnerArcDeg;
     [SerializeField] private float _weaponLOutterArcDeg;
-    [SerializeField] private float _weaponRangeL;
-    [SerializeField] private float _weaponCoolDownL;
-    [SerializeField] private float _weaponDamegeL;
+    [SerializeField] private float WeaponRangeL;
+    [SerializeField] private float WeaponCoolDownL;
+    [SerializeField] private float WeaponDamegeL;
     */
 
     [SerializeField] private ParticleSystem _weaponParticleL;
@@ -34,9 +34,9 @@ public class CUnitWeaponContorller : MonoBehaviour
     /*
     [SerializeField] private float _weaponRInnerArcDeg;
     [SerializeField] private float _weaponROutterArcDeg;
-    [SerializeField] private float _weaponRangeR;
-    [SerializeField] private float _weaponCoolDownR;
-    [SerializeField] private float _weaponDamegeR;
+    [SerializeField] private float WeaponRangeR;
+    [SerializeField] private float WeaponCoolDownR;
+    [SerializeField] private float WeaponDamegeR;
     */
 
     [SerializeField] private ParticleSystem _weaponParticleR;
@@ -104,15 +104,17 @@ public class CUnitWeaponContorller : MonoBehaviour
     }
 
 
-    void Start()
-    {
-        WeaponInit();
-    }
-
 
     void Update()
     {
         WeaponUpdate();
+    }
+    
+    public void SetModule(ScriptableObjectWeaponModule weaponModuleL, ScriptableObjectWeaponModule weaponModuleR)
+    {
+        _weaponL = weaponModuleL;
+        _weaponR = weaponModuleR;
+        WeaponInit();
     }
 
     private void WeaponInit()
@@ -125,23 +127,23 @@ public class CUnitWeaponContorller : MonoBehaviour
         if (_weaponEnableL)
         {
             _weaponLInnerArc.positionCount = 2;
-            _weaponLInnerArc.SetPosition(1, Vector3.forward * _weaponL._weaponRange);
-            _weaponLInnerArc.transform.Rotate(Vector3.up, _weaponL._weaponInnerArcDeg);
+            _weaponLInnerArc.SetPosition(1, Vector3.forward * _weaponL.WeaponRange);
+            _weaponLInnerArc.transform.Rotate(Vector3.up, _weaponL.WeaponInnerArcDeg);
 
             _weaponLOutterArc.positionCount = 2;
-            _weaponLOutterArc.SetPosition(1, Vector3.forward * _weaponL._weaponRange);
-            _weaponLOutterArc.transform.Rotate(Vector3.up, -_weaponL._weaponOutterArcDeg);
+            _weaponLOutterArc.SetPosition(1, Vector3.forward * _weaponL.WeaponRange);
+            _weaponLOutterArc.transform.Rotate(Vector3.up, -_weaponL.WeaponOutterArcDeg);
         }
 
         if(_weaponEnableR)
         {
             _weaponRInnerArc.positionCount = 2;
-            _weaponRInnerArc.SetPosition(1, Vector3.forward * _weaponR._weaponRange);
-            _weaponRInnerArc.transform.Rotate(Vector3.up, -_weaponR._weaponInnerArcDeg);
+            _weaponRInnerArc.SetPosition(1, Vector3.forward * _weaponR.WeaponRange);
+            _weaponRInnerArc.transform.Rotate(Vector3.up, -_weaponR.WeaponInnerArcDeg);
 
             _weaponROutterArc.positionCount = 2;
-            _weaponROutterArc.SetPosition(1, Vector3.forward * _weaponR._weaponRange);
-            _weaponROutterArc.transform.Rotate(Vector3.up, _weaponR._weaponOutterArcDeg);
+            _weaponROutterArc.SetPosition(1, Vector3.forward * _weaponR.WeaponRange);
+            _weaponROutterArc.transform.Rotate(Vector3.up, _weaponR.WeaponOutterArcDeg);
         }
 
         if(_visualizeRange == false)
@@ -152,6 +154,7 @@ public class CUnitWeaponContorller : MonoBehaviour
             _weaponROutterArc.enabled = false;
         }
 
+        _turnStateManager = CTurnStateManager.Instance;
     }
 
     private void WeaponUpdate()
@@ -173,9 +176,9 @@ public class CUnitWeaponContorller : MonoBehaviour
                 CastWeaponRay
                     (
                     _weaponLInnerArc.transform.position,
-                    -_weaponL._weaponOutterArcDeg,
-                    _weaponL._weaponInnerArcDeg,
-                    _weaponL._weaponRange,
+                    -_weaponL.WeaponOutterArcDeg,
+                    _weaponL.WeaponInnerArcDeg,
+                    _weaponL.WeaponRange,
                     out RaycastHit hit,
                     out bool isHit
                     );
@@ -183,8 +186,8 @@ public class CUnitWeaponContorller : MonoBehaviour
                 if (isHit)
                 {
                     _weaponParticleL.Play();
-                    _weaponTimerL = _weaponL._weaponCoolDown;
-                    hit.collider.GetComponent<IDamageable>().TakeHit(_weaponL._weaponDamege);
+                    _weaponTimerL = _weaponL.WeaponCoolDown;
+                    hit.collider.GetComponent<IDamageable>().TakeHit(_weaponL.WeaponDamege);
                     _combatTracker.SetLastCombatTurn();
                 }
             }
@@ -203,9 +206,9 @@ public class CUnitWeaponContorller : MonoBehaviour
                 CastWeaponRay
                     (
                     _weaponRInnerArc.transform.position,
-                    -_weaponR._weaponInnerArcDeg,
-                    _weaponR._weaponOutterArcDeg,
-                    _weaponR._weaponRange,
+                    -_weaponR.WeaponInnerArcDeg,
+                    _weaponR.WeaponOutterArcDeg,
+                    _weaponR.WeaponRange,
                     out RaycastHit hit,
                     out bool isHit
                     );
@@ -213,8 +216,8 @@ public class CUnitWeaponContorller : MonoBehaviour
                 if (isHit)
                 {
                     _weaponParticleR.Play();
-                    _weaponTimerR = _weaponR._weaponCoolDown;
-                    hit.collider.GetComponent<IDamageable>().TakeHit(_weaponR._weaponDamege);
+                    _weaponTimerR = _weaponR.WeaponCoolDown;
+                    hit.collider.GetComponent<IDamageable>().TakeHit(_weaponR.WeaponDamege);
                     _combatTracker.SetLastCombatTurn();
                 }
             }
