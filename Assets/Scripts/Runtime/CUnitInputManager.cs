@@ -91,7 +91,7 @@ public class CUnitInputManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            CUnitController nextUnit = _turnStateManager.GetNextUnreadyUnit(_selectedUnit);
+            CUnitController nextUnit = _turnStateManager.GetNextUnit(_selectedUnit);
 
             if (nextUnit != null)
             {
@@ -119,12 +119,6 @@ public class CUnitInputManager : MonoBehaviour
     private void OnClick()
     {
 
-        if(_turnStateManager.TurnState != CTurnStateManager.ETurnState.AwaitPlayerInput)
-        {
-            return;
-        }
-
-
         Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
         if (EventSystem.current.IsPointerOverGameObject())
@@ -143,6 +137,11 @@ public class CUnitInputManager : MonoBehaviour
                 if (go.CompareTag(_playerUnitTag))
                 {
                     SetSelectedUint(go.GetComponent<CUnitController>());
+                }
+
+                if (_turnStateManager.TurnState != CTurnStateManager.ETurnState.AwaitPlayerInput)
+                {
+                    return;
                 }
 
                 else if (go.CompareTag(_rayCatcherTag))

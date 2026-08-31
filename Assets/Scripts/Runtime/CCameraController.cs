@@ -27,6 +27,7 @@ public class CCameraController : MonoBehaviour
     private Vector3 _camOffsetDefault;
     private Quaternion _rotOffset;
     private bool _freeCamMod = false;
+    private bool _isOnTarget = false;
     #endregion
 
     private void Awake()
@@ -61,7 +62,8 @@ public class CCameraController : MonoBehaviour
 
         SetCameraPose(out desiredPos, out desiredRot);
 
-        ApplyCameraPose(desiredPos, desiredRot, _sharpness);
+        ApplyCameraPose(desiredPos, desiredRot);
+        _isOnTarget = true;
     }
 
     private void Update()
@@ -75,29 +77,20 @@ public class CCameraController : MonoBehaviour
     }
 
 
-    private void ApplyCameraPose(Vector3 desiredPos, Quaternion desiredRot, float sharpness)
+    private void ApplyCameraPose(Vector3 desiredPos, Quaternion desiredRot)
     {
         _camTr.position = desiredPos;
         _camTr.rotation = desiredRot;
     }
 
-    /*
+    
     private float GetSmmothT(float sharpness)
     {
         return 1f - Mathf.Exp(-sharpness * Time.deltaTime);
     }
-    /*
-    private void ApplyCameraPose(Vector3 desiredPos, Quaternion desiredRot, float sharpness, bool snap)
+    
+    private void ApplyCameraPose(Vector3 desiredPos, Quaternion desiredRot, float sharpness)
     {
-
-        if (snap)
-        {
-            _camTr.position = desiredPos;
-            _camTr.rotation = desiredRot;
-
-            return;
-        }
-
 
         float t = GetSmmothT(sharpness);
 
@@ -106,7 +99,7 @@ public class CCameraController : MonoBehaviour
         _camTr.rotation = Quaternion.Slerp(_camTr.rotation, desiredRot, t);
 
     }
-    */
+    /*/**/
 
     private void CameraUpdate()
     {
@@ -115,7 +108,19 @@ public class CCameraController : MonoBehaviour
 
         SetCameraPose(out desiredPos, out desiredRot);
 
-        ApplyCameraPose(desiredPos, desiredRot, _sharpness);
+        if (_isOnTarget)
+        {
+            ApplyCameraPose(desiredPos, desiredRot);
+        }
+
+        else
+        {
+            ApplyCameraPose(desiredPos, desiredRot, _sharpness);
+            if ((desiredPos - _camTr.position).sqrMagnitude <= 1)
+            {
+                _isOnTarget = true;
+            }
+        }
     }
 
     private void SetCameraPose(out Vector3 desiredPos, out Quaternion desiredRot)
@@ -240,5 +245,6 @@ public class CCameraController : MonoBehaviour
     public void SetTarget(Transform target)
     {
         _target = target;
+        _isOnTarget = false;
     }
 }

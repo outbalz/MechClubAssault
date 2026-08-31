@@ -292,7 +292,7 @@ public class CTurnStateManager : MonoBehaviour
     public void UnitGetKnockedOut(CUnitController unit)
     {
         _playerUnits.Remove(unit);
-        if (_playerUnits.Count > 0)
+        if (_playerUnits.Count > 0 && _unitInputManager.SelectedUnit == unit)
         {
             _unitInputManager.SetSelectedUint(_playerUnits[0]);
         }
@@ -320,13 +320,25 @@ public class CTurnStateManager : MonoBehaviour
         return null;
     }
 
-    public CUnitController GetNextUnreadyUnit(CUnitController currntUnit)
+    public CUnitController GetNextUnit(CUnitController currntUnit)
     {
+        if(_playerUnits.Count == 1)
+        {
+            return null;
+        }
+
         for (int i = 0; i < _playerUnits.Count; i++)
         {
-            if (_playerUnits[i].IsReady == false && _playerUnits[i] != currntUnit)
+            if (_playerUnits[i] == currntUnit)
             {
-                return _playerUnits[i];
+                if(_playerUnits.Count -1 != i)
+                {
+                    return _playerUnits[i + 1];
+                }
+                else
+                {
+                    return _playerUnits[0];
+                }
             }
         }
 
