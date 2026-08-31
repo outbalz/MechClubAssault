@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -27,7 +28,7 @@ public class CTurnStateManager : MonoBehaviour
 
     #region private var
     private int _turnNum;
-    private int _reqReadyCount;
+    [SerializeField] private int _reqReadyCount;
     private int _reqEnemyReadyCount;
     private ETurnState _turnState;
 
@@ -74,7 +75,7 @@ public class CTurnStateManager : MonoBehaviour
         _playerUnits = units;
         _enemyUnits = enemys;
 
-        _unitInputManager.SetSelectedUint(_playerUnits[0]);
+        //_unitInputManager.SetSelectedUint(_playerUnits[0]);
         ChangeTurnState(ETurnState.TurnInit);
     }
 
@@ -108,7 +109,7 @@ public class CTurnStateManager : MonoBehaviour
         _turnNum++;
 
         _reqReadyCount = _playerUnits.Count;
-        _reqReadyCount = _enemyUnits.Count;
+        _reqEnemyReadyCount = _enemyUnits.Count;
 
         if(_playerUnits.Count <= 0 || _enemyUnits.Count <= 0)
         {
@@ -140,6 +141,7 @@ public class CTurnStateManager : MonoBehaviour
             _playerUnits[i].TurnInit(_turnNum);
 
             _playerUnits[i].MovementController.SetTargetPos(tunPosData[tunPosData.Length-1], tunPosData[tunPosData.Length - 1]);
+            _playerUnits[i].VisualizePath(tunPosData.ToList<Vector3>());
             _playerUnits[i].MovementController.SetOnMove(false);
             _playerUnits[i].MovementController.SpeedTurnInit();
         }
@@ -169,7 +171,15 @@ public class CTurnStateManager : MonoBehaviour
 
         ChangeTurnState(ETurnState.AwaitPlayerInput);
 
-        _battleUI.TurnInitSelectedUnitUi();
+        if (_unitInputManager.SelectedUnit == null)
+        {
+            _unitInputManager.SetSelectedUint(_playerUnits[0]);
+        }
+
+        else
+        {
+            _battleUI.TurnInitSelectedUnitUi();
+        }
     }
 
     private void AIInput()
@@ -282,10 +292,45 @@ public class CTurnStateManager : MonoBehaviour
     public void UnitGetKnockedOut(CUnitController unit)
     {
         _playerUnits.Remove(unit);
+        if (_playerUnits.Count > 0)
+        {
+            _unitInputManager.SetSelectedUint(_playerUnits[0]);
+        }
+        //if(_turnState != ETurnState.TurnResolve)
+        //{
+            //_reqReadyCount--;
+        //}
     }
 
     public void UnitGetKnockedOut(CEnemyUnitContorller unit)
     {
         _enemyUnits.Remove(unit);
     }
+
+    public CUnitController GetNextUnreadyUnit()
+    {
+        for (int i = 0; i < _playerUnits.Count; i++)
+        {
+            if (_playerUnits[i].IsReady == false)
+            {
+                return _playerUnits[i]; 
+            }
+        }
+
+        return null;
+    }
+
+    public CUnitController GetNextUnreadyUnit(CUnitController currntUnit)
+    {
+        for (int i = 0; i < _playerUnits.Count; i++)
+        {
+            if (_playerUnits[i].IsReady == false && _playerUnits[i] != currntUnit)
+            {
+                return _playerUnits[i];
+            }
+        }
+
+        return null;
+    }
+
 }

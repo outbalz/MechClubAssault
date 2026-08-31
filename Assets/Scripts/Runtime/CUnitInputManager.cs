@@ -17,8 +17,9 @@ public class CUnitInputManager : MonoBehaviour
     [SerializeField] private LayerMask _rayLayerMask;
 
     [Space]
-    [Header("Turn State Manager")]
-    [SerializeField] CTurnStateManager _turnStateManager;
+    [Header("Manager")]
+    [SerializeField] private CTurnStateManager _turnStateManager;
+    [SerializeField] private CBattleUIManager _battleUIManager;
     #endregion
 
     #region inspector (debug)
@@ -32,6 +33,9 @@ public class CUnitInputManager : MonoBehaviour
     #region private var
     private const float _MAPHIGHT = 0;
     private Ray _previousRay;
+
+    private const string _playerUnitTag = "PlayerUnit";
+    private const string _rayCatcherTag = "RayCatcher";
     #endregion
 
     #region getter
@@ -72,20 +76,47 @@ public class CUnitInputManager : MonoBehaviour
                 Debug.LogWarning("Missing CTurnStateManager");
             }
         }
+
+        if(_battleUIManager == null)
+        {
+            if(TryGetComponent<CBattleUIManager>(out _battleUIManager) == false)
+            {
+                Debug.LogWarning("Missing CBattleUIManager");
+            }
+        }
+
     }
 
-
-
-    private void LateUpdate()
+    private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            SetUnitMovementPath();
+            CUnitController nextUnit = _turnStateManager.GetNextUnreadyUnit(_selectedUnit);
+
+            if (nextUnit != null)
+            {
+                SetSelectedUint(nextUnit);
+            }
         }
     }
 
 
-    private void SetUnitMovementPath()
+    private void LateUpdate()
+    {
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            OnClick();
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            OnClickPress();
+        }
+    }
+
+
+    private void OnClick()
     {
 
         if(_turnStateManager.TurnState != CTurnStateManager.ETurnState.AwaitPlayerInput)
@@ -107,11 +138,53 @@ public class CUnitInputManager : MonoBehaviour
             OnClickRay(ray, out RaycastHit hit, out bool isHit);
             if (isHit)
             {
-                UnitMovementPathToRayHit(hit);
+                GameObject go = hit.collider.gameObject;
+
+                if (go.CompareTag(_playerUnitTag))
+                {
+                    SetSelectedUint(go.GetComponent<CUnitController>());
+                }
+
+                else if (go.CompareTag(_rayCatcherTag))
+                {
+                    UnitMovementPathToRayHit(hit);
+                }
             }
         }
     }
 
+
+    private void OnClickPress()
+    {
+
+        if(_turnStateManager.TurnState != CTurnStateManager.ETurnState.AwaitPlayerInput)
+        {
+            return;
+        }
+
+
+        Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
+
+        if (ray.direction != _previousRay.direction)
+        {
+            OnClickRay(ray, out RaycastHit hit, out bool isHit);
+            if (isHit)
+            {
+                GameObject go = hit.collider.gameObject;
+
+                if (go.CompareTag(_rayCatcherTag))
+                {
+                    UnitMovementPathToRayHit(hit);
+                }
+            }
+        }
+    }
 
 
     private void OnClickRay(Ray ray,out RaycastHit hit, out bool isHit)
@@ -229,7 +302,22 @@ public class CUnitInputManager : MonoBehaviour
 
     public void SetSelectedUint(CUnitController unit)
     {
+        if(unit == null)
+        {
+            Debug.LogWarning("unit null Err");
+            return;
+        }
+
+        if(_selectedUnit != null)
+        {
+            _selectedUnit.UnitUI.localScale = new Vector3(0.1f, 0.1f, 1f);
+        }
+
         _selectedUnit = unit;
+        _selectedUnit.UnitUI.localScale = new Vector3(0.05f, 0.05f, 1f);
+
+        _battleUIManager.SetValToSelectedUnitVal(unit);
+
         _cameraController.SetTarget(unit.transform);
     }
 

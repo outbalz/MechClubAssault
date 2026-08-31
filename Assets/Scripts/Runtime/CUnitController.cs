@@ -29,6 +29,7 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
     [Header("Shield")]
     [SerializeField] private ScriptableObjectShieldModule _shieldModule;
     [SerializeField] private float _shield;
+    [SerializeField] private ParticleSystem _shieldEffect;
 
     [Space]
     [Header("Line Renderer")]
@@ -49,6 +50,7 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
     private int _lastCombatTurn = 0;
     private Transform _cameraTr;
     private bool _isReady = false;
+    private bool _isInitedForTurn = false;
     private float _previousShield;
     private int _shieldRegenLevel = 0;
     #endregion
@@ -62,14 +64,21 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
     public float Shield { get {  return _shield; } set { _shield = value; } }
     public float PreviousShield { get { return _previousShield; } }
     public int ShieldRegenLevel { get {  return _shieldRegenLevel; } set { _shieldRegenLevel = value; } }
+    public Transform UnitUI { get { return _unitUi; } }
 
     public CTurnData TurnData { get { return _turnData; } }
     public bool IsReady { get { return _isReady; } set { _isReady = value; } }
+    public bool IsInitedForTurn { get { return _isInitedForTurn; } set { _isInitedForTurn = value; } }
     #endregion
 
     private void Awake()
     {
         InitializeUnit();
+    }
+
+    private void Update()
+    {
+        SetShieldBar();
     }
 
     private void LateUpdate()
@@ -171,6 +180,8 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
         ScriptableObjectWeaponModule weaponModuleR
         )
     {
+
+
         _generator = generatorModule;
         _shieldModule = shieldModule;
         _movementController.SetModule(flightModule);
@@ -179,7 +190,7 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
         _energy = _generator.StartEnergy;
         _shield = _shieldModule.StartShield;
         _shieldRegenLevel = 0;
-        SetShieldBar();
+        //SetShieldBar();
 
         _turnStateManager = CTurnStateManager.Instance;
 
@@ -199,16 +210,23 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
         _lineRenderer.SetPositions(posArr);
     }
 
-    public void SetShieldBar()
+    private void SetShieldBar()
     {
-        _shieldBar.fillAmount = _shield / _shieldModule.MaxShield;
+        if (Mathf.Abs(_shieldBar.fillAmount - (_shield / _shieldModule.MaxShield)) < 0.1F)
+        {
+            _shieldBar.fillAmount = _shield / _shieldModule.MaxShield;
+            return;
+        }
+
+        float lerp = Mathf.Lerp(_shieldBar.fillAmount, _shield / _shieldModule.MaxShield, 0.05f);
+        _shieldBar.fillAmount = lerp;
     }
 
     public void TakeHit(float damage)
     {
         _shield -= damage;
 
-        SetShieldBar();
+        //SetShieldBar();
 
         _lastCombatTurn = _turnNum;
 
@@ -218,13 +236,19 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
             TryGetComponent<Collider>(out Collider collider);
             collider.enabled = false;
             _turnStateManager.UnitGetKnockedOut(this);
+
+            return;
         }
+
+        _shieldEffect.Play();
     }
 
     public void TurnInit(int turnNum)
     {
         _turnNum = turnNum;
         _previousShield = _shield;
+        _isReady = false;
+        _isInitedForTurn = false;
 
         if(_turnNum <= 1)
         {

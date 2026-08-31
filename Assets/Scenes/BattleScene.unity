@@ -163,7 +163,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 3, y: 0}
+  m_AnchoredPosition: {x: 3.000061, y: 0}
   m_SizeDelta: {x: 610, y: 440}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &2109116
@@ -583,9 +583,10 @@ MonoBehaviour:
   _rayMaxDistance: 100
   _rayLayerMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 72
   _turnStateManager: {fileID: 192198922}
-  _selectedUnit: {fileID: 8233098296661468948}
+  _battleUIManager: {fileID: 192198925}
+  _selectedUnit: {fileID: 0}
   _targetUnit: {fileID: 0}
   _posMarker: {fileID: 830492969}
 --- !u!4 &192198921
@@ -621,6 +622,7 @@ MonoBehaviour:
   - {fileID: 1062365804}
   _battleUI: {fileID: 192198925}
   _unitInputManager: {fileID: 192198920}
+  _reqReadyCount: 0
 --- !u!114 &192198923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,7 +711,31 @@ MonoBehaviour:
     _shieldModule: {fileID: 11400000, guid: 3b6da2bde678931499a9a74871ea1915, type: 2}
     _weaponModuleL: {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
     _weaponModuleR: {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
+  - _unitName: "\uC11C\uC728"
+    _flightModule: {fileID: 11400000, guid: f9448c241af583041971afc27a8b62b7, type: 2}
+    _generatorModule: {fileID: 11400000, guid: 0ed0f16245108614b9f21f7abc9c319d, type: 2}
+    _shieldModule: {fileID: 11400000, guid: 3b6da2bde678931499a9a74871ea1915, type: 2}
+    _weaponModuleL: {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
+    _weaponModuleR: {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
+  - _unitName: "\uAE40\uC194"
+    _flightModule: {fileID: 11400000, guid: f9448c241af583041971afc27a8b62b7, type: 2}
+    _generatorModule: {fileID: 11400000, guid: 0ed0f16245108614b9f21f7abc9c319d, type: 2}
+    _shieldModule: {fileID: 11400000, guid: 3b6da2bde678931499a9a74871ea1915, type: 2}
+    _weaponModuleL: {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
+    _weaponModuleR: {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
   _enemyUnitData:
+  - _unitName: "\uBAA8\uBE0C\uC9F1"
+    _flightModule: {fileID: 11400000, guid: f9448c241af583041971afc27a8b62b7, type: 2}
+    _generatorModule: {fileID: 11400000, guid: 0ed0f16245108614b9f21f7abc9c319d, type: 2}
+    _shieldModule: {fileID: 11400000, guid: 3b6da2bde678931499a9a74871ea1915, type: 2}
+    _weaponModuleL: {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
+    _weaponModuleR: {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
+  - _unitName: "\uBAA8\uBE0C\uC9F1"
+    _flightModule: {fileID: 11400000, guid: f9448c241af583041971afc27a8b62b7, type: 2}
+    _generatorModule: {fileID: 11400000, guid: 0ed0f16245108614b9f21f7abc9c319d, type: 2}
+    _shieldModule: {fileID: 11400000, guid: 3b6da2bde678931499a9a74871ea1915, type: 2}
+    _weaponModuleL: {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
+    _weaponModuleR: {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
   - _unitName: "\uBAA8\uBE0C\uC9F1"
     _flightModule: {fileID: 11400000, guid: f9448c241af583041971afc27a8b62b7, type: 2}
     _generatorModule: {fileID: 11400000, guid: 0ed0f16245108614b9f21f7abc9c319d, type: 2}
@@ -815,7 +841,7 @@ GameObject:
   - component: {fileID: 330428909}
   m_Layer: 3
   m_Name: RayCatcher
-  m_TagString: Untagged
+  m_TagString: RayCatcher
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6581,6 +6607,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2292367423124700219, guid: d0bfd9a2afaf9bd44814fd8d4dd3bb05, type: 3}
+      propertyPath: m_TagString
+      value: PlayerUnit
+      objectReference: {fileID: 0}
     - target: {fileID: 3769451115338527317, guid: d0bfd9a2afaf9bd44814fd8d4dd3bb05, type: 3}
       propertyPath: _turnStateManager
       value: 
@@ -6630,7 +6660,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7460581352879760954, guid: d0bfd9a2afaf9bd44814fd8d4dd3bb05, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0bfd9a2afaf9bd44814fd8d4dd3bb05, type: 3}

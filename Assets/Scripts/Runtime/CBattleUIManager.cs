@@ -107,13 +107,15 @@ public class CBattleUIManager : MonoBehaviour
         }
 
 
-        //CUnitController unit = _unitInputManager.SelectedUnit;
+        CUnitController unit = _unitInputManager.SelectedUnit;
+        unit.IsInitedForTurn = true;
+
+        //SetValToSelectedUnitVal(unit);
 
         SetShieldRegen(true);
         SetReadyToggle(true);
         InitWeaponToggle();
         SetAccelerationLevel(true);
-
     }
 
     private void UpdateEnergy(CUnitController unit)
@@ -121,6 +123,12 @@ public class CBattleUIManager : MonoBehaviour
         _energyText.text = $"{unit.Energy:00}";
         _energyMaxText.text = $"{unit.MaxEnergy:00}";
         _energyFill.fillAmount = unit.Energy / unit.MaxEnergy;
+    }
+
+    private void UpdateSpeed(CUnitController unit, CUnitMovementController MovementController)
+    {
+        _speedText.text = $"{MovementController.Speed:00}";
+        _speedFill.fillAmount = MovementController.Speed / MovementController.FlightModule.MaxSpeed;
     }
 
     public void SetAccelerationLevel(bool init)
@@ -238,9 +246,10 @@ public class CBattleUIManager : MonoBehaviour
 
         //_previousSpeedBarVal = _speedSlider.value;
 
-        _speedText.text = $"{MovementController.Speed:00}";
-        _speedFill.fillAmount = MovementController.Speed / MovementController.FlightModule.MaxSpeed;
+        //_speedText.text = $"{MovementController.Speed:00}";
+        //_speedFill.fillAmount = MovementController.Speed / MovementController.FlightModule.MaxSpeed;
 
+        UpdateSpeed(unit, MovementController);
         UpdateEnergy(unit);
 
         //Debug.Log("!!");
@@ -351,6 +360,17 @@ public class CBattleUIManager : MonoBehaviour
         unit.IsReady = isReady;
 
         _turnStateManager.SetReadyCount(isReady);
+
+        if (isReady)
+        {
+            CUnitController nextUnit = _turnStateManager.GetNextUnreadyUnit();
+
+            if (nextUnit != null)
+            {
+                _unitInputManager.SetSelectedUint(nextUnit);
+            }
+
+        }
     }
 
     public void SetShieldRegen(bool init)
@@ -394,7 +414,7 @@ public class CBattleUIManager : MonoBehaviour
             return;
         }
 
-        unit.SetShieldBar();
+        //unit.SetShieldBar();
 
         UpdateEnergy(unit);
 
@@ -412,4 +432,35 @@ public class CBattleUIManager : MonoBehaviour
         _resultText.text = "패배...";
     }
 
+    public void SetValToSelectedUnitVal(CUnitController unit)
+    {
+        if(unit.IsInitedForTurn == false)
+        {
+            TurnInitSelectedUnitUi();
+            return;
+        }
+
+        /*
+        _speedSlider.value = (unit.MovementController.AccelerationLevel);
+        _WeaponToggles[0].isOn = (unit.WeaponContorller.WeaponEnableL);
+        _WeaponToggles[1].isOn = (unit.WeaponContorller.WeaponEnableR);
+        _shieldSlider.value =(unit.ShieldRegenLevel);
+        _readyToggle.SetIsOnWithoutNotify(unit.IsReady);
+
+        unit.SetShieldBar();
+        UpdateSpeed(unit, unit.MovementController);
+        UpdateEnergy(unit);
+        /**/
+
+        _speedSlider.SetValueWithoutNotify(unit.MovementController.AccelerationLevel);
+        _WeaponToggles[0].SetIsOnWithoutNotify(unit.WeaponContorller.WeaponEnableL);
+        _WeaponToggles[1].SetIsOnWithoutNotify(unit.WeaponContorller.WeaponEnableR);
+        _shieldSlider.SetValueWithoutNotify(unit.ShieldRegenLevel);
+        _readyToggle.SetIsOnWithoutNotify(unit.IsReady);
+
+        //unit.SetShieldBar();
+        UpdateSpeed(unit, unit.MovementController);
+        UpdateEnergy(unit);
+        
+    }
 }

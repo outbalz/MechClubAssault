@@ -14,6 +14,7 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
     [Space]
     [Header("Shield")]
     [SerializeField] private ScriptableObjectShieldModule _shieldModule;
+    [SerializeField] private ParticleSystem _shieldEffect;
 
     [Space]
     [Header("Movement")]
@@ -64,6 +65,11 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
     private void Awake()
     {
         InitializeUnit();
+    }
+
+    private void Update()
+    {
+        SetShieldBar();
     }
 
     private void LateUpdate()
@@ -143,7 +149,7 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
         _weaponContorller.SetModule(weaponModuleL, weaponModuleR);
 
         _shield = _shieldModule.StartShield;
-        SetShieldBar();
+        //SetShieldBar();
 
         _turnStateManager = CTurnStateManager.Instance;
 
@@ -317,21 +323,34 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
             _shield = _shieldModule.MaxShield;
         }
 
-        SetShieldBar();
+        //SetShieldBar();
 
     }
 
-
+    /*
     private void SetShieldBar()
     {
         _shieldBar.fillAmount = _shield / _shieldModule.MaxShield;
+    }
+    */
+
+    private void SetShieldBar()
+    {
+        if (Mathf.Abs(_shieldBar.fillAmount - (_shield / _shieldModule.MaxShield)) < 0.1F)
+        {
+            _shieldBar.fillAmount = _shield / _shieldModule.MaxShield;
+            return;
+        }
+
+        float lerp = Mathf.Lerp(_shieldBar.fillAmount, _shield / _shieldModule.MaxShield, 0.05f);
+        _shieldBar.fillAmount = lerp;
     }
 
     public void TakeHit(float damage)
     {
         _shield -= damage;
 
-        SetShieldBar();
+        //SetShieldBar();
 
         _lastCombatTurn = _turnNum;
 
@@ -341,7 +360,10 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
             TryGetComponent<Collider>(out Collider collider);
             collider.enabled = false;
             _turnStateManager.UnitGetKnockedOut(this);
+            return;
         }
+
+        _shieldEffect.Play();
     }
 
     public void SetLastCombatTurn()
