@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: b4120197ebcd4e34c9fede052d7a6718
+  - enabled: 1
     path: Assets/Scenes/BattleScene.unity
     guid: 543a817fbf084f8428192144a1eda377
+  - enabled: 1
+    path: Assets/Scenes/ClupMeating.unity
+    guid: e9cf261692501624bb76ffedc2651294
   m_configObjects: {}

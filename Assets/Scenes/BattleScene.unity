@@ -96,7 +96,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: ed60bbba7e0508649ae8ac08918ca16d, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -559,6 +559,7 @@ GameObject:
   - component: {fileID: 192198924}
   - component: {fileID: 192198923}
   - component: {fileID: 192198926}
+  - component: {fileID: 192198927}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -754,6 +755,18 @@ MonoBehaviour:
   _spanwPointEnemyUnit:
   - {x: 0, y: 0, z: -90}
   _turnStateManager: {fileID: 192198922}
+--- !u!114 &192198927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192198919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce6e5cd4a1cceac44876e486d408f18d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &258746341
 GameObject:
   m_ObjectHideFlags: 0
@@ -1052,50 +1065,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 340225324}
   m_CullTransparentMesh: 1
---- !u!1 &377975849
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 377975851}
-  - component: {fileID: 377975850}
-  m_Layer: 0
-  m_Name: ScenManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &377975850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377975849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3735a2dd8d9c0c94e8353d24b2c9c155, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &377975851
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377975849}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 373.15402, y: 290.49728, z: -10.080878}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &503618924
 GameObject:
   m_ObjectHideFlags: 0
@@ -3780,13 +3749,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 377975850}
-        m_TargetAssemblyTypeName: CSeceneManager, Assembly-CSharp
-        m_MethodName: ReloadBattleScene
-        m_Mode: 1
+      - m_Target: {fileID: 192198927}
+        m_TargetAssemblyTypeName: CSceneTransitionTrigerController, Assembly-CSharp
+        m_MethodName: TriggerSceneTransition
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 11400000, guid: 5e8fc15355c242749919b8441c1d535e, type: 2}
+          m_ObjectArgumentAssemblyTypeName: ScriptableObjectSceneData, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5426,6 +5395,71 @@ RectTransform:
   m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &1847678072
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 391895320964960726, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 510.95416
+      objectReference: {fileID: 0}
+    - target: {fileID: 391895320964960726, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 304.38803
+      objectReference: {fileID: 0}
+    - target: {fileID: 391895320964960726, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.781616
+      objectReference: {fileID: 0}
+    - target: {fileID: 391895320964960726, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 391895320964960726, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 391895320964960726, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 391895320964960726, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 391895320964960726, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 391895320964960726, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 391895320964960726, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134058133842179525, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134058133842179525, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2451628230348487273, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
+      propertyPath: m_Name
+      value: SceneManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4bc25403cfc559944a04049ff9ac4737, type: 3}
 --- !u!1 &1856370041
 GameObject:
   m_ObjectHideFlags: 0
@@ -6120,13 +6154,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 377975850}
-        m_TargetAssemblyTypeName: CSeceneManager, Assembly-CSharp
-        m_MethodName: ExitToDescktop
-        m_Mode: 1
+      - m_Target: {fileID: 192198927}
+        m_TargetAssemblyTypeName: CSceneTransitionTrigerController, Assembly-CSharp
+        m_MethodName: TriggerSceneTransition
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 11400000, guid: 82e99b8909450684cb99cb4456783c74, type: 2}
+          m_ObjectArgumentAssemblyTypeName: ScriptableObjectSceneData, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6302,7 +6336,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAC8C\uC784 \uC885\uB8CC"
+  m_text: "\uBA54\uC778 \uBA54\uB274"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1354f7250c2c133469a15ad307c8eef5, type: 2}
   m_sharedMaterial: {fileID: 8130487448765610541, guid: 1354f7250c2c133469a15ad307c8eef5, type: 2}
@@ -6686,7 +6720,7 @@ SceneRoots:
   - {fileID: 4400306812658156837}
   - {fileID: 330428910}
   - {fileID: 192198921}
-  - {fileID: 377975851}
   - {fileID: 1721058018}
   - {fileID: 716826408}
   - {fileID: 830492969}
+  - {fileID: 1847678072}

@@ -31,7 +31,7 @@ public class CUnitSpawnManager : MonoBehaviour
 
     #region inspector
     [Header("Unit Data")]
-    [SerializeField] private List<CUnitData> _playerUnitData;
+    [SerializeField] private List<CClubMember> _playerUnitData;
     [SerializeField] private List<CUnitData> _enemyUnitData;
 
     [Space]
@@ -50,18 +50,14 @@ public class CUnitSpawnManager : MonoBehaviour
     #endregion
 
     #region private var
+    private CGameProgressManager _gameProgressManager;
+
     private List<CUnitController> _playrUnits = new List<CUnitController>();
     private List<CEnemyUnitContorller> _enemyUnits = new List<CEnemyUnitContorller>();
     #endregion
 
     private void Awake()
     {
-        if(_playerUnitData.Count == 0 || _enemyUnitData.Count == 0)
-        {
-            Debug.LogWarning("Missing UnitData");
-            enabled = false;
-            return;
-        }
 
         if(_playerUnitPrefab == null || _enemyUnitPrefab == null)
         {
@@ -79,6 +75,25 @@ public class CUnitSpawnManager : MonoBehaviour
 
     void Start()
     {
+        _gameProgressManager = CGameProgressManager.Instance;
+
+        if(_gameProgressManager == null)
+        {
+            Debug.LogWarning("Missing GameProgressManager");
+            enabled = false;
+            return;
+        }
+
+        _playerUnitData = _gameProgressManager.ClubMembers;
+
+
+        if (_playerUnitData.Count == 0 || _enemyUnitData.Count == 0)
+        {
+            Debug.LogWarning("Missing UnitData");
+            enabled = false;
+            return;
+        }
+
         SpawnUnit();
         SpawnEnemy();
         _turnStateManager.InitializeUnitList(_playrUnits, _enemyUnits);
