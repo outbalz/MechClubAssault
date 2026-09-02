@@ -46,6 +46,18 @@ public class ScriptableObjectDataBase : ScriptableObject
         {
             return _generatorModules[index];
         }
+
+        return null;
+    }
+    
+    public ScriptableObjectGeneratorModule GetRandomGeneratorModule(int index = 0)
+    {
+        if (_generatorModules.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(index, _generatorModules.Count);
+            return _generatorModules[randomIndex];
+        }
+
         return null;
     }
 
@@ -55,6 +67,18 @@ public class ScriptableObjectDataBase : ScriptableObject
         {
             return _shieldModules[index];
         }
+
+        return null;
+    }
+
+    public ScriptableObjectShieldModule GetRandomShieldModule(int index = 0)
+    {
+        if (_shieldModules.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(index, _shieldModules.Count);
+            return _shieldModules[randomIndex];
+        }
+
         return null;
     }
 
@@ -64,8 +88,21 @@ public class ScriptableObjectDataBase : ScriptableObject
         {
             return _flightModules[index];
         }
+
         return null;
     }
+
+    public ScriptableObjectFlightModule GetRandomFlightModule(int index = 0)
+    {
+        if (_flightModules.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(index, _flightModules.Count);
+            return _flightModules[randomIndex];
+        }
+
+        return null;
+    }
+
 
     public ScriptableObjectWeaponModule GetWeaponModule(int index)
     {
@@ -73,8 +110,40 @@ public class ScriptableObjectDataBase : ScriptableObject
         {
             return _weaponModules[index];
         }
+
         return null;
     }
+
+    public ScriptableObjectWeaponModule GetRandomWeaponModule(int index = 0)
+    {
+        if (_weaponModules.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(index, _weaponModules.Count);
+            return _weaponModules[randomIndex];
+        }
+
+        return null;
+    }
+
+    public IItemable GetRandomModule()
+    {
+        int ranNum = UnityEngine.Random.Range(0, 4);
+
+        switch (ranNum)
+        {
+            case 0:
+                return GetRandomGeneratorModule();
+            case 1:
+                return GetRandomShieldModule();
+            case 2:
+                return GetRandomFlightModule();
+            case 3:
+                return GetRandomWeaponModule();
+            default:
+                return null;
+        }
+    }
+
     #endregion
 
     #region level DB

@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+public enum EClubMeetingState
+{
+    ActivitySelection,
+    Management,
+    Shop,
+    Recruit
+}
 
 public class CClubMeetingStateManager : MonoBehaviour
 {
@@ -12,11 +19,15 @@ public class CClubMeetingStateManager : MonoBehaviour
     [SerializeField] private Transform _managementPanelContentTr;
     [SerializeField] private GameObject _shopPanel;
     [SerializeField] private GameObject _recruitPanel;
+    [SerializeField] private GameObject _closeButton;
 
     [Space]
     [Header("Text")]
     [SerializeField] private TMP_Text _fundText;
     [SerializeField] private TMP_Text _reputationText;
+
+    [Space]
+    [SerializeField] private TMP_Text[] _shopItemText;
 
     [Space]
     [Header("Prefab")]
@@ -25,6 +36,10 @@ public class CClubMeetingStateManager : MonoBehaviour
 
     #region private var
     private CGameProgressManager _gameProgressManager;
+
+    private EClubMeetingState _currentState;
+
+    private CItemData[] _shopItems;
     #endregion
 
     private void Awake()
@@ -54,6 +69,21 @@ public class CClubMeetingStateManager : MonoBehaviour
         {
             Debug.LogWarning("Reputation Text is not assigned in the inspector.");
         }
+
+        if (_clubMemberPanelPrefab == null)
+        {
+            Debug.LogWarning("Club Member Panel Prefab is not assigned in the inspector.");
+        }
+
+        if (_managementPanelContentTr == null)
+        {
+            Debug.LogWarning("Management Panel Content Transform is not assigned in the inspector.");
+        }
+
+        if (_closeButton == null)
+        {
+            Debug.LogWarning("Close Button is not assigned in the inspector.");
+        }
         #endregion
 
     }
@@ -63,6 +93,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         _gameProgressManager = CGameProgressManager.Instance;
         UpdateFundText();
         InitializeClupMember();
+        InitializeShopItems();
     }
 
     private void InitializeClupMember()
@@ -73,8 +104,22 @@ public class CClubMeetingStateManager : MonoBehaviour
         {
             GameObject memberPanel = Instantiate(_clubMemberPanelPrefab, _managementPanelContentTr);
         }
-    }
+    } 
 
+    private void InitializeShopItems()
+    {
+        _shopItems = new CItemData[]
+        {
+            new CItemData(_gameProgressManager.SODB.GetRandomModule()),
+            new CItemData(_gameProgressManager.SODB.GetRandomModule()),
+            new CItemData(_gameProgressManager.SODB.GetRandomModule())
+        };
+
+        for (int i = 0; i < _shopItems.Length; i++)
+        {
+            _shopItemText[i].text = _shopItems[i].Name;
+        }
+    }
 
     public void UpdateFundText()
     {
@@ -89,5 +134,34 @@ public class CClubMeetingStateManager : MonoBehaviour
         }
     }
 
+    public void ChangeState(EClubMeetingState newState)
+    {
+        _currentState = newState;
+        _ActivityPanel.SetActive(newState == EClubMeetingState.ActivitySelection);
+        _managementPanel.SetActive(newState == EClubMeetingState.Management);
+        _shopPanel.SetActive(newState == EClubMeetingState.Shop);
+        _recruitPanel.SetActive(newState == EClubMeetingState.Recruit);
+        _closeButton.SetActive(newState != EClubMeetingState.ActivitySelection);
+    }
+
+    public void OnCloseButtonClicked()
+    {
+        ChangeState(EClubMeetingState.ActivitySelection);
+    }
+
+    public void OnManagementButtonClicked()
+    {
+        ChangeState(EClubMeetingState.Management);
+    }
+
+    public void OnShopButtonClicked()
+    {
+        ChangeState(EClubMeetingState.Shop);
+    }
+
+    public void OnRecruitButtonClicked()
+    {
+        ChangeState(EClubMeetingState.Recruit);
+    }
 
 }

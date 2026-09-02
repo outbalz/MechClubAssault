@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newFlightModule", menuName = "ScriptableObjects/FlightModule", order = 3)]
-public class ScriptableObjectFlightModule : ScriptableObject
+public class ScriptableObjectFlightModule : ScriptableObject, IItemable
 {
     [SerializeField] private string _name;
 
@@ -19,7 +19,7 @@ public class ScriptableObjectFlightModule : ScriptableObject
 
     [SerializeField] private float _price;
 
-    public string moduleName {  get { return _name; } }
+    public string ModuleName {  get { return _name; } }
     public float StartSpeed { get { return _startSpeed; } }
     public float MaxSpeed { get { return _maxSpeed; } }
     public float TurnRate { get { return _turnRate; } }

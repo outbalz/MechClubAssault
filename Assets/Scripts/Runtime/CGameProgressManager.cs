@@ -61,10 +61,28 @@ public class CEnemyUnitData
 
 }
 
+public class CItemData
+{
+    private IItemable _item;
+    private int _count;
+    public IItemable Item { get { return _item; } }
+    public int Count { get { return _count; } set { _count = value; } }
+
+    public string Name { get { return _item.ModuleName; } }
+    public float Price { get { return _item.Price; } }
+
+    public CItemData(IItemable item, int count = 1)
+    {
+        this._item = item;
+        this._count = count;
+    }
+}
+
 public class CGameProgressManager : MonoBehaviour
 {
     #region inspector
     [SerializeField] private ScriptableObjectDataBase _SODB;
+
     #endregion
 
     #region private var
@@ -74,14 +92,29 @@ public class CGameProgressManager : MonoBehaviour
     private int _level = 0;
     private float _fund = 0;
     private float _reputation = 0;
+
+    private List<CItemData> _inventoryGeneratorModule;
+    private List<CItemData> _inventoryShieldModule;
+    private List<CItemData> _inventoryFlightModule;
+    private List<CItemData> _inventoryWeaponModule;
     #endregion
 
     #region getter
     public ScriptableObjectDataBase SODB { get { return _SODB; } }
+    
     public static CGameProgressManager Instance { get { return _instance; } }
+    
     public List<CClubMember> ClubMembers { get { return _clubMembers; } }
+    
     public float Fund { get { return _fund; } set { _fund = value; } }
     public float Reputation { get { return _reputation; } set { _reputation = value; } }
+
+    public int Level { get { return _level; } set { _level = value; } }
+
+    public List<CItemData> InventoryGeneratorModule { get { return _inventoryGeneratorModule; } set { _inventoryGeneratorModule = value; } }
+    public List<CItemData> InventoryShieldModule { get { return _inventoryShieldModule; } set { _inventoryShieldModule = value; } }
+    public List<CItemData> InventoryFlightModule { get { return _inventoryFlightModule; } set { _inventoryFlightModule = value; } }
+    public List<CItemData> InventoryWeaponModule { get { return _inventoryWeaponModule; } set { _inventoryWeaponModule = value; } }
     #endregion
 
 
@@ -152,7 +185,8 @@ public class CGameProgressManager : MonoBehaviour
 
         return levelData;
     }   
-
+    
+    /*
     public List<CEnemyUnitData> GetLevelCEnemyUnitDatas(out List<Vector3> enemySpawnPoint,int index = -1)
     {
         if(_level < 0 || _level >= _SODB.GetLevelListCount())
@@ -186,6 +220,7 @@ public class CGameProgressManager : MonoBehaviour
         enemySpawnPoint = levelData.EnemySpawnPoints;
         return levelData.EnemyUnitDatas;
     }
+    */
 
     public string FundToString()
     {

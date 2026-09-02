@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newShieldModule", menuName = "ScriptableObjects/ShieldModule", order = 4)]
-public class ScriptableObjectShieldModule : ScriptableObject
+public class ScriptableObjectShieldModule : ScriptableObject, IItemable
 {
     [SerializeField] private string _name;
 

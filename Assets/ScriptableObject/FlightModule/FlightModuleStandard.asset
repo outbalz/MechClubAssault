@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38cedc26109328a4eae1c15d19f2b14c, type: 3}
   m_Name: FlightModuleStandard
   m_EditorClassIdentifier: 
-  _name: Standard Flight Module
+  _name: "\uC2A4\uD150\uB2E4\uB4DC \uBE44\uD589 \uBAA8\uB4C8"
   _startSpeed: 5
   _maxSpeed: 20
   _turnRate: 50
