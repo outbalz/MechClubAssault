@@ -35,10 +35,19 @@ public class CTurnStateManager : MonoBehaviour
     private float _turnTimer;
     private int _turnSec;
 
+    private int _turnKOCombo = 0;
+
+    private float _rewardPrize = 0;
+    private float _rewardReputation = 0;
+    private float _rewardComboReputation = 0;
+
     private static CTurnStateManager _instance;
     #endregion
 
     #region getter
+    public float RewardPrize { get { return _rewardPrize; } set { _rewardPrize = value; } }
+    public float RewardReputation { get { return _rewardReputation; } }
+    public float RewardComboReputation { get { return _rewardComboReputation; } }
     public ETurnState TurnState { get { return _turnState; } }
     public static CTurnStateManager Instance { get { return _instance; } }
     #endregion
@@ -67,6 +76,9 @@ public class CTurnStateManager : MonoBehaviour
         {
             _instance = this;
         }
+
+        _rewardReputation = 0;
+        _rewardComboReputation = 0;
     }
 
 
@@ -107,6 +119,7 @@ public class CTurnStateManager : MonoBehaviour
     private void TurnInit()
     {
         _turnNum++;
+        _turnKOCombo = 0;
 
         _reqReadyCount = _playerUnits.Count;
         _reqEnemyReadyCount = _enemyUnits.Count;
@@ -296,6 +309,7 @@ public class CTurnStateManager : MonoBehaviour
         {
             _unitInputManager.SetSelectedUint(_playerUnits[0]);
         }
+
         //if(_turnState != ETurnState.TurnResolve)
         //{
             //_reqReadyCount--;
@@ -305,6 +319,10 @@ public class CTurnStateManager : MonoBehaviour
     public void UnitGetKnockedOut(CEnemyUnitContorller unit)
     {
         _enemyUnits.Remove(unit);
+
+        _rewardReputation += 5;
+        _rewardComboReputation += 5 * _turnKOCombo;
+        _turnKOCombo++;
     }
 
     public CUnitController GetNextUnreadyUnit()

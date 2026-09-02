@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656d49043f0527b45817272834aca3b9, type: 3}
   m_Name: GeneratorModuleStandard
   m_EditorClassIdentifier: 
-  _name: Standard generator
+  _name: "\uC2A4\uD150\uB2E4\uB4DC \uC81C\uB108\uB808\uC774\uD130"
   _maxEnergy: 10
   _startEnergy: 4
   _energyRegen: 4
+  _price: 5

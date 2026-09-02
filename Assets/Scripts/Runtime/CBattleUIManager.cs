@@ -35,8 +35,9 @@ public class CBattleUIManager : MonoBehaviour
     [SerializeField] private Toggle _readyToggle;
 
     [Space]
-    [SerializeField] private GameObject _resultUI;
-    [SerializeField] private TMP_Text _resultText;
+    [SerializeField] private GameObject _resultWinUI;
+    [SerializeField] private TMP_Text _winResultText;
+    [SerializeField] private GameObject _resultLostUI;
 
     #endregion
 
@@ -422,14 +423,25 @@ public class CBattleUIManager : MonoBehaviour
 
     public void BattleWin()
     {
-        _resultUI.SetActive(true);
-        _resultText.text = "승리!!";
+        _resultWinUI.SetActive(true);
+
+        string resultText = $"상금: +{_turnStateManager.RewardPrize}만원 \n평판: +{_turnStateManager.RewardReputation+_turnStateManager.RewardComboReputation}";
+
+        if (_turnStateManager.RewardComboReputation > 0)
+        {
+            resultText += $" (KO +{_turnStateManager.RewardReputation} 콤보 +{_turnStateManager.RewardComboReputation})";
+        }
+        else
+        {
+            resultText += $" (KO +{_turnStateManager.RewardReputation})";
+        }
+
+        _winResultText.text = resultText;
     }
 
     public void BattleLost()
     {
-        _resultUI.SetActive(true);
-        _resultText.text = "패배...";
+        _resultLostUI.SetActive(true);
     }
 
     public void SetValToSelectedUnitVal(CUnitController unit)
@@ -462,5 +474,13 @@ public class CBattleUIManager : MonoBehaviour
         UpdateSpeed(unit, unit.MovementController);
         UpdateEnergy(unit);
         
+    }
+    
+    public void BattleResultConfirm()
+    {
+        CGameProgressManager progressManager = CGameProgressManager.Instance;
+
+        progressManager.Fund += _turnStateManager.RewardPrize;
+        progressManager.Reputation += _turnStateManager.RewardReputation + _turnStateManager.RewardComboReputation;
     }
 }

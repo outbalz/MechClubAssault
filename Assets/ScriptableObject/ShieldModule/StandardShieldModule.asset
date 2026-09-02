@@ -17,3 +17,4 @@ MonoBehaviour:
   _maxShield: 20
   _shieldRegen: 5
   _shieldRegenCost: 4
+  _price: 5

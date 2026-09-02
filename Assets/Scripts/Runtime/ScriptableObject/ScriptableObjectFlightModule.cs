@@ -17,6 +17,8 @@ public class ScriptableObjectFlightModule : ScriptableObject
     [SerializeField] private float _accelerationEnergyCost;
     [SerializeField] private float _decelerationEnergyCost;
 
+    [SerializeField] private float _price;
+
     public string moduleName {  get { return _name; } }
     public float StartSpeed { get { return _startSpeed; } }
     public float MaxSpeed { get { return _maxSpeed; } }
@@ -26,5 +28,6 @@ public class ScriptableObjectFlightModule : ScriptableObject
     public float AirResistance { get { return _airResistance; } }
     public float AccelerationEnergyCost {  get { return _accelerationEnergyCost; } }
     public float DecelerationEnergyCost { get { return _decelerationEnergyCost; } }
+    public float Price { get { return _price; } }
 
 }

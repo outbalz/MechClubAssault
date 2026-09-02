@@ -3,28 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class CUnitData
-{
-    [SerializeField] private string _unitName;
-
-    [SerializeField] private ScriptableObjectFlightModule _flightModule;
-    [SerializeField] private ScriptableObjectGeneratorModule _generatorModule;
-    [SerializeField] private ScriptableObjectShieldModule _shieldModule;
-    [SerializeField] private ScriptableObjectWeaponModule _weaponModuleL;
-    [SerializeField] private ScriptableObjectWeaponModule _weaponModuleR;
-
-
-    public string UnitName {  get { return _unitName; } }
-
-    public ScriptableObjectFlightModule FlightModule {  get { return _flightModule; } }
-    public ScriptableObjectGeneratorModule GeneratorModule { get { return _generatorModule; } }
-    public ScriptableObjectShieldModule ShieldModule { get { return _shieldModule; } }
-    public ScriptableObjectWeaponModule WeaponModuleL {  get { return _weaponModuleL; } }
-    public ScriptableObjectWeaponModule WeaponModuleR {  get { return _weaponModuleR; } }
-
-}
-
 
 public class CUnitSpawnManager : MonoBehaviour
 {
@@ -32,7 +10,7 @@ public class CUnitSpawnManager : MonoBehaviour
     #region inspector
     [Header("Unit Data")]
     [SerializeField] private List<CClubMember> _playerUnitData;
-    [SerializeField] private List<CUnitData> _enemyUnitData;
+    [SerializeField] private List<CEnemyUnitData> _enemyUnitData;
 
     [Space]
     [Header("Unit prefab")]
@@ -86,10 +64,42 @@ public class CUnitSpawnManager : MonoBehaviour
 
         _playerUnitData = _gameProgressManager.ClubMembers;
 
+        ScriptableObjectLevelData levelData = _gameProgressManager.GetLevelData();
 
-        if (_playerUnitData.Count == 0 || _enemyUnitData.Count == 0)
+        _enemyUnitData = levelData.EnemyUnitDatas;
+        _spanwPointEnemyUnit = levelData.EnemySpawnPoints;
+
+        _turnStateManager.RewardPrize = levelData.RewardPrize;
+
+        //_enemyUnitData = _gameProgressManager.GetLevelCEnemyUnitDatas(out _spanwPointEnemyUnit);
+
+
+        if (_playerUnitData.Count == 0)
         {
             Debug.LogWarning("Missing UnitData");
+            _playerUnitData.Add(new CClubMember
+                (
+                CUtil.GetRandomName(),
+                _gameProgressManager.SODB.GetGeneratorModule(0),
+                _gameProgressManager.SODB.GetShieldModule(0),
+                _gameProgressManager.SODB.GetFlightModule(0),
+                _gameProgressManager.SODB.GetWeaponModule(0),
+                _gameProgressManager.SODB.GetWeaponModule(0)
+                ));
+            _playerUnitData.Add(new CClubMember
+                (
+                CUtil.GetRandomName(),
+                _gameProgressManager.SODB.GetGeneratorModule(0),
+                _gameProgressManager.SODB.GetShieldModule(0),
+                _gameProgressManager.SODB.GetFlightModule(0),
+                _gameProgressManager.SODB.GetWeaponModule(0),
+                _gameProgressManager.SODB.GetWeaponModule(0)
+                ));
+        }
+
+        if (_enemyUnitData.Count == 0)
+        {
+            Debug.LogWarning("Missing EnemyUnitData");
             enabled = false;
             return;
         }

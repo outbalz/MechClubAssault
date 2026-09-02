@@ -14,9 +14,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _generatorModules:
   - {fileID: 11400000, guid: 0ed0f16245108614b9f21f7abc9c319d, type: 2}
+  - {fileID: 11400000, guid: e340e139eb462154c975d31d44000186, type: 2}
+  - {fileID: 11400000, guid: bb1eed0cf38a05649bc68f3b1efbabf3, type: 2}
+  - {fileID: 11400000, guid: a33f34778e43b67439a84fadc1b7347b, type: 2}
+  - {fileID: 11400000, guid: d0a39fdc1e0c754458b8cca2dbb65049, type: 2}
+  - {fileID: 11400000, guid: 4f6c34495797e054e99490004ed6d035, type: 2}
+  - {fileID: 11400000, guid: 0ed0f16245108614b9f21f7abc9c319d, type: 2}
+  - {fileID: 11400000, guid: ae415b3ff5e53244fb165462549a0755, type: 2}
+  - {fileID: 11400000, guid: da4ff9a1516bebd47a676f987128e31d, type: 2}
   _shieldModules:
+  - {fileID: 11400000, guid: 3b6da2bde678931499a9a74871ea1915, type: 2}
+  - {fileID: 11400000, guid: 961e37f44e7d5574ebff997839b66ac9, type: 2}
+  - {fileID: 11400000, guid: 9e5db5166595ff842af5b84686c23b19, type: 2}
+  - {fileID: 11400000, guid: ff75c0bd087bffa44b4943e34d4fe1dc, type: 2}
+  - {fileID: 11400000, guid: 70b05f6308f50634b90f489dd10c7e91, type: 2}
+  - {fileID: 11400000, guid: 799d81d74649edf488fc0d803c510a40, type: 2}
   - {fileID: 11400000, guid: 3b6da2bde678931499a9a74871ea1915, type: 2}
   _flightModules:
   - {fileID: 11400000, guid: f9448c241af583041971afc27a8b62b7, type: 2}
+  - {fileID: 11400000, guid: cd2d69df3566b5f4283394b4eb815a73, type: 2}
+  - {fileID: 11400000, guid: 71cf7e27eea4cc141b4d23a752eb4b2b, type: 2}
+  - {fileID: 11400000, guid: d6956aa1d87fdde4e97e06fb6b24bc1b, type: 2}
+  - {fileID: 11400000, guid: 587d53518cef3aa4393605fdb1329994, type: 2}
+  - {fileID: 11400000, guid: 70a5f2c2e7e1a9749bf5cce4aa663e29, type: 2}
+  - {fileID: 11400000, guid: 601c1bb7ed192ed4691a275b4f5ab368, type: 2}
   _weaponModules:
   - {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
+  - {fileID: 11400000, guid: 05dc9f60f3403ae48a283e1dc6de02d5, type: 2}
+  - {fileID: 11400000, guid: 7022cbe56234e9f41bb43d8e8e91b486, type: 2}
+  - {fileID: 11400000, guid: 36bd8a15b6d493542b917ec9ba7aea6a, type: 2}
+  - {fileID: 11400000, guid: 03d8df46c298ebe429136a89ff7cf832, type: 2}
+  _levelLists:
+  - _levelDatas:
+    - {fileID: 11400000, guid: d3a0cc61d8819f74e952bf567d9664cc, type: 2}
+  - _levelDatas:
+    - {fileID: 11400000, guid: d3a0cc61d8819f74e952bf567d9664cc, type: 2}
+    - {fileID: 11400000, guid: d3a0cc61d8819f74e952bf567d9664cc, type: 2}

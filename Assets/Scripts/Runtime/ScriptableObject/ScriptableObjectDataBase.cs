@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newDataBase", menuName = "ScriptableObjects/Database", order = 0)]
 public class ScriptableObjectDataBase : ScriptableObject
 {
+
+    #region module DB
     [SerializeField] private List<ScriptableObjectGeneratorModule> _generatorModules = new List<ScriptableObjectGeneratorModule>();
     [SerializeField] private List<ScriptableObjectShieldModule> _shieldModules = new List<ScriptableObjectShieldModule>();
     [SerializeField] private List<ScriptableObjectFlightModule> _flightModules = new List<ScriptableObjectFlightModule>();
@@ -72,4 +75,53 @@ public class ScriptableObjectDataBase : ScriptableObject
         }
         return null;
     }
+    #endregion
+
+    #region level DB
+    [Serializable]
+    public class LevelDataList
+    {
+        [SerializeField] private List<ScriptableObjectLevelData> _levelDatas;
+
+        public List<ScriptableObjectLevelData> LevelDatas { get { return _levelDatas; } }
+    }
+
+    [SerializeField] private List<LevelDataList> _levelLists;
+
+    public List<ScriptableObjectLevelData> GetLevelDatas(int index)
+    {
+        if (index >= 0 && index < _levelLists.Count)
+        {
+            return _levelLists[index].LevelDatas;
+        }
+        return null;
+    }
+
+    public int GetLevelDataCount(int index)
+    {
+        if (index >= 0 && index < _levelLists.Count)
+        {
+            return _levelLists[index].LevelDatas.Count;
+        }
+        return 0;
+    }
+
+    public ScriptableObjectLevelData GetLevelData(int index, int levelIndex)
+    {
+        if (index >= 0 && index < _levelLists.Count)
+        {
+            if (levelIndex >= 0 && levelIndex < _levelLists[index].LevelDatas.Count)
+            {
+                return _levelLists[index].LevelDatas[levelIndex];
+            }
+        }
+        return null;
+    }
+
+    public int GetLevelListCount()
+    {
+        return _levelLists.Count;
+    }
+    #endregion
+
 }

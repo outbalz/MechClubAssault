@@ -21,3 +21,4 @@ MonoBehaviour:
   _airResistance: 1
   _accelerationEnergyCost: 1
   _decelerationEnergyCost: 1
+  _price: 5

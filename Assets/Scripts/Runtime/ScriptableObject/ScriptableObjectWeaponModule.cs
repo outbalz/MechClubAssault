@@ -14,6 +14,8 @@ public class ScriptableObjectWeaponModule : ScriptableObject
     [SerializeField] private float _weaponDamege;
     [SerializeField] private float _weaponEnegyCost;
 
+    [SerializeField] private float _price;
+
     public string ModuleName { get { return _name; } }
 
     public float WeaponInnerArcDeg { get { return _weaponInnerArcDeg; } }
@@ -22,5 +24,6 @@ public class ScriptableObjectWeaponModule : ScriptableObject
     public float WeaponCoolDown { get { return _weaponCoolDown; } }
     public float WeaponDamege { get { return _weaponDamege; } }
     public float WeaponEnegyCost {  get { return _weaponEnegyCost; } }
+    public float Price { get { return _price; } }
 
 }
