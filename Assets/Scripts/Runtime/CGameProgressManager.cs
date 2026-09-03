@@ -61,23 +61,6 @@ public class CEnemyUnitData
 
 }
 
-public class CItemData
-{
-    private IItemable _item;
-    private int _count;
-    public IItemable Item { get { return _item; } }
-    public int Count { get { return _count; } set { _count = value; } }
-
-    public string Name { get { return _item.ModuleName; } }
-    public float Price { get { return _item.Price; } }
-
-    public CItemData(IItemable item, int count = 1)
-    {
-        this._item = item;
-        this._count = count;
-    }
-}
-
 public class CGameProgressManager : MonoBehaviour
 {
     #region inspector
@@ -93,10 +76,7 @@ public class CGameProgressManager : MonoBehaviour
     private float _fund = 0;
     private float _reputation = 0;
 
-    private List<CItemData> _inventoryGeneratorModule = new List<CItemData>();
-    private List<CItemData> _inventoryShieldModule = new List<CItemData>();
-    private List<CItemData> _inventoryFlightModule = new List<CItemData>();
-    private List<CItemData> _inventoryWeaponModule = new List<CItemData>();
+    private List<IItemable> _inventory = new List<IItemable>();
     #endregion
 
     #region getter
@@ -111,10 +91,6 @@ public class CGameProgressManager : MonoBehaviour
 
     public int Level { get { return _level; } set { _level = value; } }
 
-    public List<CItemData> InventoryGeneratorModule { get { return _inventoryGeneratorModule; } set { _inventoryGeneratorModule = value; } }
-    public List<CItemData> InventoryShieldModule { get { return _inventoryShieldModule; } set { _inventoryShieldModule = value; } }
-    public List<CItemData> InventoryFlightModule { get { return _inventoryFlightModule; } set { _inventoryFlightModule = value; } }
-    public List<CItemData> InventoryWeaponModule { get { return _inventoryWeaponModule; } set { _inventoryWeaponModule = value; } }
     #endregion
 
 
@@ -149,10 +125,7 @@ public class CGameProgressManager : MonoBehaviour
         _reputation = 20;
         _clubMembers.Add(new CClubMember(CUtil.GetRandomName(), _SODB.GetGeneratorModule(0), _SODB.GetShieldModule(0), _SODB.GetFlightModule(0), _SODB.GetWeaponModule(0), _SODB.GetWeaponModule(0)));
         _clubMembers.Add(new CClubMember(CUtil.GetRandomName(), _SODB.GetGeneratorModule(0), _SODB.GetShieldModule(0), _SODB.GetFlightModule(0), _SODB.GetWeaponModule(0), _SODB.GetWeaponModule(0)));
-        _inventoryGeneratorModule.Clear();
-        _inventoryShieldModule.Clear();
-        _inventoryFlightModule.Clear();
-        _inventoryWeaponModule.Clear();
+        _inventory.Clear();
     }
 
     public void AddClubMember(CClubMember member)
@@ -231,52 +204,20 @@ public class CGameProgressManager : MonoBehaviour
         return _fund.ToString("N0") + "만원";
     }
 
-    public bool AddItemToInventory(CItemData item)
+    public bool AddItemToInventory(IItemable item)
     {
-        List<CItemData> inventoryList = null;
-
-        switch(item.Item)
+        if(item == null)
         {
-            case ScriptableObjectGeneratorModule generatorModule:
-                inventoryList = _inventoryGeneratorModule;
-                break;
-            case ScriptableObjectShieldModule shieldModule:
-                inventoryList = _inventoryShieldModule;
-                break;
-            case ScriptableObjectFlightModule flightModule:
-                inventoryList = _inventoryFlightModule;
-                break;
-            case ScriptableObjectWeaponModule weaponModule:
-                inventoryList = _inventoryWeaponModule;
-                break;
-            default:
-                Debug.LogWarning("Unknown item type: " + item.Item.GetType().Name);
-                return false;
-        }
-
-        if (inventoryList != null)
-        {
-            if (inventoryList.Count > 0)
-            {
-                for (int i = 0; i < inventoryList.Count; i++)
-                {
-                    if (inventoryList[i].Item == item.Item)
-                    {
-                        inventoryList[i].Count += item.Count;
-                        return true;
-                    }
-                }
-            }
-
-            if (inventoryList.Count < 24)
-            {
-                inventoryList.Add(item);
-                return true;
-            }
-            Debug.LogWarning("Not enough space in inventory to add this item.");
+            Debug.LogWarning("item is null");
             return false;
         }
-        Debug.LogWarning("Inventory list is null for item type: " + item.Item.GetType().Name);
+
+        if(_inventory.Count < 24)
+        {
+            _inventory.Add(item);
+            return true;
+        }
+
         return false;
     }
 

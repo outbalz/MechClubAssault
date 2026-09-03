@@ -49,7 +49,7 @@ public class CClubMeetingStateManager : MonoBehaviour
 
     private EClubMeetingState _currentState;
 
-    private CItemData[] _shopItems;
+    private IItemable[] _shopItems;
 
     private int _rerollPrice = 1;
     #endregion
@@ -124,19 +124,19 @@ public class CClubMeetingStateManager : MonoBehaviour
 
     private void InitializeShopItems()
     {
-        _shopItems = new CItemData[]
+        _shopItems = new IItemable[]
         {
-            new CItemData(_gameProgressManager.SODB.GetRandomModule()),
-            new CItemData(_gameProgressManager.SODB.GetRandomModule()),
-            new CItemData(_gameProgressManager.SODB.GetRandomModule())
+            _gameProgressManager.SODB.GetRandomModule(),
+            _gameProgressManager.SODB.GetRandomModule(),
+            _gameProgressManager.SODB.GetRandomModule()
         };
 
         for (int i = 0; i < _shopItems.Length; i++)
         {
-            _shopItemText[i].text = _shopItems[i].Name;
+            _shopItemText[i].text = _shopItems[i].ModuleName;
             _shopItemPriceText[i].text = $"{_shopItems[i].Price}";
-            _shopItemDescriptionText[i].text = _shopItems[i].Item.Description;
-            _shopItemIcon[i].sprite = _shopItems[i].Item.Icon;
+            _shopItemDescriptionText[i].text = _shopItems[i].Description;
+            _shopItemIcon[i].sprite = _shopItems[i].Icon;
             _shopItemCanvas[i].alpha = 1f;
             _shopItemCanvas[i].interactable = true; 
         }
@@ -198,7 +198,7 @@ public class CClubMeetingStateManager : MonoBehaviour
             return;
         }
 
-        CItemData selectedItem = _shopItems[index];
+        IItemable selectedItem = _shopItems[index];
 
         if (_gameProgressManager.Fund < selectedItem.Price)
         {
@@ -212,7 +212,7 @@ public class CClubMeetingStateManager : MonoBehaviour
             _shopItemCanvas[index].interactable = false; // Disable interaction with the purchased item
             _gameProgressManager.Fund -= selectedItem.Price;
             UpdateFundText();
-            Debug.Log($"Purchased {selectedItem.Name} for {selectedItem.Price}.");
+            Debug.Log($"Purchased {selectedItem.ModuleName} for {selectedItem.Price}.");
         }
         else
         {
