@@ -18,7 +18,8 @@ public class CClubMeetingStateManager : MonoBehaviour
     [Header("Panel")]
     [SerializeField] private GameObject _ActivityPanel;
     [SerializeField] private GameObject _managementPanel;
-    [SerializeField] private Transform _managementPanelContentTr;
+    [SerializeField] private Transform _managementPanelLayoutTr;
+    [SerializeField] private Transform _inventorySlotLayoutTr;
     [SerializeField] private GameObject _shopPanel;
     [SerializeField] private GameObject _recruitPanel;
     [SerializeField] private GameObject _closeButton;
@@ -42,6 +43,7 @@ public class CClubMeetingStateManager : MonoBehaviour
     [Space]
     [Header("Prefab")]
     [SerializeField] private GameObject _clubMemberPanelPrefab;
+    [SerializeField] private GameObject _itemSlotPrefab;
     #endregion
 
     #region private var
@@ -52,6 +54,8 @@ public class CClubMeetingStateManager : MonoBehaviour
     private IItemable[] _shopItems;
 
     private int _rerollPrice = 1;
+
+    private CItemSlotController[] _inventorySlot = new CItemSlotController[24];
     #endregion
 
     private void Awake()
@@ -87,7 +91,7 @@ public class CClubMeetingStateManager : MonoBehaviour
             Debug.LogWarning("Club Member Panel Prefab is not assigned in the inspector.");
         }
 
-        if (_managementPanelContentTr == null)
+        if (_managementPanelLayoutTr == null)
         {
             Debug.LogWarning("Management Panel Content Transform is not assigned in the inspector.");
         }
@@ -95,6 +99,16 @@ public class CClubMeetingStateManager : MonoBehaviour
         if (_closeButton == null)
         {
             Debug.LogWarning("Close Button is not assigned in the inspector.");
+        }
+
+        if (_itemSlotPrefab == null)
+        {
+            Debug.LogWarning("_itemSlotPrefab is not assigned in the inspector.");
+        }
+
+        if(_inventorySlotLayoutTr == null)
+        {
+            Debug.LogWarning("_inventorySlotLayoutTr is not assigned in the inspector.");
         }
         #endregion
 
@@ -110,6 +124,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         UpdateFundText();
         InitializeClupMember();
         InitializeShopItems();
+        InitializeInventorySlot();
     }
 
     private void InitializeClupMember()
@@ -118,9 +133,50 @@ public class CClubMeetingStateManager : MonoBehaviour
 
         for (int i = 0; i < clubMembers.Count; i++)
         {
-            GameObject memberPanel = Instantiate(_clubMemberPanelPrefab, _managementPanelContentTr);
+            GameObject memberPanel = Instantiate(_clubMemberPanelPrefab, _managementPanelLayoutTr);
+            memberPanel.GetComponent<CChararcterPanelContorller>().InitializePanel(clubMembers[i]);
         }
     } 
+
+    private void InitializeInventorySlot()
+    {
+        for (int i = 0; i < _inventorySlot.Length; i++)
+        {
+            GameObject slot = Instantiate(_itemSlotPrefab, _inventorySlotLayoutTr);
+            CItemSlotController itemSlotController = slot.GetComponent<CItemSlotController>();
+
+            _inventorySlot[i] = itemSlotController;
+
+            if(_gameProgressManager.Inventory.Count > i)
+            {
+                itemSlotController.InitializeSlot(null, _gameProgressManager.Inventory[i]);
+            }
+
+            else
+            {
+                itemSlotController.InitializeSlot(null, null);
+            }
+
+        }
+    }
+
+    private void UpdateInventorySlot()
+    {
+        for (int i = 0; i < _inventorySlot.Length; i++)
+        {
+            CItemSlotController itemSlotController = _inventorySlot[i];
+
+            if (_gameProgressManager.Inventory.Count > i)
+            {
+                itemSlotController.InitializeSlot(null, _gameProgressManager.Inventory[i]);
+            }
+
+            else
+            {
+                itemSlotController.InitializeSlot(null, null);
+            }
+        }
+    }
 
     private void InitializeShopItems()
     {
@@ -212,6 +268,7 @@ public class CClubMeetingStateManager : MonoBehaviour
             _shopItemCanvas[index].interactable = false; // Disable interaction with the purchased item
             _gameProgressManager.Fund -= selectedItem.Price;
             UpdateFundText();
+            UpdateInventorySlot();
             Debug.Log($"Purchased {selectedItem.ModuleName} for {selectedItem.Price}.");
         }
         else

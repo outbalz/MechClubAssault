@@ -28,7 +28,7 @@ public class CClubMember
             ScriptableObjectShieldModule shieldModule,
             ScriptableObjectFlightModule flightModule,
             ScriptableObjectWeaponModule weaponModuleL,
-            ScriptableObjectWeaponModule weaponModuleR/**/
+            ScriptableObjectWeaponModule weaponModuleR
         )
     {
         this._name = name;
@@ -36,7 +36,7 @@ public class CClubMember
         this._shieldModule = shieldModule;
         this._flightModule = flightModule;
         this._weaponModuleL = weaponModuleL;
-        this._weaponModuleR = weaponModuleR;/**/
+        this._weaponModuleR = weaponModuleR;
     }
 }
 
@@ -91,6 +91,7 @@ public class CGameProgressManager : MonoBehaviour
 
     public int Level { get { return _level; } set { _level = value; } }
 
+    public List<IItemable> Inventory {  get { return _inventory; } }
     #endregion
 
 
