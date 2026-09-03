@@ -11,7 +11,6 @@ public class CItemDragContorller : MonoBehaviour, IDragHandler, IBeginDragHandle
     #endregion
 
     #region private var
-    private Transform _previousParent;
     private IItemable _item;
     private CItemSlotController _slot;
     #endregion
@@ -21,10 +20,6 @@ public class CItemDragContorller : MonoBehaviour, IDragHandler, IBeginDragHandle
     public IItemable Item { get { return _item; } set { _item = value; } }
     #endregion
 
-    void Start()
-    {
-        _previousParent = transform.parent;
-    }
 
     public void InitializeItem(CItemSlotController slot, IItemable item)
     {
@@ -35,19 +30,41 @@ public class CItemDragContorller : MonoBehaviour, IDragHandler, IBeginDragHandle
             gameObject.SetActive(true);
             _item = item;
             _image.sprite = _item.Icon;
+            _image.raycastTarget = true;
         }
 
         else
         {
+            _item = null;
             gameObject.SetActive(false);
         }
+
+        transform.SetParent(slot.transform);
     }
 
 
+    public void InitializeItem(IItemable item)
+    {
+
+        if (item != null)
+        {
+            gameObject.SetActive(true);
+            _item = item;
+            _image.sprite = _item.Icon;
+            _image.raycastTarget = true;
+        }
+
+        else
+        {
+            _item = null;
+            gameObject.SetActive(false);
+        }
+
+        transform.SetParent(_slot.transform);
+    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _previousParent = transform.parent;
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
         _image.raycastTarget = false;
@@ -60,7 +77,7 @@ public class CItemDragContorller : MonoBehaviour, IDragHandler, IBeginDragHandle
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.SetParent(_previousParent);
+        transform.SetParent(_slot.transform);
         _image.raycastTarget = true;
     }
 }

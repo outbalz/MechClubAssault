@@ -80,6 +80,7 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
                 _clubMember.WeaponModuleR = _itemController.Item as ScriptableObjectWeaponModule;
                 break;
             default:
+                Debug.LogWarning("unknown slotType Err");
                 break;
         }
     }
@@ -102,17 +103,17 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
             if (originSlot.SlotType == ESlotType.Inventory)
             {
                 IItemable tempItem = dropedItem.Item;
-                dropedItem.InitializeItem(originSlot, _itemController.Item);
-                _itemController.InitializeItem(this, tempItem);
+                dropedItem.InitializeItem(_itemController.Item);
+                _itemController.InitializeItem(tempItem);
                 return;
             }
 
             if (_itemController.Item == null)
             {
                 _itemController.gameObject.SetActive(true);
-                _itemController.InitializeItem(this, dropedItem.Item);
+                _itemController.InitializeItem(dropedItem.Item);
                 ApplySlot();
-                dropedItem.InitializeItem(originSlot, null);
+                dropedItem.InitializeItem(null);
                 originSlot.ApplySlot();
                 return;
             }
@@ -125,8 +126,8 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
                     {
                         CGameProgressManager.Instance.Inventory.Remove(_itemController.Item);
                         IItemable tempItem = dropedItem.Item;
-                        dropedItem.InitializeItem(originSlot, _itemController.Item);
-                        _itemController.InitializeItem(this, tempItem);
+                        dropedItem.InitializeItem(_itemController.Item);
+                        _itemController.InitializeItem(tempItem);
                         ApplySlot();
                         originSlot.ApplySlot();
                         return;
@@ -143,8 +144,8 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
                     {
                         CGameProgressManager.Instance.Inventory.Remove(_itemController.Item);
                         IItemable tempItem = dropedItem.Item;
-                        dropedItem.InitializeItem(originSlot, _itemController.Item);
-                        _itemController.InitializeItem(this, tempItem);
+                        dropedItem.InitializeItem(_itemController.Item);
+                        _itemController.InitializeItem(tempItem);
                         ApplySlot();
                         originSlot.ApplySlot();
                         return;
@@ -161,8 +162,8 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
                     {
                         CGameProgressManager.Instance.Inventory.Remove(_itemController.Item);
                         IItemable tempItem = dropedItem.Item;
-                        dropedItem.InitializeItem(originSlot, _itemController.Item);
-                        _itemController.InitializeItem(this, tempItem);
+                        dropedItem.InitializeItem(_itemController.Item);
+                        _itemController.InitializeItem(tempItem);
                         ApplySlot();
                         originSlot.ApplySlot();
                         return;
@@ -180,8 +181,8 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
                     {
                         CGameProgressManager.Instance.Inventory.Remove(_itemController.Item);
                         IItemable tempItem = dropedItem.Item;
-                        dropedItem.InitializeItem(originSlot, _itemController.Item);
-                        _itemController.InitializeItem(this, tempItem);
+                        dropedItem.InitializeItem(_itemController.Item);
+                        _itemController.InitializeItem(tempItem);
                         ApplySlot();
                         originSlot.ApplySlot();
                         return;
@@ -216,9 +217,10 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
                         CGameProgressManager.Instance.Inventory.Remove(dropedItem.Item);
                     }
 
+                    _itemController.gameObject.SetActive(true);
                     IItemable tempItem = dropedItem.Item;
-                    dropedItem.InitializeItem(originSlot, _itemController.Item);
-                    _itemController.InitializeItem(this, tempItem);
+                    dropedItem.InitializeItem(_itemController.Item);
+                    _itemController.InitializeItem(tempItem);
                     ApplySlot();
                     originSlot.ApplySlot();
                     return;
@@ -238,9 +240,10 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
                         CGameProgressManager.Instance.Inventory.Remove(dropedItem.Item);
                     }
 
+                    _itemController.gameObject.SetActive(true);
                     IItemable tempItem = dropedItem.Item;
-                    dropedItem.InitializeItem(originSlot, _itemController.Item);
-                    _itemController.InitializeItem(this, tempItem);
+                    dropedItem.InitializeItem(_itemController.Item);
+                    _itemController.InitializeItem(tempItem);
                     ApplySlot();
                     originSlot.ApplySlot();
                     return;
@@ -260,9 +263,10 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
                         CGameProgressManager.Instance.Inventory.Remove(dropedItem.Item);
                     }
 
+                    _itemController.gameObject.SetActive(true);
                     IItemable tempItem = dropedItem.Item;
-                    dropedItem.InitializeItem(originSlot, _itemController.Item);
-                    _itemController.InitializeItem(this, tempItem);
+                    dropedItem.InitializeItem(_itemController.Item);
+                    _itemController.InitializeItem(tempItem);
                     ApplySlot();
                     originSlot.ApplySlot();
                     return;
@@ -283,9 +287,10 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
                         CGameProgressManager.Instance.Inventory.Remove(dropedItem.Item);
                     }
 
+                    _itemController.gameObject.SetActive(true);
                     IItemable tempItem = dropedItem.Item;
-                    dropedItem.InitializeItem(originSlot, _itemController.Item);
-                    _itemController.InitializeItem(this, tempItem);
+                    dropedItem.InitializeItem(_itemController.Item);
+                    _itemController.InitializeItem(tempItem);
                     ApplySlot();
                     originSlot.ApplySlot();
                     return;
