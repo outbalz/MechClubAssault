@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: WeaponModule_20mmCannon
   m_EditorClassIdentifier: 
   _name: "\uC2A4\uD150\uB2E4\uB4DC 20mm \uCE90\uB17C"
+  _icon: {fileID: 21300000, guid: 70fb9ca53d4afcd4b8806ef0c5641d80, type: 3}
+  _description: 
   _weaponInnerArcDeg: 10
   _weaponOutterArcDeg: 20
   _weaponRange: 20

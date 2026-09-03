@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: FlightModuleFatburnny
   m_EditorClassIdentifier: 
   _name: "\uD33B\uBC84\uB2C8 \uBE44\uD589 \uBAA8\uB4C8"
+  _icon: {fileID: 21300000, guid: de14df1dc9325084a8ebded96911db05, type: 3}
+  _description: 
   _startSpeed: 40
   _maxSpeed: 40
   _turnRate: 55

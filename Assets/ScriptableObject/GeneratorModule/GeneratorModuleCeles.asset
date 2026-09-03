@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: GeneratorModuleCeles
   m_EditorClassIdentifier: 
   _name: "\uC140\uB808\uC2A4 \uCD95\uC804\uC9C0"
+  _icon: {fileID: 21300000, guid: 251fe6156842a044f8a68dc8bc049d5c, type: 3}
+  _description: 
   _maxEnergy: 40
   _startEnergy: 40
   _energyRegen: 1

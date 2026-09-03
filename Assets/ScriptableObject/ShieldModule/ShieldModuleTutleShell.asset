@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: ShieldModuleTutleShell
   m_EditorClassIdentifier: 
   _name: "\uD130\uD2C0\uC258 \uC2E4\uB4DC \uBAA8\uB4C8"
+  _icon: {fileID: 21300000, guid: fa351c94b16f2e44f98c5f7a03a7c443, type: 3}
+  _description: 
   _startShield: 20
   _maxShield: 50
   _shieldRegen: 1

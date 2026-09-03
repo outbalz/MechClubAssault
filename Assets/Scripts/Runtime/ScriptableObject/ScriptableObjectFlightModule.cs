@@ -6,7 +6,12 @@ using UnityEngine;
 public class ScriptableObjectFlightModule : ScriptableObject, IItemable
 {
     [SerializeField] private string _name;
+    [SerializeField] private Sprite _icon;
 
+    [Space]
+    [SerializeField] private string _description;
+
+    [Space]
     [SerializeField] private float _startSpeed;
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _turnRate;
@@ -20,6 +25,8 @@ public class ScriptableObjectFlightModule : ScriptableObject, IItemable
     [SerializeField] private float _price;
 
     public string ModuleName {  get { return _name; } }
+    public Sprite Icon { get { return _icon; } }
+    public string Description { get { return _description; } }
     public float StartSpeed { get { return _startSpeed; } }
     public float MaxSpeed { get { return _maxSpeed; } }
     public float TurnRate { get { return _turnRate; } }
@@ -29,5 +36,4 @@ public class ScriptableObjectFlightModule : ScriptableObject, IItemable
     public float AccelerationEnergyCost {  get { return _accelerationEnergyCost; } }
     public float DecelerationEnergyCost { get { return _decelerationEnergyCost; } }
     public float Price { get { return _price; } }
-
 }

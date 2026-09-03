@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: FlightModuleStandard
   m_EditorClassIdentifier: 
   _name: "\uC2A4\uD150\uB2E4\uB4DC \uBE44\uD589 \uBAA8\uB4C8"
+  _icon: {fileID: 21300000, guid: de14df1dc9325084a8ebded96911db05, type: 3}
+  _description: 
   _startSpeed: 5
   _maxSpeed: 20
   _turnRate: 50

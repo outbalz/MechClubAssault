@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: FlightModuleGenGen
   m_EditorClassIdentifier: 
   _name: "\uAC90\uAC90 \uBE44\uD589 \uBAA8\uB4C8"
+  _icon: {fileID: 21300000, guid: d4be81742065b3541a722ea98b1507d4, type: 3}
+  _description: 
   _startSpeed: 1
   _maxSpeed: 50
   _turnRate: 70

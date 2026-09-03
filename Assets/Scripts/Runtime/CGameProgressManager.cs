@@ -93,10 +93,10 @@ public class CGameProgressManager : MonoBehaviour
     private float _fund = 0;
     private float _reputation = 0;
 
-    private List<CItemData> _inventoryGeneratorModule;
-    private List<CItemData> _inventoryShieldModule;
-    private List<CItemData> _inventoryFlightModule;
-    private List<CItemData> _inventoryWeaponModule;
+    private List<CItemData> _inventoryGeneratorModule = new List<CItemData>();
+    private List<CItemData> _inventoryShieldModule = new List<CItemData>();
+    private List<CItemData> _inventoryFlightModule = new List<CItemData>();
+    private List<CItemData> _inventoryWeaponModule = new List<CItemData>();
     #endregion
 
     #region getter
@@ -149,6 +149,10 @@ public class CGameProgressManager : MonoBehaviour
         _reputation = 20;
         _clubMembers.Add(new CClubMember(CUtil.GetRandomName(), _SODB.GetGeneratorModule(0), _SODB.GetShieldModule(0), _SODB.GetFlightModule(0), _SODB.GetWeaponModule(0), _SODB.GetWeaponModule(0)));
         _clubMembers.Add(new CClubMember(CUtil.GetRandomName(), _SODB.GetGeneratorModule(0), _SODB.GetShieldModule(0), _SODB.GetFlightModule(0), _SODB.GetWeaponModule(0), _SODB.GetWeaponModule(0)));
+        _inventoryGeneratorModule.Clear();
+        _inventoryShieldModule.Clear();
+        _inventoryFlightModule.Clear();
+        _inventoryWeaponModule.Clear();
     }
 
     public void AddClubMember(CClubMember member)
@@ -226,4 +230,54 @@ public class CGameProgressManager : MonoBehaviour
     {
         return _fund.ToString("N0") + "만원";
     }
+
+    public bool AddItemToInventory(CItemData item)
+    {
+        List<CItemData> inventoryList = null;
+
+        switch(item.Item)
+        {
+            case ScriptableObjectGeneratorModule generatorModule:
+                inventoryList = _inventoryGeneratorModule;
+                break;
+            case ScriptableObjectShieldModule shieldModule:
+                inventoryList = _inventoryShieldModule;
+                break;
+            case ScriptableObjectFlightModule flightModule:
+                inventoryList = _inventoryFlightModule;
+                break;
+            case ScriptableObjectWeaponModule weaponModule:
+                inventoryList = _inventoryWeaponModule;
+                break;
+            default:
+                Debug.LogWarning("Unknown item type: " + item.Item.GetType().Name);
+                return false;
+        }
+
+        if (inventoryList != null)
+        {
+            if (inventoryList.Count > 0)
+            {
+                for (int i = 0; i < inventoryList.Count; i++)
+                {
+                    if (inventoryList[i].Item == item.Item)
+                    {
+                        inventoryList[i].Count += item.Count;
+                        return true;
+                    }
+                }
+            }
+
+            if (inventoryList.Count < 24)
+            {
+                inventoryList.Add(item);
+                return true;
+            }
+            Debug.LogWarning("Not enough space in inventory to add this item.");
+            return false;
+        }
+        Debug.LogWarning("Inventory list is null for item type: " + item.Item.GetType().Name);
+        return false;
+    }
+
 }

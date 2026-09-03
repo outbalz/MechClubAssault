@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 public enum EClubMeetingState
 {
     ActivitySelection,
@@ -22,12 +24,20 @@ public class CClubMeetingStateManager : MonoBehaviour
     [SerializeField] private GameObject _closeButton;
 
     [Space]
+    [Header("shop item")]
+    [SerializeField] private CanvasGroup[] _shopItemCanvas;
+    [SerializeField] private TMP_Text[] _shopItemText;
+    [SerializeField] private TMP_Text[] _shopItemPriceText;
+    [SerializeField] private TMP_Text[] _shopItemDescriptionText;
+
+    [SerializeField] private Image[] _shopItemIcon;
+
+
+    [Space]
     [Header("Text")]
     [SerializeField] private TMP_Text _fundText;
     [SerializeField] private TMP_Text _reputationText;
-
-    [Space]
-    [SerializeField] private TMP_Text[] _shopItemText;
+    [SerializeField] private TMP_Text _rerollText;
 
     [Space]
     [Header("Prefab")]
@@ -40,6 +50,8 @@ public class CClubMeetingStateManager : MonoBehaviour
     private EClubMeetingState _currentState;
 
     private CItemData[] _shopItems;
+
+    private int _rerollPrice = 1;
     #endregion
 
     private void Awake()
@@ -91,6 +103,10 @@ public class CClubMeetingStateManager : MonoBehaviour
     private void Start()
     {
         _gameProgressManager = CGameProgressManager.Instance;
+
+        _rerollPrice = 1;
+        _currentState = EClubMeetingState.ActivitySelection;
+
         UpdateFundText();
         InitializeClupMember();
         InitializeShopItems();
@@ -118,6 +134,11 @@ public class CClubMeetingStateManager : MonoBehaviour
         for (int i = 0; i < _shopItems.Length; i++)
         {
             _shopItemText[i].text = _shopItems[i].Name;
+            _shopItemPriceText[i].text = $"{_shopItems[i].Price}";
+            _shopItemDescriptionText[i].text = _shopItems[i].Item.Description;
+            _shopItemIcon[i].sprite = _shopItems[i].Item.Icon;
+            _shopItemCanvas[i].alpha = 1f;
+            _shopItemCanvas[i].interactable = true; 
         }
     }
 
@@ -131,6 +152,11 @@ public class CClubMeetingStateManager : MonoBehaviour
         if (_reputationText != null)
         {
             _reputationText.text = $"{_gameProgressManager.Reputation}";
+        }
+
+        if(_rerollText != null)
+        {
+            _rerollText.text = $"리롤 {_rerollPrice}만원";
         }
     }
 
@@ -162,6 +188,63 @@ public class CClubMeetingStateManager : MonoBehaviour
     public void OnRecruitButtonClicked()
     {
         ChangeState(EClubMeetingState.Recruit);
+    }
+
+    public void OnShopItemClicked(int index)
+    {
+        if (index < 0 || index >= _shopItems.Length)
+        {
+            Debug.LogWarning("Invalid shop item index.");
+            return;
+        }
+
+        CItemData selectedItem = _shopItems[index];
+
+        if (_gameProgressManager.Fund < selectedItem.Price)
+        {
+            Debug.LogWarning("Not enough funds to purchase this item.");
+            return;
+        }
+
+        if (_gameProgressManager.AddItemToInventory(selectedItem))
+        {
+            _shopItemCanvas[index].alpha = 0.3f; // Make the purchased item semi-transparent
+            _shopItemCanvas[index].interactable = false; // Disable interaction with the purchased item
+            _gameProgressManager.Fund -= selectedItem.Price;
+            UpdateFundText();
+            Debug.Log($"Purchased {selectedItem.Name} for {selectedItem.Price}.");
+        }
+        else
+        {
+            Debug.LogWarning("Not enough space in inventory to add this item.");
+        }
+    }
+
+    public void OnRerollByFundButtonClicked()
+    {
+        if (_gameProgressManager.Fund < _rerollPrice)
+        {
+            Debug.LogWarning("Not enough funds to reroll shop items.");
+            return;
+        }
+
+        _gameProgressManager.Fund -= _rerollPrice;
+        _rerollPrice++;
+        UpdateFundText();
+        InitializeShopItems();
+    }
+
+    public void OnRerollByReputationButtonClicked()
+    {
+        if (_gameProgressManager.Reputation < 5)
+        {
+            Debug.LogWarning("Not enough reputation to reroll shop items.");
+            return;
+        }
+
+        _gameProgressManager.Reputation -= 5;
+        UpdateFundText();
+        InitializeShopItems();
     }
 
 }

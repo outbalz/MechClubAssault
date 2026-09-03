@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: FlightModuleRedCoth
   m_EditorClassIdentifier: 
   _name: "\uD64D\uC758 \uBE44\uD589\uBAA8\uB4C8"
+  _icon: {fileID: 21300000, guid: 390321f30974a364c947d722d32ddc44, type: 3}
+  _description: 
   _startSpeed: 8
   _maxSpeed: 40
   _turnRate: 60

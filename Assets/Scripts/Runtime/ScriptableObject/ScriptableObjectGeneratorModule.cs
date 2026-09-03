@@ -6,7 +6,12 @@ using UnityEngine;
 public class ScriptableObjectGeneratorModule : ScriptableObject, IItemable
 {
     [SerializeField] private string _name;
+    [SerializeField] private Sprite _icon;
 
+    [Space]
+    [SerializeField] private string _description;
+
+    [Space]
     [SerializeField] private float _maxEnergy;
     [SerializeField] private float _startEnergy;
     [SerializeField] private float _energyRegen;
@@ -14,6 +19,9 @@ public class ScriptableObjectGeneratorModule : ScriptableObject, IItemable
     [SerializeField] private float _price;
 
     public string ModuleName { get { return _name; } }
+    public Sprite Icon { get { return _icon; } }
+    public string Description { get { return _description; } }
+
 
     public float MaxEnergy {  get { return _maxEnergy; } }
     public float StartEnergy { get { return _startEnergy; } }

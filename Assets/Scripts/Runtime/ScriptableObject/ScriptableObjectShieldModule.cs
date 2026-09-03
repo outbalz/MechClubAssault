@@ -6,7 +6,12 @@ using UnityEngine;
 public class ScriptableObjectShieldModule : ScriptableObject, IItemable
 {
     [SerializeField] private string _name;
+    [SerializeField] private Sprite _icon;
 
+    [Space]
+    [SerializeField] private string _description;
+
+    [Space]
     [SerializeField] private float _startShield;
     [SerializeField] private float _maxShield;
     [SerializeField] private float _shieldRegen;
@@ -15,6 +20,9 @@ public class ScriptableObjectShieldModule : ScriptableObject, IItemable
     [SerializeField] private float _price;
 
     public string ModuleName { get { return _name; } }
+    public Sprite Icon { get { return _icon; } }
+    public string Description { get { return _description; } }
+
 
     public float StartShield { get { return _startShield; } }
     public float MaxShield { get { return _maxShield; } }

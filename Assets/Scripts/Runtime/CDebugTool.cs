@@ -4,9 +4,31 @@ using UnityEngine;
 
 public class CDebugTool : MonoBehaviour
 {
-    public void GetRandomName()
+    private CGameProgressManager _gameProgressManager;
+
+    [SerializeField] private float _fundCheat;
+    [SerializeField] private float _reputationCheat;
+
+    [SerializeField] private CClubMeetingStateManager _clubMeetingStateManager;
+
+    private void Start()
     {
-        Debug.Log($"Random Name: {CUtil.GetRandomName()}");
-        //Debug.Log($"Random Name: {familyName}");
+        _gameProgressManager = CGameProgressManager.Instance;
     }
+
+    [ContextMenu("Apply Cheat")]
+    private void ApllyCheat()
+    {
+        if (_gameProgressManager != null)
+        {
+            _gameProgressManager.Fund += _fundCheat;
+            _gameProgressManager.Reputation += _reputationCheat;
+        }
+
+        if (_clubMeetingStateManager != null)
+        {
+            _clubMeetingStateManager.UpdateFundText();
+        }
+    }
+
 }

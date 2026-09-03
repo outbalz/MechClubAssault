@@ -6,7 +6,12 @@ using UnityEngine;
 public class ScriptableObjectWeaponModule : ScriptableObject, IItemable
 {
     [SerializeField] private string _name;
+    [SerializeField] private Sprite _icon;
 
+    [Space]
+    [SerializeField] private string _description;
+
+    [Space]
     [SerializeField] private float _weaponInnerArcDeg;
     [SerializeField] private float _weaponOutterArcDeg;
     [SerializeField] private float _weaponRange;
@@ -17,6 +22,8 @@ public class ScriptableObjectWeaponModule : ScriptableObject, IItemable
     [SerializeField] private float _price;
 
     public string ModuleName { get { return _name; } }
+    public Sprite Icon { get { return _icon; } }
+    public string Description { get { return _description; } }
 
     public float WeaponInnerArcDeg { get { return _weaponInnerArcDeg; } }
     public float WeaponOutterArcDeg { get { return _weaponOutterArcDeg; } }

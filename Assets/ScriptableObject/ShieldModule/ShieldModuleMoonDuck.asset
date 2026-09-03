@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: ShieldModuleMoonDuck
   m_EditorClassIdentifier: 
   _name: "\uBB38\uB355 \uC2E4\uB4DC \uBAA8\uB4C8"
+  _icon: {fileID: 21300000, guid: 5eadd136aa37ca340afbff0fffa6d00d, type: 3}
+  _description: 
   _startShield: 20
   _maxShield: 20
   _shieldRegen: 10

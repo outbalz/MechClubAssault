@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: WeaponModule_UT117Minigun
   m_EditorClassIdentifier: 
   _name: "UT117 \uBBF8\uB2C8\uAC74"
+  _icon: {fileID: 21300000, guid: a87e02e4030aaea468d50139dec97dd2, type: 3}
+  _description: 
   _weaponInnerArcDeg: 10
   _weaponOutterArcDeg: 20
   _weaponRange: 20

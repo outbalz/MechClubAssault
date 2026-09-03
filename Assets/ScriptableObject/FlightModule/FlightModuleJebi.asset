@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: FlightModuleJebi
   m_EditorClassIdentifier: 
   _name: "\uC81C\uBE44 \uBE44\uD589 \uBAA8\uB4C8"
+  _icon: {fileID: 21300000, guid: 3c4660ce3bb762b4294dddcb962af25d, type: 3}
+  _description: 
   _startSpeed: 8
   _maxSpeed: 20
   _turnRate: 60

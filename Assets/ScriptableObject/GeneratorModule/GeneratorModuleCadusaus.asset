@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: GeneratorModuleCadusaus
   m_EditorClassIdentifier: 
   _name: "\uCE74\uB450\uC138\uC6B0\uC2A4 \uB9AC\uC5D1\uD130"
+  _icon: {fileID: 21300000, guid: 6be8f8394abff854197f112b378bc871, type: 3}
+  _description: 
   _maxEnergy: 17
   _startEnergy: 17
   _energyRegen: 4
