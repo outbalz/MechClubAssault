@@ -237,6 +237,11 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
             collider.enabled = false;
             _turnStateManager.UnitGetKnockedOut(this);
 
+            if(_movementController.Speed > 8)
+            {
+                _movementController.Speed = 8;
+            }
+
             return;
         }
 

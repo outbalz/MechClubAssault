@@ -360,9 +360,15 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
             TryGetComponent<Collider>(out Collider collider);
             collider.enabled = false;
             _turnStateManager.UnitGetKnockedOut(this);
+
+            if (_movementController.Speed > 8)
+            {
+                _movementController.Speed = 8;
+            }
+
             return;
         }
-
+        
         _shieldEffect.Play();
     }
 
