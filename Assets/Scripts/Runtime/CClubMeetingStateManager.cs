@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 public enum EClubMeetingState
@@ -39,6 +40,8 @@ public class CClubMeetingStateManager : MonoBehaviour
     [SerializeField] private TMP_Text _fundText;
     [SerializeField] private TMP_Text _reputationText;
     [SerializeField] private TMP_Text _rerollText;
+    [SerializeField] private TMP_Text _recruitChanceText;
+    [SerializeField] private TMP_Text _recruitLogText;
 
     [Space]
     [Header("Prefab")]
@@ -57,6 +60,7 @@ public class CClubMeetingStateManager : MonoBehaviour
 
     private CItemSlotController[] _inventorySlot = new CItemSlotController[24];
     #endregion
+
 
     private void Awake()
     {
@@ -111,7 +115,6 @@ public class CClubMeetingStateManager : MonoBehaviour
             Debug.LogWarning("_inventorySlotLayoutTr is not assigned in the inspector.");
         }
         #endregion
-
     }
 
     private void Start()
@@ -304,4 +307,117 @@ public class CClubMeetingStateManager : MonoBehaviour
         InitializeShopItems();
     }
 
+    public void OnRecruitNewMemberButtonClicked(CanvasGroup canvasGroup)
+    {
+        if(_gameProgressManager.Reputation < 5)
+        {
+            Debug.LogWarning("Not enough reputation to Recruit New Member");
+            return;
+        }
+
+        _gameProgressManager.Reputation -= 5;
+        UpdateFundText();
+
+        int ranNum = UnityEngine.Random.Range(1, 101);
+
+        if (ranNum > _gameProgressManager.RecruitChance)
+        {
+            int ranTextNum = UnityEngine.Random.Range(0, 4);
+
+            switch (ranTextNum)
+            {
+                case 0:
+                    _recruitLogText.text += $"\n열심히 노력했지만 아무도 관심을 주지 않았습니다. \n(성공확률:{_gameProgressManager.RecruitChance}%)";
+                    break;
+                case 1:
+                    _recruitLogText.text += $"\n입부신청 희망자를 찾는데 실패하였습니다. \n(성공확률:{_gameProgressManager.RecruitChance}%)";
+                    break;
+                case 2:
+                    _recruitLogText.text += $"\n동아리에 들어오겠다고 말한 친구가 끝내 오지 않았습니다. \n(성공확률:{_gameProgressManager.RecruitChance}%)";
+                    break;
+                case 3:
+                    _recruitLogText.text += $"\n관심을 보인 사람은 있었지만 입부신청은 없었습니다. \n(성공확률:{_gameProgressManager.RecruitChance}%)";
+                    break;
+                default:
+                    break;
+            }
+
+            if(_recruitLogText.rectTransform.sizeDelta.y < _recruitLogText.preferredHeight)
+            {
+                switch (ranTextNum)
+                {
+                    case 0:
+                        _recruitLogText.text = $"열심히 노력했지만 아무도 관심을 주지 않았습니다. \n(성공확률:{_gameProgressManager.RecruitChance}%)";
+                        break;
+                    case 1:
+                        _recruitLogText.text = $"입부신청 희망자를 찾는데 실패하였습니다. \n(성공확률:{_gameProgressManager.RecruitChance}%)";
+                        break;
+                    case 2:
+                        _recruitLogText.text = $"동아리에 들어오겠다고 말한 친구가 끝내 오지 않았습니다. \n(성공확률:{_gameProgressManager.RecruitChance}%)";
+                        break;
+                    case 3:
+                        _recruitLogText.text = $"관심을 보인 사람은 있었지만 입부신청은 없었습니다. \n(성공확률:{_gameProgressManager.RecruitChance}%)";
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            _gameProgressManager.RecruitChance *= 2;
+
+            _recruitChanceText.text = $"{_gameProgressManager.RecruitChance}%";
+
+        }
+
+        else
+        {
+            canvasGroup.interactable = false;
+            canvasGroup.alpha = 0.3f;
+
+            CClubMember newMember = new CClubMember(CUtil.GetRandomName(),null,null,null,null,null);
+
+            _recruitLogText.text += $"\n모집 성공! {newMember.Name}이(가) 메카 동아리에 들어왔습니다! \n(확률:{_gameProgressManager.RecruitChance}%)";
+            
+            if(_recruitLogText.rectTransform.sizeDelta.y < _recruitLogText.preferredHeight)
+            {
+                _recruitLogText.text = $"모집 성공! {newMember.Name}이(가) 메카 동아리에 들어왔습니다! \n(확률:{_gameProgressManager.RecruitChance}%)";
+            }
+
+            _gameProgressManager.ClubMembers.Add(newMember);
+
+            GameObject newMemberPanel = Instantiate(_clubMemberPanelPrefab, _managementPanelLayoutTr);
+            newMemberPanel.GetComponent<CChararcterPanelContorller>().InitializePanel(newMember);
+
+            _gameProgressManager.RecruitChance = 1;
+
+            _recruitChanceText.text = $"{_gameProgressManager.RecruitChance}%";
+        }
+
+    }
+
+
+    /*
+    public bool CheckScene()
+    {
+        for (int i = 0; i < _gameProgressManager.ClubMembers.Count; i++)
+        {
+            CClubMember clubMember = _gameProgressManager.ClubMembers[i];
+
+            bool moduleCheck = true;
+
+            if(clubMember.GeneratorModule == null || clubMember.ShieldModule == null || clubMember.FlightModule == null|| clubMember.WeaponModuleL == null || clubMember.WeaponModuleR == null)
+            {
+                moduleCheck = false;
+                continue;
+            }
+
+            if (moduleCheck)
+            {
+                return true;
+            }
+        }
+
+        Debug.Log("No valid clubMember");
+        return false;
+    }*/
 }

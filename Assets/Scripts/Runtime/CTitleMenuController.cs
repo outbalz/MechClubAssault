@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class CTitleMenuController : MonoBehaviour
 {
+    [SerializeField] private GameObject _gameClearPenal;
+
     private CGameProgressManager _gameProgressManager;
 
     private void Start()
     {
         _gameProgressManager = CGameProgressManager.Instance;
+        if(_gameProgressManager.Level >= 14)
+        {
+            _gameClearPenal.SetActive(true);
+        }
     }
 
     public void StartNewGame()

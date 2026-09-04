@@ -75,6 +75,7 @@ public class CGameProgressManager : MonoBehaviour
     private int _level = 0;
     private float _fund = 0;
     private float _reputation = 0;
+    private int _recruitChance = 1;
 
     private List<IItemable> _inventory = new List<IItemable>();
     #endregion
@@ -88,6 +89,8 @@ public class CGameProgressManager : MonoBehaviour
     
     public float Fund { get { return _fund; } set { _fund = value; } }
     public float Reputation { get { return _reputation; } set { _reputation = value; } }
+
+    public int RecruitChance { get { return _recruitChance; } set { _recruitChance = value; } }
 
     public int Level { get { return _level; } set { _level = value; } }
 
@@ -105,6 +108,7 @@ public class CGameProgressManager : MonoBehaviour
         else if (_instance != this)
         {
             Destroy(this.gameObject);
+            return;
         }
 
         _level = 0;
@@ -124,6 +128,7 @@ public class CGameProgressManager : MonoBehaviour
         _level = 0;
         _fund = 0;
         _reputation = 20;
+        _recruitChance = 1;
         _clubMembers.Add(new CClubMember(CUtil.GetRandomName(), _SODB.GetGeneratorModule(0), _SODB.GetShieldModule(0), _SODB.GetFlightModule(0), _SODB.GetWeaponModule(0), _SODB.GetWeaponModule(0)));
         _clubMembers.Add(new CClubMember(CUtil.GetRandomName(), _SODB.GetGeneratorModule(0), _SODB.GetShieldModule(0), _SODB.GetFlightModule(0), _SODB.GetWeaponModule(0), _SODB.GetWeaponModule(0)));
         _inventory.Clear();

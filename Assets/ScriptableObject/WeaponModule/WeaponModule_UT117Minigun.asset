@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: "UT117 \uBBF8\uB2C8\uAC74"
   _icon: {fileID: 21300000, guid: a87e02e4030aaea468d50139dec97dd2, type: 3}
-  _description: 
+  _description: "\uB0B4\uBD80\uC0AC\uACA9\uAC01:10\xBA    \uC678\uBD80\uC0AC\uACA9\uAC01:20\xBA   
+    \uC0AC\uAC70\uB9AC:20    \uC7AC\uC0AC\uC6A9\uB300\uAE30\uC2DC\uAC04:0.5    \uBB34\uAE30\uD53C\uD574:0.2   
+    \uC560\uB108\uC9C0\uBE44\uC6A9:1"
   _weaponInnerArcDeg: 10
   _weaponOutterArcDeg: 20
   _weaponRange: 20

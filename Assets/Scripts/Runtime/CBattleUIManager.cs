@@ -10,6 +10,7 @@ public class CBattleUIManager : MonoBehaviour
     [Header("manager")]
     [SerializeField] private CUnitInputManager _unitInputManager;
     [SerializeField] private CTurnStateManager _turnStateManager;
+    [SerializeField] private CSceneTransitionTrigerController _transitionTrigerController;
 
     [Space]
     [Header("UI Element")]
@@ -39,6 +40,9 @@ public class CBattleUIManager : MonoBehaviour
     [SerializeField] private TMP_Text _winResultText;
     [SerializeField] private GameObject _resultLostUI;
 
+    [Space]
+    [SerializeField] private ScriptableObjectSceneData _nextScene;
+    [SerializeField] private ScriptableObjectSceneData _endingScene;
     #endregion
 
     #region private var
@@ -94,7 +98,15 @@ public class CBattleUIManager : MonoBehaviour
             Debug.LogWarning("Missing Image element");
         }
 
+        if(_transitionTrigerController == null)
+        {
+            Debug.LogWarning("Missing _transitionTrigerController");
+        }
 
+        if(_nextScene == null || _endingScene == null)
+        {
+            Debug.LogWarning("Missing SceneData");
+        }
     }
 
 
@@ -482,5 +494,16 @@ public class CBattleUIManager : MonoBehaviour
 
         progressManager.Fund += _turnStateManager.RewardPrize;
         progressManager.Reputation += _turnStateManager.RewardReputation + _turnStateManager.RewardComboReputation;
+        progressManager.Level++;
+
+        if (progressManager.Level < 14)
+        {
+            _transitionTrigerController.TriggerSceneTransition(_nextScene);
+        }
+
+        else
+        {
+            _transitionTrigerController.TriggerSceneTransition(_endingScene);
+        }
     }
 }

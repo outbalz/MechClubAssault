@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: "\uC2A4\uD300\uD558\uD2B8 \uD130\uBE48"
   _icon: {fileID: 21300000, guid: cda7a4dd0ed2ecd4d994eece726ab93b, type: 3}
-  _description: 
+  _description: "\uCD5C\uB300 \uC5D0\uB108\uC9C0:15    \uC2DC\uC791 \uC5D0\uB108\uC9C0:5   
+    \uC5D0\uB108\uC9C0 \uC7AC\uC0DD:5"
   _maxEnergy: 15
   _startEnergy: 5
   _energyRegen: 5

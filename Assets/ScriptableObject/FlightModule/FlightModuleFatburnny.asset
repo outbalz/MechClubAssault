@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: "\uD33B\uBC84\uB2C8 \uBE44\uD589 \uBAA8\uB4C8"
   _icon: {fileID: 21300000, guid: de14df1dc9325084a8ebded96911db05, type: 3}
-  _description: 
+  _description: "\uC2DC\uC791\uC18D\uB3C4: 40    \uCD5C\uACE0\uC18D\uB3C4:40    \uC120\uD68C\uB825:55   
+    \uAC00\uC18D\uB825: 3   \uAC10\uC18D\uB825:1    \uACF5\uAE30\uC800\uD56D:5   
+    \uAC00\uC18D\uBE44\uC6A9:3    \uAC10\uC18D\uBE44\uC6A9:1"
   _startSpeed: 40
   _maxSpeed: 40
   _turnRate: 55

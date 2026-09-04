@@ -9,6 +9,7 @@ public class ScriptableObjectFlightModule : ScriptableObject, IItemable
     [SerializeField] private Sprite _icon;
 
     [Space]
+    [TextArea]
     [SerializeField] private string _description;
 
     [Space]

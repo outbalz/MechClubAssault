@@ -160,5 +160,6 @@ public class CUnitMovementController : MonoBehaviour
     public void SetModule(ScriptableObjectFlightModule flightModule)
     {
         _flightModule = flightModule;
+        _speed = flightModule.StartSpeed;
     }
 }

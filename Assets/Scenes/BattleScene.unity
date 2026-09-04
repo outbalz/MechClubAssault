@@ -999,6 +999,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unitInputManager: {fileID: 192198920}
   _turnStateManager: {fileID: 192198922}
+  _transitionTrigerController: {fileID: 192198927}
   _playerTurnUI: {fileID: 2044730416}
   _speedText: {fileID: 687061555}
   _speedFill: {fileID: 1053046440}
@@ -1014,6 +1015,8 @@ MonoBehaviour:
   _resultWinUI: {fileID: 2131986614}
   _winResultText: {fileID: 180622391}
   _resultLostUI: {fileID: 540304318}
+  _nextScene: {fileID: 11400000, guid: 26b011a94771db645b0867396e4055ff, type: 2}
+  _endingScene: {fileID: 11400000, guid: 82e99b8909450684cb99cb4456783c74, type: 2}
 --- !u!114 &192198926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1049,7 +1052,17 @@ MonoBehaviour:
     _weaponModuleR: {fileID: 11400000, guid: 4e3f4e7929563194ebec2ceaf1e5c3ef, type: 2}
   _playerUnitPrefab: {fileID: 2292367423124700219, guid: d0bfd9a2afaf9bd44814fd8d4dd3bb05, type: 3}
   _enemyUnitPrefab: {fileID: 1509500998397317776, guid: 9daafa638edc18946aaeb0c82e6e1626, type: 3}
-  _spanwPointPlayerUnit: []
+  _spanwPointPlayerUnit:
+  - {x: 0, y: 0, z: 0}
+  - {x: 20, y: 0, z: 0}
+  - {x: -20, y: 0, z: 0}
+  - {x: 40, y: 0, z: 0}
+  - {x: 50, y: 0, z: 10}
+  - {x: -50, y: 0, z: 10}
+  - {x: 70, y: 0, z: 10}
+  - {x: -70, y: 0, z: 10}
+  - {x: 80, y: 0, z: 20}
+  - {x: -80, y: 0, z: -20}
   _spanwPointEnemyUnit:
   - {x: 0, y: 0, z: -90}
   _turnStateManager: {fileID: 192198922}
@@ -3067,18 +3080,6 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 192198927}
-        m_TargetAssemblyTypeName: CSceneTransitionTrigerController, Assembly-CSharp
-        m_MethodName: TriggerSceneTransition
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 26b011a94771db645b0867396e4055ff, type: 2}
-          m_ObjectArgumentAssemblyTypeName: ScriptableObjectSceneData, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

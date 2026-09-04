@@ -126,6 +126,18 @@ public class CUnitSpawnManager : MonoBehaviour
                 continue;
             }
 
+            if (
+                _playerUnitData[i].GeneratorModule == null || 
+                _playerUnitData[i].ShieldModule == null || 
+                _playerUnitData[i].FlightModule == null || 
+                _playerUnitData[i].WeaponModuleL == null || 
+                _playerUnitData[i].WeaponModuleR == null
+                )
+            {
+                continue;
+            }
+
+
             GameObject unit = Instantiate(_playerUnitPrefab);
             CUnitController controller = unit.GetComponent<CUnitController>();
 
