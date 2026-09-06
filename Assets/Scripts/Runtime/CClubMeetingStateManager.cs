@@ -194,7 +194,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         {
             _shopItemText[i].text = _shopItems[i].ModuleName;
             _shopItemPriceText[i].text = $"{_shopItems[i].Price}";
-            _shopItemDescriptionText[i].text = _shopItems[i].Description;
+            _shopItemDescriptionText[i].text = CUtil.GetFormetedDescription(_shopItems[i].Description, false);
             _shopItemIcon[i].sprite = _shopItems[i].Icon;
             _shopItemCanvas[i].alpha = 1f;
             _shopItemCanvas[i].interactable = true; 

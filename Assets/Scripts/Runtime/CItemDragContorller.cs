@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CItemDragContorller : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class CItemDragContorller : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     #region inspector
     [SerializeField] private Image _image;
@@ -79,5 +79,20 @@ public class CItemDragContorller : MonoBehaviour, IDragHandler, IBeginDragHandle
     {
         transform.SetParent(_slot.transform);
         _image.raycastTarget = true;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (_item == null)
+        {
+            return;
+        }
+
+        CTooltipController.ShowTooltip(_item.ModuleName,CUtil.GetFormetedDescription(_item.Description, true));
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        CTooltipController.HideTooltip();
     }
 }

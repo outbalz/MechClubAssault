@@ -105,6 +105,7 @@ public class CGameProgressManager : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
+
         else if (_instance != this)
         {
             Destroy(this.gameObject);

@@ -253,4 +253,22 @@ public static class CUtil
         return givenName;
     }
 
+    public static string GetFormetedDescription(string rawDesc, bool isVertical)
+    {
+        if(rawDesc == null)
+        {
+            return null;
+        }
+
+        if (isVertical)
+        {
+            return rawDesc.Replace("|", "\n");
+        }
+
+        else
+        {
+            return rawDesc.Replace("|", "    ");
+        }
+    }
+
 }
