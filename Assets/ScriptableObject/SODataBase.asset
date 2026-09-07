@@ -88,3 +88,10 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 5f1efe52b11cb5f42b3ac944891468e5, type: 2}
   - _levelDatas:
     - {fileID: 11400000, guid: f7391db4048831f42a661cee70c8c778, type: 2}
+  _eyeColorDatats:
+  - {fileID: 11400000, guid: b497a6525d722674fa06da7e3ed4155e, type: 2}
+  - {fileID: 11400000, guid: 111a925ba31f55149bc7c7121e93b80e, type: 2}
+  - {fileID: 11400000, guid: 2ae34c8ee2039f24fac6646ae59c659a, type: 2}
+  - {fileID: 11400000, guid: 77923e693ad79634aba381c9983250f9, type: 2}
+  - {fileID: 11400000, guid: bb98b38feafb7a540af7612e0f9ba884, type: 2}
+  - {fileID: 11400000, guid: 3e4da0241256deb4daee417f9b0f7aa5, type: 2}

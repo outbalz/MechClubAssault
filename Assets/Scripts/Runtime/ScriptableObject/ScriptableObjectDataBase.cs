@@ -193,4 +193,20 @@ public class ScriptableObjectDataBase : ScriptableObject
     }
     #endregion
 
+    #region StyleDB
+    [SerializeField] private List<ScriptableObjectEyeColorData> _eyeColorDatats;
+
+    public List<ScriptableObjectEyeColorData> EyeColorDatats { get { return _eyeColorDatats; } }
+
+    public int GetEyeColorDataCount()
+    {
+        return _eyeColorDatats.Count;
+    }
+
+    public ScriptableObjectEyeColorData GetRandomEyeColor()
+    {
+        return _eyeColorDatats[UnityEngine.Random.Range(0, _eyeColorDatats.Count)];
+    }
+    #endregion
+
 }

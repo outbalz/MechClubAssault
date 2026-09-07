@@ -36,6 +36,12 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
     [Space]
     [Header("knockout")]
     [SerializeField] private CKnockout _knockout;
+
+    [Space]
+    [Header("Style")]
+    [SerializeField] private CHairStyleController _hairStyleController;
+    [SerializeField] private Renderer _eyeRenderer;
+    [SerializeField] private Renderer _eyeLightRenderer;
     #endregion
 
     #region Debug
@@ -133,8 +139,31 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
                 Debug.LogWarning("Missing CKnockout");
             }
         }
+
+        if (_hairStyleController == null)
+        {
+            Debug.LogWarning("Missing _hairStyleController");
+        }
+
+        if (_eyeRenderer == null || _eyeLightRenderer == null)
+        {
+            Debug.LogWarning("Missing Eye renderer");
+        }
     }
 
+
+    private void UnitStyleInit()
+    {
+        Color hairColor;
+        Color highLightColor;
+        CUtil.GetRandomHairColor(out hairColor, out highLightColor);
+        _hairStyleController.InitializeHair(Random.Range(0, 8),hairColor,highLightColor);
+
+        ScriptableObjectEyeColorData eyeColorData = CGameProgressManager.Instance.SODB.GetRandomEyeColor();
+
+        _eyeRenderer.material = eyeColorData.EyeMaterial;
+        _eyeLightRenderer.material = eyeColorData.EyeMaterial;
+    }
 
     public void UnitModuleInit
         (
@@ -157,6 +186,8 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
         {
             Debug.LogWarning("Missing _turnStateManager");
         }
+
+        UnitStyleInit();
     }
 
     public void CallAIInput(int turn)

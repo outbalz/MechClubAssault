@@ -42,6 +42,12 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
     [Space]
     [Header("knockout")]
     [SerializeField] private CKnockout _knockout;
+
+    [Space]
+    [Header("Style")]
+    [SerializeField] private CHairStyleController _hairStyleController;
+    [SerializeField] private Renderer _eyeRenderer;
+    [SerializeField] private Renderer _eyeLightRenderer;
     #endregion
 
     #region private var
@@ -129,38 +135,16 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
                 Debug.LogWarning("Missing CUnitWeaponContorller");
             }
         }
-
-        /*
-        if (_generator == null)
-        {
-            Debug.LogWarning("Missing _generator");
-        }
-
-        else
-        {
-            _energy = _generator.StartEnergy;
-        }
-        */
-
+        
         if (_unitUi == null || _shieldBar == null)
         {
             Debug.LogWarning("Missing Ui element");
         }
 
-        /*
-        if (_shieldModule == null)
+        if(_hairStyleController == null)
         {
-            Debug.LogWarning("Missing _shieldModule");
+            Debug.LogWarning("Missing _hairStyleController");
         }
-
-        else
-        {
-            _shield = _shieldModule.StartShield;
-            _shieldRegenLevel = 0;
-            SetShieldBar();
-        }
-        */
-
 
         if (_knockout == null)
         {
@@ -168,6 +152,11 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
             {
                 Debug.LogWarning("Missing CKnockout");
             }
+        }
+
+        if (_eyeRenderer == null || _eyeLightRenderer == null)
+        {
+            Debug.LogWarning("Missing Eye renderer");
         }
     }
 
@@ -180,7 +169,6 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
         ScriptableObjectWeaponModule weaponModuleR
         )
     {
-
 
         _generator = generatorModule;
         _shieldModule = shieldModule;
@@ -199,6 +187,20 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
             Debug.LogWarning("Missing _turnStateManager");
         }
     }
+
+    public void UnitStyleinit
+        (
+        int hairIndex,
+        Color hairColor,
+        Color hairHighLightColor,
+        ScriptableObjectEyeColorData eyeColor
+        )
+    {
+        _hairStyleController.InitializeHair(hairIndex, hairColor, hairHighLightColor);
+        _eyeRenderer.material = eyeColor.EyeMaterial;
+        _eyeLightRenderer.material = eyeColor.EyeMaterial;
+    }
+
 
 
     public void VisualizePath(List<Vector3> posList)

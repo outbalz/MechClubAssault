@@ -13,6 +13,11 @@ public class CClubMember
     private ScriptableObjectWeaponModule _weaponModuleL;
     private ScriptableObjectWeaponModule _weaponModuleR;
 
+    private int _hairStyleIndex;
+    private Color _hairColor;
+    private Color _hairHighightColor;
+
+    private ScriptableObjectEyeColorData _eyeColorData;
     public string Name { get { return _name; } }
 
     public ScriptableObjectGeneratorModule GeneratorModule { get { return _generatorModule; } set { _generatorModule = value; } }
@@ -20,6 +25,11 @@ public class CClubMember
     public ScriptableObjectFlightModule FlightModule { get { return _flightModule; } set { _flightModule = value; } }
     public ScriptableObjectWeaponModule WeaponModuleL { get { return _weaponModuleL; } set { _weaponModuleL = value; } }
     public ScriptableObjectWeaponModule WeaponModuleR { get { return _weaponModuleR; } set { _weaponModuleR = value; } }
+
+    public int HairStyleIndex { get { return _hairStyleIndex; } }
+    public Color HairColor { get { return _hairColor; } }
+    public Color HairHighightColor { get { return _hairHighightColor; } }
+    public ScriptableObjectEyeColorData EyeColorData { get { return _eyeColorData; } }
 
     public CClubMember
         (
@@ -37,6 +47,10 @@ public class CClubMember
         this._flightModule = flightModule;
         this._weaponModuleL = weaponModuleL;
         this._weaponModuleR = weaponModuleR;
+
+        _hairStyleIndex = UnityEngine.Random.Range(0, 8);
+        CUtil.GetRandomHairColor(out _hairColor, out _hairHighightColor);
+        _eyeColorData = CGameProgressManager.Instance.SODB.GetRandomEyeColor();
     }
 }
 

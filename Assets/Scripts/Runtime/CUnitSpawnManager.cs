@@ -149,6 +149,14 @@ public class CUnitSpawnManager : MonoBehaviour
                     _playerUnitData[i].WeaponModuleL,
                     _playerUnitData[i].WeaponModuleR
                 );
+            
+            controller.UnitStyleinit
+                (
+                    _playerUnitData[i].HairStyleIndex,
+                    _playerUnitData[i].HairColor,
+                    _playerUnitData[i].HairHighightColor,
+                    _playerUnitData[i].EyeColorData
+                );
 
             _playrUnits.Add(controller);
 

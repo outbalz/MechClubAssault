@@ -271,4 +271,20 @@ public static class CUtil
         }
     }
 
+    public static void GetRandomHairColor(out Color main, out Color highLight)
+    {
+
+        main = Random.ColorHSV(0,1,0,0.8f,0.2f,1,1,1);
+
+        float R = main.r;
+        float G = main.g;
+        float B = main.b;
+
+        R = Mathf.Clamp01(R+0.1f);
+        G = Mathf.Clamp01(G+0.1f);
+        B = Mathf.Clamp01(B+0.1f);
+
+        highLight = new Color(R, G, B, 1);
+    }
+
 }

@@ -10,6 +10,7 @@ public class CTooltipController : MonoBehaviour
     [SerializeField] private TMP_Text _header;
     [SerializeField] private TMP_Text _content;
     [SerializeField] private RectTransform _rectTransform;
+    [SerializeField] private RectTransform _rootTransform;
     #endregion
 
     #region private var
@@ -35,6 +36,14 @@ public class CTooltipController : MonoBehaviour
             if(TryGetComponent<RectTransform>(out _rectTransform))
             {
                 Debug.LogWarning("Missing _rectTransform");
+            }
+        }
+
+        if(_rootTransform == null)
+        {
+            if(transform.parent.TryGetComponent<RectTransform>(out _rootTransform))
+            {
+                Debug.LogWarning("Missing _rootTransform");
             }
         }
 
@@ -74,12 +83,12 @@ public class CTooltipController : MonoBehaviour
         float pivotX = -0.05f;
         float pivotY = 1;
 
-        if(Screen.width - mousePos.x < _rectTransform.sizeDelta.x)
+        if((Screen.width - mousePos.x) / _rootTransform.localScale.x < _rectTransform.sizeDelta.x)
         {
             pivotX = 1;
         }
 
-        if(mousePos.y < _rectTransform.sizeDelta.y)
+        if(mousePos.y / _rootTransform.localScale.y < _rectTransform.sizeDelta.y)
         {
             pivotY = 0;
         }

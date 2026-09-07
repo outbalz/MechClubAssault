@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aad9eee3edcde945a2f6dc2a465a428, type: 3}
+  m_Name: SOEyeColorDB
+  m_EditorClassIdentifier: 
+  _eyeMaterial: {fileID: 2100000, guid: 56d5c8a0c8152a349b476471e8826532, type: 2}

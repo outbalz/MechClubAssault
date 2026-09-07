@@ -10,6 +10,10 @@ public class CDebugTool : MonoBehaviour
     [SerializeField] private float _reputationCheat;
 
     [SerializeField] private CClubMeetingStateManager _clubMeetingStateManager;
+    [SerializeField] private Renderer _renderer;
+
+    [Space]
+    [SerializeField] private Color _color = Color.white;
 
     private void Start()
     {
@@ -17,7 +21,7 @@ public class CDebugTool : MonoBehaviour
     }
 
     [ContextMenu("Apply Cheat")]
-    private void ApllyCheat()
+    private void ApplyCheat()
     {
         if (_gameProgressManager != null)
         {
@@ -28,6 +32,15 @@ public class CDebugTool : MonoBehaviour
         if (_clubMeetingStateManager != null)
         {
             _clubMeetingStateManager.UpdateFundText();
+        }
+    }
+
+    [ContextMenu("Apply Color")]
+    private void ApplyColor()
+    {
+        if (_renderer != null)
+        {
+            _renderer.material.color = _color;
         }
     }
 
