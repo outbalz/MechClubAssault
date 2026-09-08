@@ -1996,11 +1996,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ActivityPanel: {fileID: 828760642}
   _managementPanel: {fileID: 527976109}
-  _managementPanelLayoutTr: {fileID: 1316688258}
-  _inventorySlotLayoutTr: {fileID: 836715177}
   _shopPanel: {fileID: 966900237}
   _recruitPanel: {fileID: 1441559197}
   _closeButton: {fileID: 1529903488}
+  _managementPanelLayoutTr: {fileID: 1316688258}
+  _inventorySlotLayoutTr: {fileID: 836715177}
+  _unitPreviewLayoutTr: {fileID: 1937142147}
   _shopItemCanvas:
   - {fileID: 12900511}
   - {fileID: 1219877260}
@@ -2028,6 +2029,7 @@ MonoBehaviour:
   _recruitLogText: {fileID: 1059264038}
   _clubMemberPanelPrefab: {fileID: 459579389491610052, guid: 6be640c9df6cbea4f8074660731db4c2, type: 3}
   _itemSlotPrefab: {fileID: 365712857459594447, guid: 4e697ca9031885545b17660ee2b1bf4b, type: 3}
+  _unitPreviewPrefab: {fileID: 3522489725664340975, guid: 3ffe0c432774a804aa469315c05a7a3c, type: 3}
 --- !u!114 &360018854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8780,6 +8782,8 @@ MonoBehaviour:
   _fundCheat: 999999
   _reputationCheat: 999999
   _clubMeetingStateManager: {fileID: 360018853}
+  _renderer: {fileID: 0}
+  _color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &1593072522
 Transform:
   m_ObjectHideFlags: 0
@@ -11103,6 +11107,37 @@ MonoBehaviour:
   _content: {fileID: 1153546447}
   _rectTransform: {fileID: 1923836922}
   _rootTransform: {fileID: 1492782986}
+--- !u!1 &1937142146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1937142147}
+  m_Layer: 0
+  m_Name: UnitPreviws
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1937142147
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937142146}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1940182566
 GameObject:
   m_ObjectHideFlags: 0
@@ -11741,7 +11776,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -12040,13 +12075,14 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 43316817}
+  - {fileID: 1984548922}
   - {fileID: 2092400666}
   - {fileID: 1845788801}
   - {fileID: 345987334}
   - {fileID: 1187403777}
   - {fileID: 1450092486}
-  - {fileID: 1593072522}
-  - {fileID: 43316817}
-  - {fileID: 1984548922}
   - {fileID: 360018852}
   - {fileID: 1492782986}
+  - {fileID: 1937142147}
+  - {fileID: 1593072522}

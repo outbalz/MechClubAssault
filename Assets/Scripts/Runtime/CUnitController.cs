@@ -141,17 +141,17 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
             Debug.LogWarning("Missing Ui element");
         }
 
-        if(_hairStyleController == null)
-        {
-            Debug.LogWarning("Missing _hairStyleController");
-        }
-
         if (_knockout == null)
         {
             if(TryGetComponent<CKnockout>(out _knockout)  == false)
             {
                 Debug.LogWarning("Missing CKnockout");
             }
+        }
+
+        if(_hairStyleController == null)
+        {
+            Debug.LogWarning("Missing _hairStyleController");
         }
 
         if (_eyeRenderer == null || _eyeLightRenderer == null)

@@ -19,11 +19,15 @@ public class CClubMeetingStateManager : MonoBehaviour
     [Header("Panel")]
     [SerializeField] private GameObject _ActivityPanel;
     [SerializeField] private GameObject _managementPanel;
-    [SerializeField] private Transform _managementPanelLayoutTr;
-    [SerializeField] private Transform _inventorySlotLayoutTr;
     [SerializeField] private GameObject _shopPanel;
     [SerializeField] private GameObject _recruitPanel;
     [SerializeField] private GameObject _closeButton;
+
+    [Space]
+    [Header("Layout")]
+    [SerializeField] private Transform _managementPanelLayoutTr;
+    [SerializeField] private Transform _inventorySlotLayoutTr;
+    [SerializeField] private Transform _unitPreviewLayoutTr;
 
     [Space]
     [Header("shop item")]
@@ -47,6 +51,7 @@ public class CClubMeetingStateManager : MonoBehaviour
     [Header("Prefab")]
     [SerializeField] private GameObject _clubMemberPanelPrefab;
     [SerializeField] private GameObject _itemSlotPrefab;
+    [SerializeField] private GameObject _unitPreviewPrefab;
     #endregion
 
     #region private var
@@ -65,55 +70,31 @@ public class CClubMeetingStateManager : MonoBehaviour
     private void Awake()
     {
         #region debug
-        if (_managementPanel == null)
+        if (_managementPanel == null || _shopPanel == null || _recruitPanel == null)
         {
-            Debug.LogWarning("Management Panel is not assigned in the inspector.");
+            Debug.LogWarning("Missing Panel element");
         }
 
-        if (_shopPanel == null)
+        if (_fundText == null || _reputationText == null)
         {
-            Debug.LogWarning("Shop Panel is not assigned in the inspector.");
+            Debug.LogWarning("Missing Text element");
         }
 
-        if (_recruitPanel == null)
+        if (_managementPanelLayoutTr == null || _inventorySlotLayoutTr == null || _unitPreviewLayoutTr == null)
         {
-            Debug.LogWarning("Recruit Panel is not assigned in the inspector.");
-        }
-
-        if (_fundText == null)
-        {
-            Debug.LogWarning("Fund Text is not assigned in the inspector.");
-        }
-
-        if (_reputationText == null)
-        {
-            Debug.LogWarning("Reputation Text is not assigned in the inspector.");
-        }
-
-        if (_clubMemberPanelPrefab == null)
-        {
-            Debug.LogWarning("Club Member Panel Prefab is not assigned in the inspector.");
-        }
-
-        if (_managementPanelLayoutTr == null)
-        {
-            Debug.LogWarning("Management Panel Content Transform is not assigned in the inspector.");
+            Debug.LogWarning("Missing LayoutTr element");
         }
 
         if (_closeButton == null)
         {
-            Debug.LogWarning("Close Button is not assigned in the inspector.");
+            Debug.LogWarning("Missing Close Button");
         }
 
-        if (_itemSlotPrefab == null)
+        if (_clubMemberPanelPrefab == null || _itemSlotPrefab == null ||_unitPreviewPrefab == null)
         {
-            Debug.LogWarning("_itemSlotPrefab is not assigned in the inspector.");
+            Debug.LogWarning("Missing prefab element");
         }
 
-        if(_inventorySlotLayoutTr == null)
-        {
-            Debug.LogWarning("_inventorySlotLayoutTr is not assigned in the inspector.");
-        }
         #endregion
     }
 
@@ -137,7 +118,9 @@ public class CClubMeetingStateManager : MonoBehaviour
         for (int i = 0; i < clubMembers.Count; i++)
         {
             GameObject memberPanel = Instantiate(_clubMemberPanelPrefab, _managementPanelLayoutTr);
-            memberPanel.GetComponent<CChararcterPanelContorller>().InitializePanel(clubMembers[i]);
+            GameObject memberPreview = Instantiate(_unitPreviewPrefab, _unitPreviewLayoutTr);
+            memberPreview.transform.position = new Vector3(0, 0, -2 *i);
+            memberPanel.GetComponent<CChararcterPanelContorller>().InitializePanel(clubMembers[i], memberPreview.GetComponent<CUnitPreviewController>());
         }
     } 
 
@@ -386,7 +369,10 @@ public class CClubMeetingStateManager : MonoBehaviour
             _gameProgressManager.ClubMembers.Add(newMember);
 
             GameObject newMemberPanel = Instantiate(_clubMemberPanelPrefab, _managementPanelLayoutTr);
-            newMemberPanel.GetComponent<CChararcterPanelContorller>().InitializePanel(newMember);
+
+            GameObject memberPreview = Instantiate(_unitPreviewPrefab, _unitPreviewLayoutTr);
+            memberPreview.transform.position = new Vector3(0, 0, -2 * _gameProgressManager.ClubMembers.Count -1);
+            newMemberPanel.GetComponent<CChararcterPanelContorller>().InitializePanel(newMember, memberPreview.GetComponent<CUnitPreviewController>());
 
             _gameProgressManager.RecruitChance = 1;
 

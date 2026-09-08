@@ -24,13 +24,14 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
 
     #region private var
     private CClubMember _clubMember;
+    private CChararcterPanelContorller _panel;
     #endregion
 
     #region getter
     public ESlotType SlotType { get { return _slotType; } set { _slotType = value; } }
     #endregion
 
-    public void InitializeSlot(CClubMember clubMember,IItemable item)
+    public void InitializeSlot(CClubMember clubMember,IItemable item, CChararcterPanelContorller panel = null)
     {
         _clubMember = clubMember;
 
@@ -41,6 +42,7 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
         }
 
         _itemController.InitializeItem(this, item);
+        _panel = panel;
     }
 
     public void ApplySlot()
@@ -82,6 +84,11 @@ public class CItemSlotController : MonoBehaviour, IDropHandler
             default:
                 Debug.LogWarning("unknown slotType Err");
                 break;
+        }
+
+        if(_panel != null)
+        {
+            _panel.UpdatePreview();
         }
     }
 
