@@ -144,6 +144,55 @@ public class ScriptableObjectDataBase : ScriptableObject
         }
     }
 
+    public Dictionary<ScriptableObjectGeneratorModule,int> GetGeneratorModuleMap()
+    {
+        Dictionary<ScriptableObjectGeneratorModule,int>  generatorModuleMap = new Dictionary<ScriptableObjectGeneratorModule,int>();
+
+        for (int i = 0; i < _generatorModules.Count; i++)
+        {
+            generatorModuleMap.Add(_generatorModules[i], i);
+        }
+
+        return generatorModuleMap;
+    }
+
+    public Dictionary<ScriptableObjectShieldModule, int> GetShieldModuleMap()
+    {
+        Dictionary<ScriptableObjectShieldModule, int> shieldModuleMap = new Dictionary<ScriptableObjectShieldModule, int>();
+
+        for (int i = 0; i < _shieldModules.Count; i++)
+        {
+            shieldModuleMap.Add(_shieldModules[i], i);
+        }
+
+        return shieldModuleMap;
+    }
+
+    public Dictionary<ScriptableObjectFlightModule, int> GetFlightModuleMap()
+    {
+        Dictionary<ScriptableObjectFlightModule, int> flightModuleMap = new Dictionary<ScriptableObjectFlightModule, int>();
+
+        for (int i = 0; i < _flightModules.Count; i++)
+        {
+            flightModuleMap.Add(_flightModules[i], i);
+        }
+
+        return flightModuleMap;
+    }
+
+    public Dictionary<ScriptableObjectWeaponModule, int> GetWeaponModuleMap()
+    {
+        Dictionary<ScriptableObjectWeaponModule, int> weaponModuleMap = new Dictionary<ScriptableObjectWeaponModule, int>();
+
+        for (int i = 0; i < _weaponModules.Count; i++)
+        {
+            weaponModuleMap.Add(_weaponModules[i], i);
+        }
+
+        return weaponModuleMap;
+    }
+
+
     #endregion
 
     #region level DB
@@ -202,10 +251,32 @@ public class ScriptableObjectDataBase : ScriptableObject
     {
         return _eyeColorDatats.Count;
     }
+    
+    public ScriptableObjectEyeColorData GetEyeColorData(int index)
+    {
+        if (index >= 0 && index < _eyeColorDatats.Count)
+        {
+            return _eyeColorDatats[index];
+        }
+
+        return null;
+    }
 
     public ScriptableObjectEyeColorData GetRandomEyeColor()
     {
         return _eyeColorDatats[UnityEngine.Random.Range(0, _eyeColorDatats.Count)];
+    }
+
+    public Dictionary<ScriptableObjectEyeColorData,int> GetEyeMap()
+    {
+        Dictionary<ScriptableObjectEyeColorData, int> eyeMap = new Dictionary<ScriptableObjectEyeColorData, int>();
+
+        for (int i = 0; i < _eyeColorDatats.Count; i++)
+        {
+            eyeMap.Add(_eyeColorDatats[i], i);
+        }
+
+        return eyeMap;
     }
     #endregion
 

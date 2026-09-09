@@ -19,7 +19,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a33f34778e43b67439a84fadc1b7347b, type: 2}
   - {fileID: 11400000, guid: d0a39fdc1e0c754458b8cca2dbb65049, type: 2}
   - {fileID: 11400000, guid: 4f6c34495797e054e99490004ed6d035, type: 2}
-  - {fileID: 11400000, guid: 0ed0f16245108614b9f21f7abc9c319d, type: 2}
   - {fileID: 11400000, guid: ae415b3ff5e53244fb165462549a0755, type: 2}
   - {fileID: 11400000, guid: da4ff9a1516bebd47a676f987128e31d, type: 2}
   _shieldModules:
@@ -29,7 +28,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ff75c0bd087bffa44b4943e34d4fe1dc, type: 2}
   - {fileID: 11400000, guid: 70b05f6308f50634b90f489dd10c7e91, type: 2}
   - {fileID: 11400000, guid: 799d81d74649edf488fc0d803c510a40, type: 2}
-  - {fileID: 11400000, guid: 3b6da2bde678931499a9a74871ea1915, type: 2}
   _flightModules:
   - {fileID: 11400000, guid: f9448c241af583041971afc27a8b62b7, type: 2}
   - {fileID: 11400000, guid: cd2d69df3566b5f4283394b4eb815a73, type: 2}

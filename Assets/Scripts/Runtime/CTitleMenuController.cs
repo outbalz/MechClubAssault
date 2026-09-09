@@ -7,6 +7,7 @@ public class CTitleMenuController : MonoBehaviour
     #region inspector
     [SerializeField] private GameObject _gameClearPenal;
     [SerializeField] private GameObject _loadGameButton;
+    [SerializeField] private CUnitPreviewController _unitPreviewController;
     #endregion
 
     #region private var
@@ -34,6 +35,13 @@ public class CTitleMenuController : MonoBehaviour
             _loadGameButton.SetActive(true);
         }
 
+
+        if(_gameProgressManager.ClubMembers != null && _gameProgressManager.ClubMembers.Count > 0)
+        {
+            CClubMember clubMember = _gameProgressManager.ClubMembers[Random.Range(0,_gameProgressManager.ClubMembers.Count)];
+
+            _unitPreviewController.UnitStyleinit(clubMember.HairStyleIndex, clubMember.HairColor, clubMember.HairHighightColor, clubMember.EyeColorData);
+        }
     }
 
     public void StartNewGame()

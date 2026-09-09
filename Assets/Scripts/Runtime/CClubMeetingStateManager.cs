@@ -111,6 +111,8 @@ public class CClubMeetingStateManager : MonoBehaviour
         InitializeClupMember();
         InitializeShopItems();
         InitializeInventorySlot();
+
+        _recruitChanceText.text = $"{_gameProgressManager.RecruitChance}%";
     }
 
     private void InitializeClupMember()

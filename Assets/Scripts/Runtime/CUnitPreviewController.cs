@@ -31,12 +31,6 @@ public class CUnitPreviewController : MonoBehaviour
 
     private void Awake()
     {
-        if (_previewCamera == null)
-        {
-            Debug.LogWarning("Missing _previewCamera");
-            this.enabled = false;
-            return;
-        }
 
         if (_hairStyleController == null)
         {
@@ -53,9 +47,13 @@ public class CUnitPreviewController : MonoBehaviour
             Debug.LogWarning("Missing module element");
         }
 
-        _previewTexture = new RenderTexture(512, 512, 3);
+        if (_previewCamera != null)
+        {
+            _previewTexture = new RenderTexture(512, 512, 3);
 
-        _previewCamera.targetTexture = _previewTexture;
+            _previewCamera.targetTexture = _previewTexture;
+        }
+
     }
 
     public void UnitStyleinit

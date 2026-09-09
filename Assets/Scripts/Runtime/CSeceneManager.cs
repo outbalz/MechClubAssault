@@ -119,6 +119,8 @@ public class CSeceneManager : MonoBehaviour
 
         yield return null;
 
+        CSaveAndLoadManager.SaveGame();
+
         if (_transitionUI != null)
         {
             yield return _transitionUI.Co_FadeTo(0f, fadeDuration);
@@ -128,6 +130,7 @@ public class CSeceneManager : MonoBehaviour
         Debug.Log($"{sceneName}");
 
         _isLoading = false;
+
 
     }
     /*

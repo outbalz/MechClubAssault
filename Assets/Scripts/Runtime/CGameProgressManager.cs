@@ -52,6 +52,33 @@ public class CClubMember
         CUtil.GetRandomHairColor(out _hairColor, out _hairHighightColor);
         _eyeColorData = CGameProgressManager.Instance.SODB.GetRandomEyeColor();
     }
+
+    public CClubMember
+        (
+            string name,
+            ScriptableObjectGeneratorModule generatorModule,
+            ScriptableObjectShieldModule shieldModule,
+            ScriptableObjectFlightModule flightModule,
+            ScriptableObjectWeaponModule weaponModuleL,
+            ScriptableObjectWeaponModule weaponModuleR,
+            int hairStyleIndex,
+            Color hairColor,
+            Color hairHighightColor,
+            ScriptableObjectEyeColorData eyeColorData
+        )
+    {
+        this._name = name;
+        this._generatorModule = generatorModule;
+        this._shieldModule = shieldModule;
+        this._flightModule = flightModule;
+        this._weaponModuleL = weaponModuleL;
+        this._weaponModuleR = weaponModuleR;
+
+        _hairStyleIndex = hairStyleIndex;
+        _hairColor = hairColor;
+        _hairHighightColor = hairHighightColor;
+        _eyeColorData = eyeColorData;
+    }
 }
 
 
@@ -99,7 +126,7 @@ public class CGameProgressManager : MonoBehaviour
     
     public static CGameProgressManager Instance { get { return _instance; } }
     
-    public List<CClubMember> ClubMembers { get { return _clubMembers; } }
+    public List<CClubMember> ClubMembers { get { return _clubMembers; } set { _clubMembers = value; } }
     
     public float Fund { get { return _fund; } set { _fund = value; } }
     public float Reputation { get { return _reputation; } set { _reputation = value; } }
@@ -108,16 +135,21 @@ public class CGameProgressManager : MonoBehaviour
 
     public int Level { get { return _level; } set { _level = value; } }
 
-    public List<IItemable> Inventory {  get { return _inventory; } }
+    public List<IItemable> Inventory {  get { return _inventory; } set { _inventory = value; } }
     #endregion
 
 
     private void Awake()
     {
+        _level = 0;
+
         if (_instance == null)
         {
             _instance = this;
             DontDestroyOnLoad(this.gameObject);
+
+            CSaveAndLoadManager.LoadGame();
+            Debug.Log(_level);
         }
 
         else if (_instance != this)
@@ -126,7 +158,6 @@ public class CGameProgressManager : MonoBehaviour
             return;
         }
 
-        _level = 0;
     }
 
     public void OnDestroy()
