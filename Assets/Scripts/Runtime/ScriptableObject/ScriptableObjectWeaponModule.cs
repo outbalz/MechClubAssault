@@ -20,6 +20,10 @@ public class ScriptableObjectWeaponModule : ScriptableObject, IItemable
     [SerializeField] private float _weaponDamege;
     [SerializeField] private float _weaponEnegyCost;
 
+    [Space]
+    [SerializeField] private AudioClip _weaponSound;
+
+    [Space]
     [SerializeField] private float _price;
 
     public string ModuleName { get { return _name; } }
@@ -32,6 +36,7 @@ public class ScriptableObjectWeaponModule : ScriptableObject, IItemable
     public float WeaponCoolDown { get { return _weaponCoolDown; } }
     public float WeaponDamege { get { return _weaponDamege; } }
     public float WeaponEnegyCost {  get { return _weaponEnegyCost; } }
+    public AudioClip WeaponSound { get { return _weaponSound; } }
     public float Price { get { return _price; } }
 
 }

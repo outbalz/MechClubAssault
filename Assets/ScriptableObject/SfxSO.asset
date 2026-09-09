@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7140ae76fdacf174598d64a087613836, type: 3}
+  m_Name: SfxSO
+  m_EditorClassIdentifier: 
+  _select: {fileID: 8300000, guid: e8c85d3a05b2039458a329b2d0dcc639, type: 3}
+  _Cancel: {fileID: 8300000, guid: 5ae571339cfbc874395afebd2c9f175f, type: 3}
+  _Cursor: {fileID: 8300000, guid: 2b1f1ed834646ff4c9cbd369043e7943, type: 3}

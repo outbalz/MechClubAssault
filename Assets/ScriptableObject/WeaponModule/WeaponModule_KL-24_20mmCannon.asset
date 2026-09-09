@@ -21,4 +21,5 @@ MonoBehaviour:
   _weaponCoolDown: 5
   _weaponDamege: 7
   _weaponEnegyCost: 2
+  _weaponSound: {fileID: 8300000, guid: 0af145d1d8c5be04f9265d7e276596c8, type: 3}
   _price: 20

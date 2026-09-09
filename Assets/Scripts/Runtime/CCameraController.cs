@@ -86,7 +86,7 @@ public class CCameraController : MonoBehaviour
     
     private float GetSmmothT(float sharpness)
     {
-        return 1f - Mathf.Exp(-sharpness * Time.deltaTime);
+        return 1f - Mathf.Exp(-sharpness * Time.unscaledDeltaTime);
     }
     
     private void ApplyCameraPose(Vector3 desiredPos, Quaternion desiredRot, float sharpness)
@@ -165,7 +165,7 @@ public class CCameraController : MonoBehaviour
             {
                 Vector3 dir = _rotOffset * Vector3.forward * wheelInput;
 
-                _camTargetOffset -= dir * 50 * _sensitivity * Time.deltaTime;
+                _camTargetOffset -= dir * 50 * _sensitivity * Time.unscaledDeltaTime;
             }
         }
 
@@ -194,7 +194,7 @@ public class CCameraController : MonoBehaviour
             {
                 Vector3 dir = _rotOffset * Vector3.forward * mouseY + _rotOffset * Vector3.right * mouseX;
 
-                _camTargetOffset += dir * 1 * _sensitivity * Time.deltaTime;
+                _camTargetOffset += dir * 1 * _sensitivity * Time.unscaledDeltaTime;
             }
 
         }
@@ -214,7 +214,7 @@ public class CCameraController : MonoBehaviour
 
             Vector3 dir = _rotOffset * Vector3.forward * v;
 
-            _camTargetOffset -= dir * 5 * _sensitivity * Time.deltaTime;
+            _camTargetOffset -= dir * 5 * _sensitivity * Time.unscaledDeltaTime;
         }
 
         if (h != 0f)
@@ -229,7 +229,7 @@ public class CCameraController : MonoBehaviour
 
             Vector3 dir = _rotOffset * Vector3.right * h;
 
-            _camTargetOffset -= dir * 5 * _sensitivity * Time.deltaTime;
+            _camTargetOffset -= dir * 5 * _sensitivity * Time.unscaledDeltaTime;
         }
 
         if (Input.GetKeyDown(KeyCode.Backspace))

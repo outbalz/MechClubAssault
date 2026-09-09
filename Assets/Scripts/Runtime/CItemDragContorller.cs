@@ -61,6 +61,7 @@ public class CItemDragContorller : MonoBehaviour, IDragHandler, IBeginDragHandle
         }
 
         transform.SetParent(_slot.transform);
+        CSoundManager.Instance.PlayCursorSound();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -79,6 +80,7 @@ public class CItemDragContorller : MonoBehaviour, IDragHandler, IBeginDragHandle
     {
         transform.SetParent(_slot.transform);
         _image.raycastTarget = true;
+        CSoundManager.Instance.PlayCursorSound();
     }
 
     public void OnPointerEnter(PointerEventData eventData)

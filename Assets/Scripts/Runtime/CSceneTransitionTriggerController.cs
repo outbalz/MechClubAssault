@@ -63,10 +63,12 @@ public class CSceneTransitionTrigerController : MonoBehaviour
 
             if (moduleCheck)
             {
+                CSoundManager.Instance.PlaySelectSound();
                 return true;
             }
         }
 
+        CSoundManager.Instance.PlayCancelSound();
         Debug.Log("No valid clubMember");
         return false;
     }

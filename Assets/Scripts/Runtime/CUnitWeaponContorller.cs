@@ -21,8 +21,9 @@ public class CUnitWeaponContorller : MonoBehaviour
     */
 
     [SerializeField] private ParticleSystem _weaponParticleL;
-    [SerializeField] private bool _weaponEnableL;
+    [SerializeField] private AudioSource _weaponLSFX;
 
+    [SerializeField] private bool _weaponEnableL;
 
     [Header("weaponR")]
     [SerializeField] private ScriptableObjectWeaponModule _weaponR;
@@ -40,6 +41,8 @@ public class CUnitWeaponContorller : MonoBehaviour
     */
 
     [SerializeField] private ParticleSystem _weaponParticleR;
+    [SerializeField] private AudioSource _weaponRSFX;
+
     [SerializeField] private bool _weaponEnableR;
 
     [Space]
@@ -101,6 +104,11 @@ public class CUnitWeaponContorller : MonoBehaviour
                 Debug.LogWarning("Missing _combatTracker");
             }
         }
+
+        if(_weaponLSFX == null || _weaponRSFX == null)
+        {
+            Debug.LogWarning("Missing AudioSource");
+        }
     }
 
 
@@ -133,6 +141,8 @@ public class CUnitWeaponContorller : MonoBehaviour
             _weaponLOutterArc.positionCount = 2;
             _weaponLOutterArc.SetPosition(1, Vector3.forward * _weaponL.WeaponRange);
             _weaponLOutterArc.transform.Rotate(Vector3.up, -_weaponL.WeaponOutterArcDeg);
+
+            _weaponLSFX.clip = _weaponL.WeaponSound;
         }
 
         if(_weaponEnableR)
@@ -144,6 +154,8 @@ public class CUnitWeaponContorller : MonoBehaviour
             _weaponROutterArc.positionCount = 2;
             _weaponROutterArc.SetPosition(1, Vector3.forward * _weaponR.WeaponRange);
             _weaponROutterArc.transform.Rotate(Vector3.up, _weaponR.WeaponOutterArcDeg);
+
+            _weaponRSFX.clip = _weaponR.WeaponSound;
         }
 
         if(_visualizeRange == false)
@@ -186,6 +198,8 @@ public class CUnitWeaponContorller : MonoBehaviour
                 if (isHit)
                 {
                     _weaponParticleL.Play();
+                    _weaponLSFX.pitch = Random.Range(0.8f, 1.2f);
+                    _weaponLSFX.Play();
                     _weaponTimerL = _weaponL.WeaponCoolDown;
                     hit.collider.GetComponent<IDamageable>().TakeHit(_weaponL.WeaponDamege);
                     _combatTracker.SetLastCombatTurn();
@@ -216,6 +230,8 @@ public class CUnitWeaponContorller : MonoBehaviour
                 if (isHit)
                 {
                     _weaponParticleR.Play();
+                    _weaponRSFX.pitch = Random.Range(0.8f, 1.2f);
+                    _weaponRSFX.Play();
                     _weaponTimerR = _weaponR.WeaponCoolDown;
                     hit.collider.GetComponent<IDamageable>().TakeHit(_weaponR.WeaponDamege);
                     _combatTracker.SetLastCombatTurn();

@@ -56,6 +56,7 @@ public class CClubMeetingStateManager : MonoBehaviour
 
     #region private var
     private CGameProgressManager _gameProgressManager;
+    private CSoundManager _soundManager;
 
     private EClubMeetingState _currentState;
 
@@ -101,6 +102,7 @@ public class CClubMeetingStateManager : MonoBehaviour
     private void Start()
     {
         _gameProgressManager = CGameProgressManager.Instance;
+        _soundManager = CSoundManager.Instance;
 
         _rerollPrice = 1;
         _currentState = EClubMeetingState.ActivitySelection;
@@ -210,26 +212,31 @@ public class CClubMeetingStateManager : MonoBehaviour
         _shopPanel.SetActive(newState == EClubMeetingState.Shop);
         _recruitPanel.SetActive(newState == EClubMeetingState.Recruit);
         _closeButton.SetActive(newState != EClubMeetingState.ActivitySelection);
+
     }
 
     public void OnCloseButtonClicked()
     {
         ChangeState(EClubMeetingState.ActivitySelection);
+        _soundManager.PlayCursorSound();
     }
 
     public void OnManagementButtonClicked()
     {
         ChangeState(EClubMeetingState.Management);
+        _soundManager.PlaySelectSound();
     }
 
     public void OnShopButtonClicked()
     {
         ChangeState(EClubMeetingState.Shop);
+        _soundManager.PlaySelectSound();
     }
 
     public void OnRecruitButtonClicked()
     {
         ChangeState(EClubMeetingState.Recruit);
+        _soundManager.PlaySelectSound();
     }
 
     public void OnShopItemClicked(int index)
@@ -245,6 +252,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         if (_gameProgressManager.Fund < selectedItem.Price)
         {
             Debug.LogWarning("Not enough funds to purchase this item.");
+            _soundManager.PlayCancelSound();
             return;
         }
 
@@ -255,11 +263,14 @@ public class CClubMeetingStateManager : MonoBehaviour
             _gameProgressManager.Fund -= selectedItem.Price;
             UpdateFundText();
             UpdateInventorySlot();
+            
             Debug.Log($"Purchased {selectedItem.ModuleName} for {selectedItem.Price}.");
+            _soundManager.PlaySelectSound();
         }
         else
         {
             Debug.LogWarning("Not enough space in inventory to add this item.");
+            _soundManager.PlayCancelSound();
         }
     }
 
@@ -268,6 +279,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         if (_gameProgressManager.Fund < _rerollPrice)
         {
             Debug.LogWarning("Not enough funds to reroll shop items.");
+            _soundManager.PlayCancelSound();
             return;
         }
 
@@ -275,6 +287,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         _rerollPrice++;
         UpdateFundText();
         InitializeShopItems();
+        _soundManager.PlayCursorSound();
     }
 
     public void OnRerollByReputationButtonClicked()
@@ -282,12 +295,14 @@ public class CClubMeetingStateManager : MonoBehaviour
         if (_gameProgressManager.Reputation < 5)
         {
             Debug.LogWarning("Not enough reputation to reroll shop items.");
+            _soundManager.PlayCancelSound();
             return;
         }
 
         _gameProgressManager.Reputation -= 5;
         UpdateFundText();
         InitializeShopItems();
+        _soundManager.PlayCursorSound();
     }
 
     public void OnRecruitNewMemberButtonClicked(CanvasGroup canvasGroup)
@@ -295,6 +310,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         if(_gameProgressManager.Reputation < 5)
         {
             Debug.LogWarning("Not enough reputation to Recruit New Member");
+            _soundManager.PlayCancelSound();
             return;
         }
 
@@ -350,6 +366,8 @@ public class CClubMeetingStateManager : MonoBehaviour
 
             _recruitChanceText.text = $"{_gameProgressManager.RecruitChance}%";
 
+            _soundManager.PlayCursorSound();
+
         }
 
         else
@@ -377,6 +395,7 @@ public class CClubMeetingStateManager : MonoBehaviour
             _gameProgressManager.RecruitChance = 1;
 
             _recruitChanceText.text = $"{_gameProgressManager.RecruitChance}%";
+            _soundManager.PlaySelectSound();
         }
 
     }

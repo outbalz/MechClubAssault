@@ -6,15 +6,22 @@ using UnityEngine.UI;
 
 public class CSeceneManager : MonoBehaviour
 {
-
+    #region inspector
     [SerializeField] private CSceneTransitionUI _transitionUI;
     [SerializeField] private Slider _loadingBar;
+    [SerializeField] private ScriptableObjectSceneData _currentScene;
+    #endregion
 
-
+    #region private var
     private static CSeceneManager _instance;
     private bool _isLoading = false;
+    #endregion
 
+    #region getter
     public static CSeceneManager Instance { get { return _instance; } }
+    public static ScriptableObjectSceneData CurrentScene {  get { return _instance._currentScene; } }
+    #endregion
+
 
     private void Awake()
     {
@@ -30,7 +37,7 @@ public class CSeceneManager : MonoBehaviour
 
         if(_loadingBar == null)
         {
-            Debug.LogWarning("Loading bar is not assigned");
+            Debug.LogWarning("Missing _loadingbar");
         }
 
         _isLoading = false;
@@ -59,7 +66,7 @@ public class CSeceneManager : MonoBehaviour
     }
 
 
-    public void LoadScene(ScriptableObjectSceneData sceneData, float fadeDuration)
+    public void LoadScene(ScriptableObjectSceneData sceneData, float fadeDuration = -1)
     {
         if (sceneData == null)
         {
@@ -74,8 +81,9 @@ public class CSeceneManager : MonoBehaviour
             return;
         }
 
+        CGameOptitonManager.Instance.CloseOptionMenu();
+        _currentScene = sceneData;
         StartCoroutine(Co_LoadSceneWithTransition(sceneName, fadeDuration));
-
     }
 
 
@@ -96,8 +104,6 @@ public class CSeceneManager : MonoBehaviour
         {
             yield return _transitionUI.Co_FadeTo(1f, fadeDuration);
         }
-
-        //비동기 씬 로드
 
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
 
@@ -124,7 +130,7 @@ public class CSeceneManager : MonoBehaviour
         _isLoading = false;
 
     }
-
+    /*
     public void LoadScene(ScriptableObjectSceneData sceneData)
     {
         if (sceneData == null)
@@ -139,7 +145,7 @@ public class CSeceneManager : MonoBehaviour
             return;
         }
         StartCoroutine(Co_LoadSceneWithTransition(sceneName, -1f));
-    }
+    }*/
 
 
 }

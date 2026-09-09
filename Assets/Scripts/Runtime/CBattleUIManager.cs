@@ -10,6 +10,7 @@ public class CBattleUIManager : MonoBehaviour
     [Header("manager")]
     [SerializeField] private CUnitInputManager _unitInputManager;
     [SerializeField] private CTurnStateManager _turnStateManager;
+    [SerializeField] private CSoundManager _soundManager;
     [SerializeField] private CSceneTransitionTrigerController _transitionTrigerController;
 
     [Space]
@@ -109,6 +110,10 @@ public class CBattleUIManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        _soundManager = CSoundManager.Instance;
+    }
 
 
     public void TurnInitSelectedUnitUi()
@@ -264,7 +269,7 @@ public class CBattleUIManager : MonoBehaviour
 
         UpdateSpeed(unit, MovementController);
         UpdateEnergy(unit);
-
+        _soundManager.PlayCursorSound();
         //Debug.Log("!!");
     }
 
@@ -307,6 +312,7 @@ public class CBattleUIManager : MonoBehaviour
         weaponContorller.SetWeaponEnable((i==0)? true : false, Enable);
 
         UpdateEnergy(unit);
+        _soundManager.PlaySelectSound();
     }
     
     private void InitWeaponToggle()
@@ -384,6 +390,8 @@ public class CBattleUIManager : MonoBehaviour
             }
 
         }
+
+        _soundManager.PlaySelectSound();
     }
 
     public void SetShieldRegen(bool init)
@@ -430,7 +438,7 @@ public class CBattleUIManager : MonoBehaviour
         //unit.SetShieldBar();
 
         UpdateEnergy(unit);
-
+        _soundManager.PlayCursorSound();
     }
 
     public void BattleWin()
@@ -505,5 +513,7 @@ public class CBattleUIManager : MonoBehaviour
         {
             _transitionTrigerController.TriggerSceneTransition(_endingScene);
         }
+
+        _soundManager.PlaySelectSound();
     }
 }

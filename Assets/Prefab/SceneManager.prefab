@@ -329,6 +329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transitionUI: {fileID: 6791014421950005502}
   _loadingBar: {fileID: 237286801591705663}
+  _transitionAudio: {fileID: 0}
 --- !u!1 &3314120726048526304
 GameObject:
   m_ObjectHideFlags: 0
