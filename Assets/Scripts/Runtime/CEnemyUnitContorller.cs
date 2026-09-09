@@ -50,7 +50,7 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
     #endregion
 
     #region private var
-    private CTurnData _turnData;
+    //private CTurnData _turnData;
     private int _turnNum = 0;
     private int _lastCombatTurn = 0;
     private CUnitController _targetUnit;
@@ -58,7 +58,7 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
 
     #region getter
     public CUnitMovementController MovementController { get { return _movementController; } }
-    public CTurnData TurnData { get { return _turnData; } }
+    //public CTurnData TurnData { get { return _turnData; } }
     public CUnitController TargetUnit { /*get { return _targetUnit; }*/ set { _targetUnit = value; } }
     #endregion
 
@@ -106,12 +106,12 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
                 Debug.LogWarning("Missing CUnitWeaponContorller");
             }
         }
-
+        /*
         if (_turnData == null)
         {
             _turnData = new CTurnData(_turnNum);
         }
-
+        */
         if(_unitUi == null || _shieldBar == null)
         {
             Debug.LogWarning("Missing Ui element");
@@ -299,7 +299,7 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
 
         }
 
-        TurnData.Positions = posPath;
+        //TurnData.Positions = posPath;
 
         MovementController.SetTargetPos(dest, posPath[posPath.Length - 1]);
 

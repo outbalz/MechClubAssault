@@ -144,7 +144,9 @@ public class CTurnStateManager : MonoBehaviour
 
         for (int i = 0; i < _playerUnits.Count; i++)
         {
-            Vector3[] tunPosData = _playerUnits[i].TurnData.Positions;
+
+            //Vector3[] tunPosData = _playerUnits[i].TurnData.Positions;
+            Vector3[] tunPosData = new Vector3[5];
 
             for (int j = 0; j < tunPosData.Length ; j++)
             {

@@ -280,7 +280,7 @@ public class CUnitInputManager : MonoBehaviour
 
         }
 
-        _selectedUnit.TurnData.Positions = posPath;
+        //_selectedUnit.TurnData.Positions = posPath;
         _selectedUnit.VisualizePath(linePos);
 
         _selectedUnit.MovementController.SetTargetPos(dest, posPath[posPath.Length-1]);

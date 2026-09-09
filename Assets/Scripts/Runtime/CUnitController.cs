@@ -51,7 +51,7 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
     #endregion
 
     #region private var
-    private CTurnData _turnData;
+    //private CTurnData _turnData;
     private int _turnNum = 0;
     private int _lastCombatTurn = 0;
     private Transform _cameraTr;
@@ -72,7 +72,7 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
     public int ShieldRegenLevel { get {  return _shieldRegenLevel; } set { _shieldRegenLevel = value; } }
     public Transform UnitUI { get { return _unitUi; } }
 
-    public CTurnData TurnData { get { return _turnData; } }
+    //public CTurnData TurnData { get { return _turnData; } }
     public bool IsReady { get { return _isReady; } set { _isReady = value; } }
     public bool IsInitedForTurn { get { return _isInitedForTurn; } set { _isInitedForTurn = value; } }
     #endregion
@@ -108,11 +108,12 @@ public class CUnitController : MonoBehaviour, IDamageable, ICombatTracker
 
         }
 
+        /*
         if (_turnData == null)
         {
             _turnData = new CTurnData(_turnNum);
         }
-
+        */
         if (_lineRenderer == null)
         {
             if (TryGetComponent<LineRenderer>(out _lineRenderer) == false)
