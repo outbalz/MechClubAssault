@@ -329,7 +329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transitionUI: {fileID: 6791014421950005502}
   _loadingBar: {fileID: 237286801591705663}
-  _transitionAudio: {fileID: 0}
+  _currentScene: {fileID: 0}
 --- !u!1 &3314120726048526304
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,7 +559,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f10e96d3dd4da174896524cb6931e6c3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8011a062a31d81944af4b1ef48856ada, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

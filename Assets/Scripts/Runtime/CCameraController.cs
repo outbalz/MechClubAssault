@@ -46,16 +46,15 @@ public class CCameraController : MonoBehaviour
             return;
         }
 
-        if (_target == null)
-        {
-            Debug.LogWarning("타겟 누락");
-            this.enabled = false;
-            return;
-        }
-
         _camTr = _camera.transform;
 
         _rotOffset = Quaternion.identity;
+
+        /*
+        if (_target == null)
+        {
+            return;
+        }
 
         Vector3 desiredPos;
         Quaternion desiredRot;
@@ -64,6 +63,7 @@ public class CCameraController : MonoBehaviour
 
         ApplyCameraPose(desiredPos, desiredRot);
         _isOnTarget = true;
+        */
     }
 
     private void Update()

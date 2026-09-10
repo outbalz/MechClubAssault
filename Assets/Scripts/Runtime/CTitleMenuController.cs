@@ -59,6 +59,6 @@ public class CTitleMenuController : MonoBehaviour
 
     public void OpenOptitonWindow()
     {
-        CGameOptitonManager.Instance.OpenOptitonWindow();
+        CGameOptionManager.Instance.OpenOptitonWindow();
     }
 }
