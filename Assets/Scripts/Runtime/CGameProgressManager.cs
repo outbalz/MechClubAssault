@@ -149,7 +149,7 @@ public class CGameProgressManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
 
             CSaveAndLoadManager.LoadGame();
-            Debug.Log(_level);
+            //Debug.Log(_level);
         }
 
         else if (_instance != this)

@@ -28,6 +28,7 @@ public class CClubMeetingStateManager : MonoBehaviour
     [SerializeField] private Transform _managementPanelLayoutTr;
     [SerializeField] private Transform _inventorySlotLayoutTr;
     [SerializeField] private Transform _unitPreviewLayoutTr;
+    [SerializeField] private Transform _messageLayoutTr;
 
     [Space]
     [Header("shop item")]
@@ -52,6 +53,7 @@ public class CClubMeetingStateManager : MonoBehaviour
     [SerializeField] private GameObject _clubMemberPanelPrefab;
     [SerializeField] private GameObject _itemSlotPrefab;
     [SerializeField] private GameObject _unitPreviewPrefab;
+    [SerializeField] private GameObject _messagePrefab;
     #endregion
 
     #region private var
@@ -65,8 +67,11 @@ public class CClubMeetingStateManager : MonoBehaviour
     private int _rerollPrice = 1;
 
     private CItemSlotController[] _inventorySlot = new CItemSlotController[24];
+
+    private static CClubMeetingStateManager _instance;
     #endregion
 
+    public static CClubMeetingStateManager Instance {  get { return _instance; } }
 
     private void Awake()
     {
@@ -81,7 +86,7 @@ public class CClubMeetingStateManager : MonoBehaviour
             Debug.LogWarning("Missing Text element");
         }
 
-        if (_managementPanelLayoutTr == null || _inventorySlotLayoutTr == null || _unitPreviewLayoutTr == null)
+        if (_managementPanelLayoutTr == null || _inventorySlotLayoutTr == null || _unitPreviewLayoutTr == null || _messageLayoutTr == null)
         {
             Debug.LogWarning("Missing LayoutTr element");
         }
@@ -91,12 +96,17 @@ public class CClubMeetingStateManager : MonoBehaviour
             Debug.LogWarning("Missing Close Button");
         }
 
-        if (_clubMemberPanelPrefab == null || _itemSlotPrefab == null ||_unitPreviewPrefab == null)
+        if (_clubMemberPanelPrefab == null || _itemSlotPrefab == null ||_unitPreviewPrefab == null || _messagePrefab == null) 
         {
             Debug.LogWarning("Missing prefab element");
         }
-
         #endregion
+
+        if(_instance == null)
+        {
+            _instance = this;
+        }
+ 
     }
 
     private void Start()
@@ -254,6 +264,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         if (_gameProgressManager.Fund < selectedItem.Price)
         {
             Debug.LogWarning("Not enough funds to purchase this item.");
+            ShowMessage("자금이 부족해요!!");
             _soundManager.PlayCancelSound();
             return;
         }
@@ -272,6 +283,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Not enough space in inventory to add this item.");
+            ShowMessage("창고가 가득찼어요!!");
             _soundManager.PlayCancelSound();
         }
     }
@@ -281,6 +293,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         if (_gameProgressManager.Fund < _rerollPrice)
         {
             Debug.LogWarning("Not enough funds to reroll shop items.");
+            ShowMessage("자금이 부족해요!!");
             _soundManager.PlayCancelSound();
             return;
         }
@@ -297,6 +310,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         if (_gameProgressManager.Reputation < 5)
         {
             Debug.LogWarning("Not enough reputation to reroll shop items.");
+            ShowMessage("평판이 부족해요!!");
             _soundManager.PlayCancelSound();
             return;
         }
@@ -312,6 +326,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         if(_gameProgressManager.Reputation < 5)
         {
             Debug.LogWarning("Not enough reputation to Recruit New Member");
+            ShowMessage("평판이 부족해요!!");
             _soundManager.PlayCancelSound();
             return;
         }
@@ -427,4 +442,28 @@ public class CClubMeetingStateManager : MonoBehaviour
         Debug.Log("No valid clubMember");
         return false;
     }*/
+
+    public void ShowMessage(string messageTxt)
+    {
+        GameObject message = Instantiate(_messagePrefab,_messageLayoutTr);
+
+        TMP_Text text = message.GetComponentInChildren<TMP_Text>();
+        text.text = messageTxt;
+
+        StartCoroutine(Co_messageRoutine(message));
+    }
+
+    private IEnumerator Co_messageRoutine(GameObject messageGO)
+    {
+        CanvasGroup canvasGroup = messageGO.GetComponent<CanvasGroup>();
+
+        while (canvasGroup.alpha > 0)
+        {
+            canvasGroup.alpha -= Time.unscaledDeltaTime;
+            messageGO.transform.position += Vector3.up * 10 * Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        Destroy(messageGO);
+    }
 }

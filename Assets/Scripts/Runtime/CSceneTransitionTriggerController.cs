@@ -69,6 +69,7 @@ public class CSceneTransitionTrigerController : MonoBehaviour
         }
 
         CSoundManager.Instance.PlayCancelSound();
+        CClubMeetingStateManager.Instance.ShowMessage("출전할수 있는 부원이 없어요!!");
         Debug.Log("No valid clubMember");
         return false;
     }
@@ -76,6 +77,7 @@ public class CSceneTransitionTrigerController : MonoBehaviour
 
     public void ExitGame()
     {
+        CSaveAndLoadManager.SaveGame();
         Application.Quit();
     }
 }

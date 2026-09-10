@@ -155,6 +155,7 @@ public class CGameOptionManager : MonoBehaviour
 
     public void ExitGame()
     {
+        CSaveAndLoadManager.SaveGame();
         Application.Quit();
     }
 

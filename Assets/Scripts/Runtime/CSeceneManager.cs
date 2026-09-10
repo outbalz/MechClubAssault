@@ -105,16 +105,18 @@ public class CSeceneManager : MonoBehaviour
             yield return _transitionUI.Co_FadeTo(1f, fadeDuration);
         }
 
+        _loadingBar.SetValueWithoutNotify(0);
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
 
         op.allowSceneActivation = false;
 
         while (op.progress < 0.9f)
         {
-            _loadingBar.value = op.progress;
+            _loadingBar.SetValueWithoutNotify(op.progress);
             yield return null;
         }
 
+        _loadingBar.SetValueWithoutNotify(1);
         op.allowSceneActivation = true;
 
         yield return null;
