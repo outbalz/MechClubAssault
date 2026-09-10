@@ -64,7 +64,7 @@ public class CClubMeetingStateManager : MonoBehaviour
 
     private IItemable[] _shopItems;
 
-    private int _rerollPrice = 1;
+    //private int _gameProgressManager.RerollPrice = 1;
 
     private CItemSlotController[] _inventorySlot = new CItemSlotController[24];
 
@@ -114,8 +114,9 @@ public class CClubMeetingStateManager : MonoBehaviour
         _gameProgressManager = CGameProgressManager.Instance;
         _soundManager = CSoundManager.Instance;
 
-        _rerollPrice = 1;
         _currentState = EClubMeetingState.ActivitySelection;
+
+        _gameProgressManager.ApplyRandomState();
 
         UpdateFundText();
         InitializeClupMember();
@@ -212,7 +213,7 @@ public class CClubMeetingStateManager : MonoBehaviour
 
         if(_rerollText != null)
         {
-            _rerollText.text = $"리롤 {_rerollPrice}만원";
+            _rerollText.text = $"리롤 {_gameProgressManager.RerollPrice}만원";
         }
     }
 
@@ -290,7 +291,7 @@ public class CClubMeetingStateManager : MonoBehaviour
 
     public void OnRerollByFundButtonClicked()
     {
-        if (_gameProgressManager.Fund < _rerollPrice)
+        if (_gameProgressManager.Fund < _gameProgressManager.RerollPrice)
         {
             Debug.LogWarning("Not enough funds to reroll shop items.");
             ShowMessage("자금이 부족해요!!");
@@ -298,8 +299,9 @@ public class CClubMeetingStateManager : MonoBehaviour
             return;
         }
 
-        _gameProgressManager.Fund -= _rerollPrice;
-        _rerollPrice++;
+        _gameProgressManager.Fund -= _gameProgressManager.RerollPrice;
+        _gameProgressManager.RerollPrice++;
+        _gameProgressManager.SetRandomState();
         UpdateFundText();
         InitializeShopItems();
         _soundManager.PlayCursorSound();
@@ -316,6 +318,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         }
 
         _gameProgressManager.Reputation -= 5;
+        _gameProgressManager.SetRandomState();
         UpdateFundText();
         InitializeShopItems();
         _soundManager.PlayCursorSound();

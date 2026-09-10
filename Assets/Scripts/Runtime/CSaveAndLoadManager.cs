@@ -16,25 +16,35 @@ public class CSaveData
     [SerializeField] private int[] _weaponModuleRIndex;
     
     [SerializeField] private int[] _hairStyleIndex;
-    [SerializeField] private float[][] _hairColor;
-    [SerializeField] private float[][] _hairHighightColor;
+    [SerializeField] private Color[] _hairColor;
+    [SerializeField] private Color[] _hairHighightColor;
 
     [SerializeField] private int[] _eyeColorDataIndex;
+
+    //[SerializeField] private List<CClubMember> _clubMembers;
 
     [SerializeField] private int _level;
     [SerializeField] private float _fund;
     [SerializeField] private float _reputation;
     [SerializeField] private int _recruitChance;
+    [SerializeField] int _rerollPrice;
+
+    //[SerializeField] private List<IItemable> _inventory;
 
     [SerializeField] private int[] _inventoryItemType;
     [SerializeField] private int[] _inventoryItemIndex;
 
+    [SerializeField] private Random.State _randomState;
+
     public CSaveData(CGameProgressManager gameProgress)
     {
+        //_clubMembers = gameProgress.ClubMembers;
+
         _level = gameProgress.Level;
         _fund = gameProgress.Fund;
         _reputation = gameProgress.Reputation;
         _recruitChance = gameProgress.RecruitChance;
+        _rerollPrice = gameProgress.RerollPrice;
 
         _clumManberNames = new string[gameProgress.ClubMembers.Count];
         _generatorModuleIndex = new int[gameProgress.ClubMembers.Count];
@@ -44,8 +54,8 @@ public class CSaveData
         _weaponModuleRIndex = new int[gameProgress.ClubMembers.Count];
 
         _hairStyleIndex = new int[gameProgress.ClubMembers.Count];
-        _hairColor = new float[gameProgress.ClubMembers.Count][];
-        _hairHighightColor = new float[gameProgress.ClubMembers.Count][];
+        _hairColor = new Color[gameProgress.ClubMembers.Count];
+        _hairHighightColor = new Color[gameProgress.ClubMembers.Count];
 
         _eyeColorDataIndex = new int[gameProgress.ClubMembers.Count];
 
@@ -117,12 +127,13 @@ public class CSaveData
 
             _hairStyleIndex[i] = clubMember.HairStyleIndex;
 
-            _hairColor[i] = new float[3] { clubMember.HairColor.r, clubMember.HairColor.g, clubMember.HairColor.b };
-            _hairHighightColor[i] = new float[3] { clubMember.HairHighightColor.r, clubMember.HairHighightColor.g, clubMember.HairHighightColor.b };
+            _hairColor[i] = clubMember.HairColor;
+            _hairHighightColor[i] = clubMember.HairHighightColor;
 
             _eyeColorDataIndex[i] = eyeDataMap[clubMember.EyeColorData];
         }
 
+        //_inventory = gameProgress.Inventory;
 
         _inventoryItemType = new int[gameProgress.Inventory.Count]; 
         _inventoryItemIndex = new int[gameProgress.Inventory.Count];
@@ -154,6 +165,7 @@ public class CSaveData
             }
         }
 
+        _randomState = gameProgress.RandomState;
     }
 
     private List<CClubMember> GetClubMember(ScriptableObjectDataBase DB)
@@ -172,8 +184,8 @@ public class CSaveData
             ScriptableObjectWeaponModule weaponModuleR = (_weaponModuleRIndex[i] > -1) ? DB.GetWeaponModule(_weaponModuleRIndex[i]) : null;
 
             int hairStyleIndex = _hairStyleIndex[i];
-            Color hairColor = new Color(_hairColor[i][0], _hairColor[i][1], _hairColor[i][2],1);
-            Color hairHighightColor = new Color(_hairHighightColor[i][0], _hairHighightColor[i][1], _hairHighightColor[i][2],1);
+            Color hairColor = _hairColor[i];
+            Color hairHighightColor = _hairHighightColor[i];
 
             ScriptableObjectEyeColorData eyeColorData = DB.GetEyeColorData(_eyeColorDataIndex[i]);
             CClubMember clubMember = new CClubMember
@@ -231,10 +243,16 @@ public class CSaveData
         progressManager.ClubMembers = GetClubMember(DB);
         progressManager.Inventory = GetInventory(DB);
 
+        //progressManager.ClubMembers = _clubMembers;
+        //progressManager.Inventory = _inventory;
+
         progressManager.Level = _level;
         progressManager.Fund = _fund;
         progressManager.Reputation = _reputation;
         progressManager.RecruitChance = _recruitChance;
+        progressManager.RerollPrice = _rerollPrice;
+
+        progressManager.SetRandomState(_randomState);
     }
 }
 
@@ -254,7 +272,9 @@ public static class CSaveAndLoadManager
 
         CSaveData saveData = new CSaveData(CGameProgressManager.Instance);
 
-        formatter.Serialize(fileStream, saveData);
+        string saveDataJason = JsonUtility.ToJson(saveData);
+
+        formatter.Serialize(fileStream, saveDataJason);
         fileStream.Close();
     }
 
@@ -270,6 +290,8 @@ public static class CSaveAndLoadManager
             return;
         }
 
+        Debug.Log(_path);
+
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream fileStream = new FileStream(_path, FileMode.Open);
 
@@ -278,9 +300,21 @@ public static class CSaveAndLoadManager
             return;
         }
 
-        CSaveData saveData = formatter.Deserialize(fileStream) as CSaveData;
+        CSaveData saveData = JsonUtility.FromJson<CSaveData>(formatter.Deserialize(fileStream) as string);
         fileStream.Close();
 
-        saveData.LoadData(CGameProgressManager.Instance);
+        if (saveData == null)
+        {
+            Debug.LogWarning("fail to laod saveData");
+            return;
+        }
+        try
+        {
+            saveData.LoadData(CGameProgressManager.Instance);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning(e.Message);
+        }
     }
 }

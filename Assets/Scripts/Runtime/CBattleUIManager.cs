@@ -503,6 +503,9 @@ public class CBattleUIManager : MonoBehaviour
         progressManager.Fund += _turnStateManager.RewardPrize;
         progressManager.Reputation += _turnStateManager.RewardReputation + _turnStateManager.RewardComboReputation;
         progressManager.Level++;
+        progressManager.RerollPrice = 1;
+
+        progressManager.SetRandomState();
 
         if (progressManager.Level < 14)
         {

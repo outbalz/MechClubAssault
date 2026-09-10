@@ -1,8 +1,9 @@
-﻿using System;
+﻿//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class CClubMember
 {
     private string _name;
@@ -48,7 +49,7 @@ public class CClubMember
         this._weaponModuleL = weaponModuleL;
         this._weaponModuleR = weaponModuleR;
 
-        _hairStyleIndex = UnityEngine.Random.Range(0, 8);
+        _hairStyleIndex = Random.Range(0, 8);
         CUtil.GetRandomHairColor(out _hairColor, out _hairHighightColor);
         _eyeColorData = CGameProgressManager.Instance.SODB.GetRandomEyeColor();
     }
@@ -82,7 +83,7 @@ public class CClubMember
 }
 
 
-[Serializable]
+[System.Serializable]
 public class CEnemyUnitData
 {
     [SerializeField] private string _unitName;
@@ -106,7 +107,6 @@ public class CGameProgressManager : MonoBehaviour
 {
     #region inspector
     [SerializeField] private ScriptableObjectDataBase _SODB;
-
     #endregion
 
     #region private var
@@ -116,9 +116,12 @@ public class CGameProgressManager : MonoBehaviour
     private int _level = 0;
     private float _fund = 0;
     private float _reputation = 0;
+    private int _rerollPrice = 1;
     private int _recruitChance = 1;
 
     private List<IItemable> _inventory = new List<IItemable>();
+
+    private Random.State _randomState;
     #endregion
 
     #region getter
@@ -131,17 +134,22 @@ public class CGameProgressManager : MonoBehaviour
     public float Fund { get { return _fund; } set { _fund = value; } }
     public float Reputation { get { return _reputation; } set { _reputation = value; } }
 
+    public int RerollPrice { get { return _rerollPrice; } set { _rerollPrice = value; } }
+
     public int RecruitChance { get { return _recruitChance; } set { _recruitChance = value; } }
 
     public int Level { get { return _level; } set { _level = value; } }
 
     public List<IItemable> Inventory {  get { return _inventory; } set { _inventory = value; } }
+
+    public Random.State RandomState { get {  return _randomState; } }
     #endregion
 
 
     private void Awake()
     {
         _level = 0;
+        _randomState = Random.state;
 
         if (_instance == null)
         {
@@ -160,16 +168,19 @@ public class CGameProgressManager : MonoBehaviour
 
     }
 
-    public void OnDestroy()
+    private void OnDestroy()
     {
         if (_instance == this)
         {
             _instance = null;
         }
     }
-
+    
     public void ResetGameProgress()
     {
+        Random.InitState(Random.Range(0, 1000000));
+        _randomState = Random.state;
+
         _clubMembers.Clear();
         _level = 0;
         _fund = 0;
@@ -201,7 +212,7 @@ public class CGameProgressManager : MonoBehaviour
 
         if (index < 0)
         {
-            index = UnityEngine.Random.Range(0, _SODB.GetLevelDataCount(_level));
+            index = Random.Range(0, _SODB.GetLevelDataCount(_level));
         }
 
         ScriptableObjectLevelData levelData = _SODB.GetLevelData(_level, index);
@@ -273,4 +284,18 @@ public class CGameProgressManager : MonoBehaviour
         return false;
     }
 
+    public void SetRandomState(Random.State state)
+    {
+        _randomState = state;
+    }
+
+    public void SetRandomState()
+    {
+        _randomState = Random.state;
+    }
+
+    public void ApplyRandomState()
+    {
+        Random.state = _randomState;
+    }
 }
