@@ -194,13 +194,13 @@ public class CCameraController : MonoBehaviour
             {
                 Vector3 dir = _rotOffset * Vector3.forward * mouseY + _rotOffset * Vector3.right * mouseX;
 
-                _camTargetOffset += dir * 1 * _sensitivity * Time.unscaledDeltaTime;
+                _camTargetOffset += dir * 5 * _sensitivity * Time.unscaledDeltaTime;
             }
 
         }
 
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
 
         if (v != 0f)
         {
@@ -246,5 +246,9 @@ public class CCameraController : MonoBehaviour
     {
         _target = target;
         _isOnTarget = false;
+        _freeCamMod = false;
+        _rotOffset = Quaternion.identity;
+        _camOffset = _camOffsetDefault;
+        _camTargetOffset = Vector3.zero;
     }
 }

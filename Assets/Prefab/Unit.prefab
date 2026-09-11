@@ -10351,7 +10351,7 @@ GameObject:
   - component: {fileID: 5601828062158408481}
   - component: {fileID: 1443243719965390018}
   m_Layer: 6
-  m_Name: BoosterEffect R
+  m_Name: BoosterEffect L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -84,6 +84,7 @@ public class CSeceneManager : MonoBehaviour
         CGameOptionManager.Instance.CloseOptionMenu();
         _currentScene = sceneData;
         StartCoroutine(Co_LoadSceneWithTransition(sceneName, fadeDuration));
+        Time.timeScale = 1f;
     }
 
 

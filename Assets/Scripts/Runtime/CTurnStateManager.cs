@@ -99,6 +99,7 @@ public class CTurnStateManager : MonoBehaviour
         switch (_turnState)
         {
             case ETurnState.TurnInit:
+                Time.timeScale = 0f;
                 TurnInit();
                 break;
             case ETurnState.AwaitPlayerInput:
@@ -108,6 +109,7 @@ public class CTurnStateManager : MonoBehaviour
                 AIInput();
                 break;
             case ETurnState.TurnResolve:
+                Time.timeScale = 1f;
                 TurnResolveInit();
                 break;
             default:
@@ -138,6 +140,7 @@ public class CTurnStateManager : MonoBehaviour
                 _battleUI.BattleWin();
             }
 
+            Time.timeScale = 1f;
             this.enabled = false;
             return;
         }
