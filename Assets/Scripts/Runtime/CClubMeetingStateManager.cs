@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
@@ -64,10 +63,6 @@ public class CClubMeetingStateManager : MonoBehaviour
 
     private EClubMeetingState _currentState;
 
-    //private IItemable[] _shopItems;
-
-    //private int _gameProgressManager.RerollPrice = 1;
-
     private CItemSlotController[] _inventorySlot = new CItemSlotController[24];
 
     private static CClubMeetingStateManager _instance;
@@ -117,8 +112,6 @@ public class CClubMeetingStateManager : MonoBehaviour
         _soundManager = CSoundManager.Instance;
 
         _currentState = EClubMeetingState.ActivitySelection;
-
-        //_gameProgressManager.ApplyRandomState();
 
         UpdateFundText();
         InitializeClupMember();
@@ -342,7 +335,7 @@ public class CClubMeetingStateManager : MonoBehaviour
 
         _gameProgressManager.Fund -= _gameProgressManager.RerollPrice;
         _gameProgressManager.RerollPrice++;
-        //_gameProgressManager.SetRandomState();
+
         UpdateFundText();
         RerollShopItems();
         _soundManager.PlayCursorSound();
@@ -359,7 +352,7 @@ public class CClubMeetingStateManager : MonoBehaviour
         }
 
         _gameProgressManager.Reputation -= 5;
-        //_gameProgressManager.SetRandomState();
+
         UpdateFundText();
         RerollShopItems();
         _soundManager.PlayCursorSound();
@@ -378,11 +371,11 @@ public class CClubMeetingStateManager : MonoBehaviour
         _gameProgressManager.Reputation -= 5;
         UpdateFundText();
 
-        int ranNum = UnityEngine.Random.Range(1, 101);
+        int ranNum = Random.Range(1, 101);
 
         if (ranNum > _gameProgressManager.RecruitChance)
         {
-            int ranTextNum = UnityEngine.Random.Range(0, 4);
+            int ranTextNum = Random.Range(0, 4);
 
             switch (ranTextNum)
             {
@@ -461,32 +454,6 @@ public class CClubMeetingStateManager : MonoBehaviour
         }
 
     }
-
-
-    /*
-    public bool CheckScene()
-    {
-        for (int i = 0; i < _gameProgressManager.ClubMembers.Count; i++)
-        {
-            CClubMember clubMember = _gameProgressManager.ClubMembers[i];
-
-            bool moduleCheck = true;
-
-            if(clubMember.GeneratorModule == null || clubMember.ShieldModule == null || clubMember.FlightModule == null|| clubMember.WeaponModuleL == null || clubMember.WeaponModuleR == null)
-            {
-                moduleCheck = false;
-                continue;
-            }
-
-            if (moduleCheck)
-            {
-                return true;
-            }
-        }
-
-        Debug.Log("No valid clubMember");
-        return false;
-    }*/
 
     public void ShowMessage(string messageTxt)
     {

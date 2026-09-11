@@ -75,21 +75,4 @@ public class CUnitPreviewController : MonoBehaviour
         _weaponR.SetActive(hasWeaponR);
         _flightModule.SetActive(hasFlightModule);
     }
-
-    /*
-    public void SetWeaponLActive(bool enable)
-    {
-        _weaponL.SetActive(enable);
-    }
-
-    public void SetWeaponRActive(bool enable)
-    {
-        _weaponR.SetActive(enable);
-    }
-
-    public void SetFlightModuleActive(bool enable)
-    {
-        _flightModule.SetActive(enable);
-    }
-    */
 }

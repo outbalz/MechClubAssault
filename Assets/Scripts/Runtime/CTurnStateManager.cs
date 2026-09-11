@@ -87,7 +87,6 @@ public class CTurnStateManager : MonoBehaviour
         _playerUnits = units;
         _enemyUnits = enemys;
 
-        //_unitInputManager.SetSelectedUint(_playerUnits[0]);
         ChangeTurnState(ETurnState.TurnInit);
     }
 
@@ -147,8 +146,6 @@ public class CTurnStateManager : MonoBehaviour
 
         for (int i = 0; i < _playerUnits.Count; i++)
         {
-
-            //Vector3[] tunPosData = _playerUnits[i].TurnData.Positions;
             Vector3[] tunPosData = new Vector3[5];
 
             for (int j = 0; j < tunPosData.Length ; j++)
@@ -224,7 +221,6 @@ public class CTurnStateManager : MonoBehaviour
             _enemyUnits[i].MovementController.SetOnMove();
         }
 
-        //TurnResolveUpDatePerSec();
     }
 
     private void TurnResolveUpDate()
@@ -240,23 +236,11 @@ public class CTurnStateManager : MonoBehaviour
                 return;
             }
 
-            //TurnResolveUpDatePerSec();
         }
 
         _turnTimer -= Time.deltaTime;
 
     }
-
-    /*
-    private void TurnResolveUpDatePerSec()
-    {
-        for (int i = 0; i < _playerUnits.Count; i++)
-        {
-            _playerUnits[i].MovementController.SetTargetPos(_playerUnits[i].TurnData.Positions[_turnSec], _playerUnits[i].TurnData.Positions[_playerUnits[i].TurnData.Positions.Length -1]);
-        }
-    }
-    */
-
 
     private void SubmitTurn()
     {
@@ -315,10 +299,6 @@ public class CTurnStateManager : MonoBehaviour
             _unitInputManager.SetSelectedUint(_playerUnits[0]);
         }
 
-        //if(_turnState != ETurnState.TurnResolve)
-        //{
-            //_reqReadyCount--;
-        //}
     }
 
     public void UnitGetKnockedOut(CEnemyUnitContorller unit)

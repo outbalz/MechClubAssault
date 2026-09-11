@@ -17,8 +17,6 @@ public class CTooltipController : MonoBehaviour
     private static CTooltipController _instance;
     #endregion
 
-    //public static CTooltipController Instance { get { return _instance; } }
-
     private void Awake()
     {
         if(_instance == null)

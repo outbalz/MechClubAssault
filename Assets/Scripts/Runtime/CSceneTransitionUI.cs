@@ -80,9 +80,6 @@ public class CSceneTransitionUI : MonoBehaviour
 
         while (t < duration)
         {
-            //dt 선택
-            // ㄴ deltaTime 타임스케일 영향
-            // ㄴ unscaled  안받음
 
             float dt =  Time.unscaledDeltaTime;
 

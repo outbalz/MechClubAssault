@@ -15,16 +15,6 @@ public class CUnitMovementController : MonoBehaviour
     #region inspector (debug)
     [Header("speed")]
     [SerializeField] private float _speed;
-
-    /*
-    [SerializeField] private float MaxSpeed;
-    [SerializeField] private float TurnRate;
-
-    [Space]
-    [SerializeField] private float _acceleration;
-    [SerializeField] private float _deceleration;
-    [SerializeField] private float _airResistance;
-    */
     #endregion
 
     #region private var
@@ -82,13 +72,6 @@ public class CUnitMovementController : MonoBehaviour
         return false;
     }
     
-    /*
-    private void UnitMovemet()
-    {
-        transform.position += transform.rotation * Vector3.forward * _speed * Time.deltaTime;
-    }
-    */
-
     private void UnitRotation(Vector3 dir)
     {
         if(dir == Vector3.zero)
@@ -106,25 +89,10 @@ public class CUnitMovementController : MonoBehaviour
         _reachedDest = false;
     }
 
-    /*
-    public bool IsOnMove()
-    {
-        return _onMove;
-    }
-    */
     public void SetOnMove(bool onMove = true)
     {
         _onMove = onMove;
     }
-
-    /*
-    public void GetSpeed(out float speed, out float turnRate, out float maxSpeed)
-    {
-        speed = _speed;
-        turnRate = _flightModule.TurnRate;
-        maxSpeed = _flightModule.MaxSpeed;
-    }
-    */
 
     public void SpeedTurnInit()
     {

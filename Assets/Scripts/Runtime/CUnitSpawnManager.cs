@@ -71,9 +71,6 @@ public class CUnitSpawnManager : MonoBehaviour
 
         _turnStateManager.RewardPrize = levelData.RewardPrize;
 
-        //_enemyUnitData = _gameProgressManager.GetLevelCEnemyUnitDatas(out _spanwPointEnemyUnit);
-
-
         if (_playerUnitData.Count == 0)
         {
             Debug.LogWarning("Missing UnitData");

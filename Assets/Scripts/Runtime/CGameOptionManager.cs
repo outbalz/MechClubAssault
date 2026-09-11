@@ -111,7 +111,6 @@ public class CGameOptionManager : MonoBehaviour
 
     public void SetFullscreenMode(int index)
     {
-        //Screen.fullScreenMode = (FullScreenMode)index;
 
         switch (index)
         {

@@ -46,12 +46,6 @@ public class CBattleUIManager : MonoBehaviour
     [SerializeField] private ScriptableObjectSceneData _endingScene;
     #endregion
 
-    #region private var
-    //private float _turnEnergy;
-    //private float _previousSpeedBarVal;
-    //private float _previousSpeedCost;
-    #endregion
-
     private void Reset()
     {
         Initialize();
@@ -128,8 +122,6 @@ public class CBattleUIManager : MonoBehaviour
         CUnitController unit = _unitInputManager.SelectedUnit;
         unit.IsInitedForTurn = true;
 
-        //SetValToSelectedUnitVal(unit);
-
         SetShieldRegen(true);
         SetReadyToggle(true);
         InitWeaponToggle();
@@ -183,35 +175,22 @@ public class CBattleUIManager : MonoBehaviour
             previousSpeedCost = previousSpeedBarVal * MovementController.FlightModule.DecelerationEnergyCost * -1f;
         }
 
-
-
-
-        //_unitInputManager.SelectedUnit.GetSpeed();
-
         if (MovementController.Speed < 0)
         {
-            //_speedSlider.SetValueWithoutNotify(-2 - MovementController.Speed);
 
             MovementController.SetAccelerationLevel((int)_speedSlider.value +1);
             _speedSlider.value++;
             return;
-            //MovementController.SetAccelerationLevel((int)_speedSlider.value);
 
         }
 
         if (MovementController.Speed > MovementController.FlightModule.MaxSpeed)
         {
-            //float overflow = MovementController.Speed - MovementController.FlightModule.MaxSpeed;
-
-            //_speedSlider.SetValueWithoutNotify(3 - overflow);
             MovementController.SetAccelerationLevel((int)_speedSlider.value -1);
             _speedSlider.value--;
             return;
-            //MovementController.SetAccelerationLevel((int)_speedSlider.value);
-            
         }
 
-        // float energyCost = Mathf.Abs(_speedSlider.value) - Mathf.Abs(_previousSpeedBarVal);
         float energyCost = 0;
 
         if (_speedSlider.value > 0)
@@ -224,29 +203,15 @@ public class CBattleUIManager : MonoBehaviour
             energyCost = _speedSlider.value * MovementController.FlightModule.DecelerationEnergyCost * -1f;
         }
 
-        /*
-        else if(_previousSpeedBarVal > 0)
-        {
-            energyCost *= MovementController.FlightModule.AccelerationEnergyCost;
-        }
-
-        else if(_previousSpeedBarVal < 0)
-        {
-            energyCost *= MovementController.FlightModule.DecelerationEnergyCost * -1f;
-        }
-        */
-
         float tempCost = energyCost - previousSpeedCost;
 
         if (unit.Energy < tempCost)
         {
-            //energyCost = previousSpeedCost;
+
             MovementController.SetAccelerationLevel((int)previousSpeedBarVal);
             _speedSlider.value = previousSpeedBarVal;
             return;
         }
-
-        //_previousSpeedCost = energyCost;
 
         unit.Energy -= tempCost;
 
@@ -262,15 +227,9 @@ public class CBattleUIManager : MonoBehaviour
 
         MovementController.SetTargetPos(pos, pos);
 
-        //_previousSpeedBarVal = _speedSlider.value;
-
-        //_speedText.text = $"{MovementController.Speed:00}";
-        //_speedFill.fillAmount = MovementController.Speed / MovementController.FlightModule.MaxSpeed;
-
         UpdateSpeed(unit, MovementController);
         UpdateEnergy(unit);
         _soundManager.PlayCursorSound();
-        //Debug.Log("!!");
     }
 
     public void SetWeaponEnable(int i)
@@ -435,8 +394,6 @@ public class CBattleUIManager : MonoBehaviour
             return;
         }
 
-        //unit.SetShieldBar();
-
         UpdateEnergy(unit);
         _soundManager.PlayCursorSound();
     }
@@ -472,25 +429,12 @@ public class CBattleUIManager : MonoBehaviour
             return;
         }
 
-        /*
-        _speedSlider.value = (unit.MovementController.AccelerationLevel);
-        _WeaponToggles[0].isOn = (unit.WeaponContorller.WeaponEnableL);
-        _WeaponToggles[1].isOn = (unit.WeaponContorller.WeaponEnableR);
-        _shieldSlider.value =(unit.ShieldRegenLevel);
-        _readyToggle.SetIsOnWithoutNotify(unit.IsReady);
-
-        unit.SetShieldBar();
-        UpdateSpeed(unit, unit.MovementController);
-        UpdateEnergy(unit);
-        /**/
-
         _speedSlider.SetValueWithoutNotify(unit.MovementController.AccelerationLevel);
         _WeaponToggles[0].SetIsOnWithoutNotify(unit.WeaponContorller.WeaponEnableL);
         _WeaponToggles[1].SetIsOnWithoutNotify(unit.WeaponContorller.WeaponEnableR);
         _shieldSlider.SetValueWithoutNotify(unit.ShieldRegenLevel);
         _readyToggle.SetIsOnWithoutNotify(unit.IsReady);
 
-        //unit.SetShieldBar();
         UpdateSpeed(unit, unit.MovementController);
         UpdateEnergy(unit);
         
@@ -505,8 +449,6 @@ public class CBattleUIManager : MonoBehaviour
         progressManager.Level++;
         progressManager.RerollPrice = 1;
         progressManager.IsLevelInited = false;
-
-        //progressManager.SetRandomState();
 
         if (progressManager.Level < 14)
         {

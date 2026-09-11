@@ -63,18 +63,21 @@ public class CSoundManager : MonoBehaviour
 
     public void PlaySelectSound()
     {
+        SetPosToCamera();
         _audioSource.clip = _sfxData.Select;
         _audioSource.Play();
     }
 
     public void PlayCancelSound()
     {
+        SetPosToCamera();
         _audioSource.clip = _sfxData.Cancel;
         _audioSource.Play();
     }
 
     public void PlayCursorSound()
     {
+        SetPosToCamera();
         _audioSource.clip = _sfxData.Cursor;
         _audioSource.Play();
     }
@@ -97,5 +100,10 @@ public class CSoundManager : MonoBehaviour
     public void SetAmbienceVolume(float level)
     {
         _mixer.SetFloat("AmbienceVolume", level);
+    }
+
+    private void SetPosToCamera()
+    {
+        transform.position = Camera.main.transform.position;
     }
 }

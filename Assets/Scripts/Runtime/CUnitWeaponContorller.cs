@@ -12,14 +12,6 @@ public class CUnitWeaponContorller : MonoBehaviour
     [SerializeField] private LineRenderer _weaponLInnerArc;
     [SerializeField] private LineRenderer _weaponLOutterArc;
 
-    /*
-    [SerializeField] private float _weaponLInnerArcDeg;
-    [SerializeField] private float _weaponLOutterArcDeg;
-    [SerializeField] private float WeaponRangeL;
-    [SerializeField] private float WeaponCoolDownL;
-    [SerializeField] private float WeaponDamegeL;
-    */
-
     [SerializeField] private ParticleSystem _weaponParticleL;
     [SerializeField] private AudioSource _weaponLSFX;
 
@@ -31,14 +23,6 @@ public class CUnitWeaponContorller : MonoBehaviour
     [Space]
     [SerializeField] private LineRenderer _weaponRInnerArc;
     [SerializeField] private LineRenderer _weaponROutterArc;
-
-    /*
-    [SerializeField] private float _weaponRInnerArcDeg;
-    [SerializeField] private float _weaponROutterArcDeg;
-    [SerializeField] private float WeaponRangeR;
-    [SerializeField] private float WeaponCoolDownR;
-    [SerializeField] private float WeaponDamegeR;
-    */
 
     [SerializeField] private ParticleSystem _weaponParticleR;
     [SerializeField] private AudioSource _weaponRSFX;

@@ -10,7 +10,6 @@ public class CCameraController : MonoBehaviour
     [SerializeField] private Transform _target;
 
     [SerializeField] private Vector3 _camOffset = new Vector3(0f, 2f, -3f);
-    //[SerializeField] private Vector3 _camLookOffset = Vector3.zero;
     [SerializeField] private Vector3 _camTargetOffset = Vector3.zero;
     [SerializeField] private float _camLookAtHeight = 1.5f;
 
@@ -50,20 +49,6 @@ public class CCameraController : MonoBehaviour
 
         _rotOffset = Quaternion.identity;
 
-        /*
-        if (_target == null)
-        {
-            return;
-        }
-
-        Vector3 desiredPos;
-        Quaternion desiredRot;
-
-        SetCameraPose(out desiredPos, out desiredRot);
-
-        ApplyCameraPose(desiredPos, desiredRot);
-        _isOnTarget = true;
-        */
     }
 
     private void Update()
@@ -99,7 +84,6 @@ public class CCameraController : MonoBehaviour
         _camTr.rotation = Quaternion.Slerp(_camTr.rotation, desiredRot, t);
 
     }
-    /*/**/
 
     private void CameraUpdate()
     {
@@ -237,7 +221,6 @@ public class CCameraController : MonoBehaviour
             _freeCamMod = false;
             _rotOffset = Quaternion.identity;
             _camOffset = _camOffsetDefault;
-            //_camLookOffset = Vector3.zero;
             _camTargetOffset = Vector3.zero;
         }
     }

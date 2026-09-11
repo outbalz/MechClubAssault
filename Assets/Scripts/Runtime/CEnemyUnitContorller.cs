@@ -50,7 +50,6 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
     #endregion
 
     #region private var
-    //private CTurnData _turnData;
     private int _turnNum = 0;
     private int _lastCombatTurn = 0;
     private CUnitController _targetUnit;
@@ -58,8 +57,7 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
 
     #region getter
     public CUnitMovementController MovementController { get { return _movementController; } }
-    //public CTurnData TurnData { get { return _turnData; } }
-    public CUnitController TargetUnit { /*get { return _targetUnit; }*/ set { _targetUnit = value; } }
+    public CUnitController TargetUnit { set { _targetUnit = value; } }
     #endregion
 
 
@@ -106,31 +104,11 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
                 Debug.LogWarning("Missing CUnitWeaponContorller");
             }
         }
-        /*
-        if (_turnData == null)
-        {
-            _turnData = new CTurnData(_turnNum);
-        }
-        */
+
         if(_unitUi == null || _shieldBar == null)
         {
             Debug.LogWarning("Missing Ui element");
         }
-
-        /*
-        if (_shieldModule == null)
-        {
-            Debug.LogWarning("Missing _shieldModule");
-        }
-
-        else
-        {
-            _shield = _shieldModule.StartShield;
-            SetShieldBar();
-        }
-        */
-
-
 
         if (_knockout == null)
         {
@@ -178,7 +156,6 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
         _weaponContorller.SetModule(weaponModuleL, weaponModuleR);
 
         _shield = _shieldModule.StartShield;
-        //SetShieldBar();
 
         _turnStateManager = CTurnStateManager.Instance;
 
@@ -238,10 +215,8 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
         dest.y = 0;
 
         Vector3[] posPath = new Vector3[5];
-        //List<Vector3> linePos = new List<Vector3>();
 
         posPath[0] = transform.position;
-        //linePos.Add(transform.position);
 
         bool pathReachedDest = false;
 
@@ -264,53 +239,28 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
 
                     moveVector += rot * Vector3.forward * speed * 0.2f;
 
-                    //linePos.Add(moveVector);
-
                     if ((dest - moveVector).sqrMagnitude <= speed * speed)
                     {
                         pathReachedDest = true;
                     }
                 }
 
-                /*
-                    Quaternion tempRot = rot;
-
-                    tempRot = Quaternion.LookRotation(dest - moveVector, Vector3.up);
-
-                    rot = Quaternion.RotateTowards(rot, tempRot, this.TurnRate * 0.1f);
-
-                    moveVector += rot * Vector3.forward * this.Speed;
-                */
-
             }
 
             else
             {
                 moveVector += rot * Vector3.forward * speed;
-                //linePos.Add(moveVector);
             }
 
 
             posPath[i] = moveVector;
 
-            //posPath[i].y = _MAPHIGHT;
-
             Debug.DrawRay(posPath[i - 1], posPath[i] - posPath[i - 1], pathReachedDest ? Color.yellow : Color.blue, 2f);
 
         }
 
-        //TurnData.Positions = posPath;
-
         MovementController.SetTargetPos(dest, posPath[posPath.Length - 1]);
 
-
-        //Debug.Log(pathReachedDest);
-
-        /*
-        // for test-----------
-        _selectedUnit.MovementController.SetOnMove(true);
-        //----------------------
-        */
     }
 
     private void AIShieldRegen()
@@ -341,7 +291,6 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
 
         if(_turnNum - _lastCombatTurn <= regenTurn)
         {
-            //Debug.Log($"{_turnNum - _lastCombatTurn} / {regenTurn}");
             return;
         }
 
@@ -354,16 +303,7 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
             _shield = _shieldModule.MaxShield;
         }
 
-        //SetShieldBar();
-
     }
-
-    /*
-    private void SetShieldBar()
-    {
-        _shieldBar.fillAmount = _shield / _shieldModule.MaxShield;
-    }
-    */
 
     private void SetShieldBar()
     {
@@ -380,8 +320,6 @@ public class CEnemyUnitContorller : MonoBehaviour, IDamageable, ICombatTracker
     public void TakeHit(float damage)
     {
         _shield -= damage;
-
-        //SetShieldBar();
 
         _lastCombatTurn = _turnNum;
 

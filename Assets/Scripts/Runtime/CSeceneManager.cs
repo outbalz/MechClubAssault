@@ -136,22 +136,5 @@ public class CSeceneManager : MonoBehaviour
 
 
     }
-    /*
-    public void LoadScene(ScriptableObjectSceneData sceneData)
-    {
-        if (sceneData == null)
-        {
-            Debug.LogWarning("Scene data is null");
-            return;
-        }
-        string sceneName = sceneData.SceneName;
-        if (string.IsNullOrEmpty(sceneName))
-        {
-            Debug.LogWarning("Scene name is null or empty");
-            return;
-        }
-        StartCoroutine(Co_LoadSceneWithTransition(sceneName, -1f));
-    }*/
-
 
 }

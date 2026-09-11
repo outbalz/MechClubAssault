@@ -1,5 +1,4 @@
-﻿//using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -166,7 +165,6 @@ public class CGameProgressManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
 
             CSaveAndLoadManager.LoadGame();
-            //Debug.Log(_level);
         }
 
         else if (_instance != this)
@@ -235,42 +233,6 @@ public class CGameProgressManager : MonoBehaviour
         return levelData;
     }   
     
-    /*
-    public List<CEnemyUnitData> GetLevelCEnemyUnitDatas(out List<Vector3> enemySpawnPoint,int index = -1)
-    {
-        if(_level < 0 || _level >= _SODB.GetLevelListCount())
-        {
-            Debug.LogWarning("Invalid level: " + _level);
-            enemySpawnPoint = new List<Vector3>();
-            return null;
-        }
-
-        if (index >= _SODB.GetLevelDataCount(_level))
-        {
-            Debug.LogWarning("Invalid level data index: " + index + " for level: " + _level);
-            enemySpawnPoint = new List<Vector3>();
-            return null;
-        }
-
-        if (index < 0)
-        {
-            index = UnityEngine.Random.Range(0, _SODB.GetLevelDataCount(_level));
-        }
-
-        ScriptableObjectLevelData levelData = _SODB.GetLevelData(_level, index);
-
-        if (levelData == null)
-        {
-            Debug.LogWarning("Level data not found for level: " + _level + ", index: " + index);
-            enemySpawnPoint = new List<Vector3>();
-            return null;
-        }
-
-        enemySpawnPoint = levelData.EnemySpawnPoints;
-        return levelData.EnemyUnitDatas;
-    }
-    */
-
     public string FundToString()
     {
         return _fund.ToString("N0") + "만원";

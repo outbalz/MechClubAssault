@@ -1,6 +1,4 @@
-﻿
-
-public interface ICombatTracker
+﻿public interface ICombatTracker
 {
     void SetLastCombatTurn();
 }

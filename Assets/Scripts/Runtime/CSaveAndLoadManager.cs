@@ -21,8 +21,6 @@ public class CSaveData
 
     [SerializeField] private int[] _eyeColorDataIndex;
 
-    //[SerializeField] private List<CClubMember> _clubMembers;
-
     [SerializeField] private int _level;
     [SerializeField] private float _fund;
     [SerializeField] private float _reputation;
@@ -31,8 +29,6 @@ public class CSaveData
 
     [SerializeField] private bool _isLevelInited;
     [SerializeField] private bool _hasRecruitedThisLevel;
-
-    //[SerializeField] private List<IItemable> _inventory;
 
     [SerializeField] private int[] _inventoryItemType;
     [SerializeField] private int[] _inventoryItemIndex;
@@ -44,7 +40,6 @@ public class CSaveData
 
     public CSaveData(CGameProgressManager gameProgress)
     {
-        //_clubMembers = gameProgress.ClubMembers;
 
         _level = gameProgress.Level;
         _fund = gameProgress.Fund;
@@ -141,8 +136,6 @@ public class CSaveData
 
             _eyeColorDataIndex[i] = eyeDataMap[clubMember.EyeColorData];
         }
-
-        //_inventory = gameProgress.Inventory;
 
         _inventoryItemType = new int[gameProgress.Inventory.Count]; 
         _inventoryItemIndex = new int[gameProgress.Inventory.Count];
@@ -323,9 +316,6 @@ public class CSaveData
         progressManager.ClubMembers = GetClubMember(DB);
         progressManager.Inventory = GetInventory(DB);
         progressManager.ShopItems = GetShopItem(DB);
-
-        //progressManager.ClubMembers = _clubMembers;
-        //progressManager.Inventory = _inventory;
 
         progressManager.Level = _level;
         progressManager.Fund = _fund;

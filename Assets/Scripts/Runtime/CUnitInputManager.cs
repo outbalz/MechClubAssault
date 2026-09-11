@@ -193,12 +193,12 @@ public class CUnitInputManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit, _rayMaxDistance, _rayLayerMask))
         {
             isHit = true;
-            Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green, 2f);
+            //Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green, 2f);
         }
 
         else
         {
-            Debug.DrawRay(ray.origin, ray.direction * _rayMaxDistance, Color.red, 2f);
+            //Debug.DrawRay(ray.origin, ray.direction * _rayMaxDistance, Color.red, 2f);
         }
 
         _previousRay = ray;
@@ -253,16 +253,6 @@ public class CUnitInputManager : MonoBehaviour
                     }
                 }
 
-                /*
-                    Quaternion tempRot = rot;
-
-                    tempRot = Quaternion.LookRotation(dest - moveVector, Vector3.up);
-
-                    rot = Quaternion.RotateTowards(rot, tempRot, _selectedUnit.TurnRate * 0.1f);
-
-                    moveVector += rot * Vector3.forward * _selectedUnit.Speed;
-                */
-
             }
 
             else
@@ -274,13 +264,10 @@ public class CUnitInputManager : MonoBehaviour
 
             posPath[i] =  moveVector;
 
-            //posPath[i].y = _MAPHIGHT;
-
-            Debug.DrawRay(posPath[i - 1], posPath[i] - posPath[i - 1], pathReachedDest ? Color.yellow : Color.blue , 2f);
+            //Debug.DrawRay(posPath[i - 1], posPath[i] - posPath[i - 1], pathReachedDest ? Color.yellow : Color.blue , 2f);
 
         }
 
-        //_selectedUnit.TurnData.Positions = posPath;
         _selectedUnit.VisualizePath(linePos);
 
         _selectedUnit.MovementController.SetTargetPos(dest, posPath[posPath.Length-1]);
@@ -288,13 +275,6 @@ public class CUnitInputManager : MonoBehaviour
 
         _posMarker.position = dest;
 
-        //Debug.Log(pathReachedDest);
-
-        /*
-        // for test-----------
-        _selectedUnit.MovementController.SetOnMove(true);
-        //----------------------
-        */
     }
 
 
