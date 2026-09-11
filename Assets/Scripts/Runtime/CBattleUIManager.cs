@@ -504,8 +504,9 @@ public class CBattleUIManager : MonoBehaviour
         progressManager.Reputation += _turnStateManager.RewardReputation + _turnStateManager.RewardComboReputation;
         progressManager.Level++;
         progressManager.RerollPrice = 1;
+        progressManager.IsLevelInited = false;
 
-        progressManager.SetRandomState();
+        //progressManager.SetRandomState();
 
         if (progressManager.Level < 14)
         {

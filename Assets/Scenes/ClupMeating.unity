@@ -245,8 +245,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 409.13223, y: -71.4507}
-  m_SizeDelta: {x: 798.26447, y: 122.9014}
+  m_AnchoredPosition: {x: 396.04938, y: -71.4507}
+  m_SizeDelta: {x: 772.09875, y: 122.9014}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &12900508
 MonoBehaviour:
@@ -1411,7 +1411,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 520c01923e75afe40b57d839accfa704, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ecc8f37b5ceece3469be4e64100835b8, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2055,6 +2055,7 @@ MonoBehaviour:
   _managementPanel: {fileID: 527976109}
   _shopPanel: {fileID: 966900237}
   _recruitPanel: {fileID: 1441559197}
+  _recruitButton: {fileID: 1285284149}
   _closeButton: {fileID: 1529903488}
   _managementPanelLayoutTr: {fileID: 1316688258}
   _inventorySlotLayoutTr: {fileID: 836715177}
@@ -6138,8 +6139,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 409.13223, y: -204.3521}
-  m_SizeDelta: {x: 798.26447, y: 122.9014}
+  m_AnchoredPosition: {x: 396.04938, y: -204.3521}
+  m_SizeDelta: {x: 772.09875, y: 122.9014}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1219877257
 MonoBehaviour:
@@ -6261,7 +6262,7 @@ GameObject:
   - component: {fileID: 1285284146}
   - component: {fileID: 1285284149}
   m_Layer: 5
-  m_Name: Button
+  m_Name: RecruitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9865,7 +9866,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 520c01923e75afe40b57d839accfa704, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ecc8f37b5ceece3469be4e64100835b8, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10208,7 +10209,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 520c01923e75afe40b57d839accfa704, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ecc8f37b5ceece3469be4e64100835b8, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11475,8 +11476,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 409.13223, y: -337.25348}
-  m_SizeDelta: {x: 798.26447, y: 122.9014}
+  m_AnchoredPosition: {x: 396.04938, y: -337.25348}
+  m_SizeDelta: {x: 772.09875, y: 122.9014}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1915048844
 MonoBehaviour:

@@ -57,6 +57,11 @@ public class CTitleMenuController : MonoBehaviour
         }
     }
 
+    public void ContinueGame()
+    {
+        CGameProgressManager.Instance.ApplyRandomState();
+    }
+
     public void OpenOptitonWindow()
     {
         CGameOptionManager.Instance.OpenOptitonWindow();

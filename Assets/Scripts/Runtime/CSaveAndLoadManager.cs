@@ -29,12 +29,18 @@ public class CSaveData
     [SerializeField] private int _recruitChance;
     [SerializeField] int _rerollPrice;
 
+    [SerializeField] private bool _isLevelInited;
+    [SerializeField] private bool _hasRecruitedThisLevel;
+
     //[SerializeField] private List<IItemable> _inventory;
 
     [SerializeField] private int[] _inventoryItemType;
     [SerializeField] private int[] _inventoryItemIndex;
 
     [SerializeField] private Random.State _randomState;
+
+    [SerializeField] private int[] _shopItemType;
+    [SerializeField] private int[] _shopItemIndex;
 
     public CSaveData(CGameProgressManager gameProgress)
     {
@@ -45,6 +51,9 @@ public class CSaveData
         _reputation = gameProgress.Reputation;
         _recruitChance = gameProgress.RecruitChance;
         _rerollPrice = gameProgress.RerollPrice;
+
+        _isLevelInited = gameProgress.IsLevelInited;
+        _hasRecruitedThisLevel = gameProgress.HasRecruitedThisLevel;
 
         _clumManberNames = new string[gameProgress.ClubMembers.Count];
         _generatorModuleIndex = new int[gameProgress.ClubMembers.Count];
@@ -165,6 +174,42 @@ public class CSaveData
             }
         }
 
+        _shopItemType = new int[3];
+        _shopItemIndex = new int[3];
+
+        for (int i = 0; i < gameProgress.ShopItems.Length; i++)
+        {
+            IItemable item = gameProgress.ShopItems[i];
+
+            switch (item)
+            {
+                case null:
+                    _shopItemType[i] = -1;
+                    break;
+                case IItemable I when I is ScriptableObjectGeneratorModule g:
+                    _shopItemType[i] = 0;
+                    _shopItemIndex[i] = generatorModuleMap[g];
+                    break;
+                case IItemable I when I is ScriptableObjectShieldModule s:
+                    _shopItemType[i] = 1;
+                    _shopItemIndex[i] = shieldModuleMap[s];
+                    break;
+                case IItemable I when I is ScriptableObjectFlightModule f:
+                    _shopItemType[i] = 2;
+                    _shopItemIndex[i] = flightModuleMap[f];
+                    break;
+                case IItemable I when I is ScriptableObjectWeaponModule w:
+                    _shopItemType[i] = 3;
+                    _shopItemIndex[i] = weaponModuleMap[w];
+                    break;
+                default:
+                    break;
+            }
+
+            Debug.Log(_shopItemType[i]);
+        }
+
+        gameProgress.SetRandomState();
         _randomState = gameProgress.RandomState;
     }
 
@@ -236,12 +281,48 @@ public class CSaveData
         return inventory;
     }
 
+    private IItemable[] GetShopItem(ScriptableObjectDataBase DB)
+    {
+        IItemable[] shopItem = new IItemable[_shopItemType.Length];
+
+        for (int i = 0; i < _shopItemType.Length; i++)
+        {
+            switch (_shopItemType[i])
+            {
+                case -1:
+                    shopItem[i] = null;
+                    break;
+                case 0:
+                    shopItem[i] = DB.GetGeneratorModule(_shopItemIndex[i]);
+                    break;
+                case 1:
+                    shopItem[i] = DB.GetShieldModule(_shopItemIndex[i]);
+                    break;
+                case 2:
+                    shopItem[i] = DB.GetFlightModule(_shopItemIndex[i]);
+                    break;
+                case 3:
+                    shopItem[i] = DB.GetWeaponModule(_shopItemIndex[i]);
+                    break;
+                default:
+                    Debug.Log("!!");
+                    break;
+            }
+
+            Debug.Log(_shopItemType[i]);
+        }
+
+        
+        return shopItem;
+    }
+
     public void LoadData(CGameProgressManager progressManager)
     {
         ScriptableObjectDataBase DB = progressManager.SODB;
 
         progressManager.ClubMembers = GetClubMember(DB);
         progressManager.Inventory = GetInventory(DB);
+        progressManager.ShopItems = GetShopItem(DB);
 
         //progressManager.ClubMembers = _clubMembers;
         //progressManager.Inventory = _inventory;
@@ -252,7 +333,11 @@ public class CSaveData
         progressManager.RecruitChance = _recruitChance;
         progressManager.RerollPrice = _rerollPrice;
 
+        progressManager.IsLevelInited = _isLevelInited;
+        progressManager.HasRecruitedThisLevel = _hasRecruitedThisLevel;
+
         progressManager.SetRandomState(_randomState);
+        progressManager.ApplyRandomState();
     }
 }
 

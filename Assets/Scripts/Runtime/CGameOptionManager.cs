@@ -10,7 +10,7 @@ public class CGameOptionManager : MonoBehaviour
     [SerializeField] private ScriptableObjectSceneData _tilteScene;
     [SerializeField] private GameObject _optionMenu;
     [SerializeField] private GameObject _optionWindow;
-    //[SerializeField] private Dropdown _resolutionDropDown;
+    [SerializeField] private GameObject _bockerPanel;
     [SerializeField] private TMP_Dropdown _resolutionDropDown;
     #endregion
 
@@ -38,7 +38,7 @@ public class CGameOptionManager : MonoBehaviour
             return;
         }
 
-        if(_optionMenu == null || _optionWindow == null)
+        if(_optionMenu == null || _optionWindow == null || _bockerPanel == null)
         {
             Debug.LogWarning("Missing Option Menu element");
         }
@@ -140,6 +140,7 @@ public class CGameOptionManager : MonoBehaviour
             Time.timeScale = 0;
 
             _optionMenu.SetActive(true);
+            _bockerPanel.SetActive(true);
             CSoundManager.Instance.PlaySelectSound();
         }
 
@@ -148,6 +149,7 @@ public class CGameOptionManager : MonoBehaviour
             Time.timeScale = _previousTimescale;
             _optionMenu.SetActive(false);
             _optionWindow.SetActive(false);
+            _bockerPanel.SetActive(false);
             CSoundManager.Instance.PlayCursorSound();
         }
 
@@ -166,6 +168,7 @@ public class CGameOptionManager : MonoBehaviour
         Time.timeScale = _previousTimescale;
         _optionMenu.SetActive(false);
         _optionWindow.SetActive(false);
+        _bockerPanel.SetActive(false);
 
         CSoundManager.Instance.PlayCursorSound();
     }
@@ -174,6 +177,7 @@ public class CGameOptionManager : MonoBehaviour
     {
         _optionMenu.SetActive(false);
         _optionWindow.SetActive(true);
+        _bockerPanel.SetActive(true);
         CSoundManager.Instance.PlaySelectSound();
     }
 

@@ -119,7 +119,11 @@ public class CGameProgressManager : MonoBehaviour
     private int _rerollPrice = 1;
     private int _recruitChance = 1;
 
+    private bool _isLevelInited = false;
+    private bool _hasRecruitedThisLevel = false;
+
     private List<IItemable> _inventory = new List<IItemable>();
+    private IItemable[] _shopItem = new IItemable[3];
 
     private Random.State _randomState;
     #endregion
@@ -140,11 +144,16 @@ public class CGameProgressManager : MonoBehaviour
 
     public int Level { get { return _level; } set { _level = value; } }
 
+
+    public bool IsLevelInited { get { return _isLevelInited; } set { _isLevelInited = value; } }
+    public bool HasRecruitedThisLevel { get { return _hasRecruitedThisLevel; } set { _hasRecruitedThisLevel = value; } }
+
     public List<IItemable> Inventory {  get { return _inventory; } set { _inventory = value; } }
+    public IItemable[] ShopItems { get { return _shopItem; } set { _shopItem = value; } }
 
     public Random.State RandomState { get {  return _randomState; } }
     #endregion
-
+    
 
     private void Awake()
     {

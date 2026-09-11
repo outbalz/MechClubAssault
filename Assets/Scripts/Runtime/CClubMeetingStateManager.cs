@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -21,6 +22,7 @@ public class CClubMeetingStateManager : MonoBehaviour
     [SerializeField] private GameObject _managementPanel;
     [SerializeField] private GameObject _shopPanel;
     [SerializeField] private GameObject _recruitPanel;
+    [SerializeField] private CanvasGroup _recruitButton;
     [SerializeField] private GameObject _closeButton;
 
     [Space]
@@ -62,7 +64,7 @@ public class CClubMeetingStateManager : MonoBehaviour
 
     private EClubMeetingState _currentState;
 
-    private IItemable[] _shopItems;
+    //private IItemable[] _shopItems;
 
     //private int _gameProgressManager.RerollPrice = 1;
 
@@ -91,9 +93,9 @@ public class CClubMeetingStateManager : MonoBehaviour
             Debug.LogWarning("Missing LayoutTr element");
         }
 
-        if (_closeButton == null)
+        if (_closeButton == null || _recruitButton == null)
         {
-            Debug.LogWarning("Missing Close Button");
+            Debug.LogWarning("Missing Button element");
         }
 
         if (_clubMemberPanelPrefab == null || _itemSlotPrefab == null ||_unitPreviewPrefab == null || _messagePrefab == null) 
@@ -116,12 +118,25 @@ public class CClubMeetingStateManager : MonoBehaviour
 
         _currentState = EClubMeetingState.ActivitySelection;
 
-        _gameProgressManager.ApplyRandomState();
+        //_gameProgressManager.ApplyRandomState();
 
         UpdateFundText();
         InitializeClupMember();
         InitializeShopItems();
         InitializeInventorySlot();
+
+        if (_gameProgressManager.IsLevelInited == false)
+        {
+            _gameProgressManager.IsLevelInited = true;
+            _gameProgressManager.HasRecruitedThisLevel = false;
+            RerollShopItems();
+        }
+
+        if(_gameProgressManager.HasRecruitedThisLevel == true)
+        {
+            _recruitButton.alpha = 0.3f;
+            _recruitButton.interactable = false;
+        }
 
         _recruitChanceText.text = $"{_gameProgressManager.RecruitChance}%";
     }
@@ -181,21 +196,46 @@ public class CClubMeetingStateManager : MonoBehaviour
 
     private void InitializeShopItems()
     {
-        _shopItems = new IItemable[]
+
+        for (int i = 0; i < _gameProgressManager.ShopItems.Length; i++)
+        {
+            if (_gameProgressManager.ShopItems[i] == null)
+            {
+                _shopItemCanvas[i].alpha = 0.3f;
+                _shopItemCanvas[i].interactable = false;
+                _shopItemText[i].text = "판매됨";
+                _shopItemPriceText[i].text = "-";
+                _shopItemDescriptionText[i].text = "-";
+                continue;
+            }
+
+            _shopItemText[i].text = _gameProgressManager.ShopItems[i].ModuleName;
+            _shopItemPriceText[i].text = $"{_gameProgressManager.ShopItems[i].Price}";
+            _shopItemDescriptionText[i].text = CUtil.GetFormetedDescription(_gameProgressManager.ShopItems[i].Description, false);
+            _shopItemIcon[i].sprite = _gameProgressManager.ShopItems[i].Icon;
+            _shopItemCanvas[i].alpha = 1f;
+            _shopItemCanvas[i].interactable = true; 
+        }
+    }
+
+
+    private void RerollShopItems()
+    {
+        _gameProgressManager.ShopItems = new IItemable[]
         {
             _gameProgressManager.SODB.GetRandomModule(),
             _gameProgressManager.SODB.GetRandomModule(),
             _gameProgressManager.SODB.GetRandomModule()
         };
 
-        for (int i = 0; i < _shopItems.Length; i++)
+        for (int i = 0; i < _gameProgressManager.ShopItems.Length; i++)
         {
-            _shopItemText[i].text = _shopItems[i].ModuleName;
-            _shopItemPriceText[i].text = $"{_shopItems[i].Price}";
-            _shopItemDescriptionText[i].text = CUtil.GetFormetedDescription(_shopItems[i].Description, false);
-            _shopItemIcon[i].sprite = _shopItems[i].Icon;
+            _shopItemText[i].text = _gameProgressManager.ShopItems[i].ModuleName;
+            _shopItemPriceText[i].text = $"{_gameProgressManager.ShopItems[i].Price}";
+            _shopItemDescriptionText[i].text = CUtil.GetFormetedDescription(_gameProgressManager.ShopItems[i].Description, false);
+            _shopItemIcon[i].sprite = _gameProgressManager.ShopItems[i].Icon;
             _shopItemCanvas[i].alpha = 1f;
-            _shopItemCanvas[i].interactable = true; 
+            _shopItemCanvas[i].interactable = true;
         }
     }
 
@@ -254,13 +294,13 @@ public class CClubMeetingStateManager : MonoBehaviour
 
     public void OnShopItemClicked(int index)
     {
-        if (index < 0 || index >= _shopItems.Length)
+        if (index < 0 || index >= _gameProgressManager.ShopItems.Length)
         {
             Debug.LogWarning("Invalid shop item index.");
             return;
         }
 
-        IItemable selectedItem = _shopItems[index];
+        IItemable selectedItem = _gameProgressManager.ShopItems[index];
 
         if (_gameProgressManager.Fund < selectedItem.Price)
         {
@@ -272,8 +312,9 @@ public class CClubMeetingStateManager : MonoBehaviour
 
         if (_gameProgressManager.AddItemToInventory(selectedItem))
         {
-            _shopItemCanvas[index].alpha = 0.3f; // Make the purchased item semi-transparent
-            _shopItemCanvas[index].interactable = false; // Disable interaction with the purchased item
+            _gameProgressManager.ShopItems[index] = null;
+            _shopItemCanvas[index].alpha = 0.3f; 
+            _shopItemCanvas[index].interactable = false; 
             _gameProgressManager.Fund -= selectedItem.Price;
             UpdateFundText();
             UpdateInventorySlot();
@@ -301,9 +342,9 @@ public class CClubMeetingStateManager : MonoBehaviour
 
         _gameProgressManager.Fund -= _gameProgressManager.RerollPrice;
         _gameProgressManager.RerollPrice++;
-        _gameProgressManager.SetRandomState();
+        //_gameProgressManager.SetRandomState();
         UpdateFundText();
-        InitializeShopItems();
+        RerollShopItems();
         _soundManager.PlayCursorSound();
     }
 
@@ -318,9 +359,9 @@ public class CClubMeetingStateManager : MonoBehaviour
         }
 
         _gameProgressManager.Reputation -= 5;
-        _gameProgressManager.SetRandomState();
+        //_gameProgressManager.SetRandomState();
         UpdateFundText();
-        InitializeShopItems();
+        RerollShopItems();
         _soundManager.PlayCursorSound();
     }
 
@@ -395,6 +436,7 @@ public class CClubMeetingStateManager : MonoBehaviour
             canvasGroup.interactable = false;
             canvasGroup.alpha = 0.3f;
 
+            _gameProgressManager.HasRecruitedThisLevel = true;
             CClubMember newMember = new CClubMember(CUtil.GetRandomName(),null,null,null,null,null);
 
             _recruitLogText.text += $"\n모집 성공! {newMember.Name}이(가) 메카 동아리에 들어왔습니다! \n(확률:{_gameProgressManager.RecruitChance}%)";
